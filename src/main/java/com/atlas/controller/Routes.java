@@ -19,9 +19,10 @@ public class Routes {
         }
         return routes;
     }
-    public int addRoutes(String source, String destination, LinkedList<String> stops){
+    public int addRoutes(String source, String destination, LinkedList<String> stops, String time, String eta){
         if(!route.containsKey(source)) {
-            Route r = new Route(source, destination, stops);
+            Route r = new Route(source, destination, stops, time, eta
+            );
             routes.route.put(source, r);
             return r.getRouteId();
         }
@@ -41,6 +42,8 @@ public class Routes {
             System.out.println("Source : " + r.getSource());
             System.out.println("Destination : " + r.getDestination());
             System.out.println("Stops : " + r.getStops());
+            System.out.println("Time : " + r.getTime());
+            System.out.println("ETA : " + r.getEta());
             System.out.println("---------------------------------------------------------------------------");
         }
         System.out.println("---------------------------------------------------------------------------");

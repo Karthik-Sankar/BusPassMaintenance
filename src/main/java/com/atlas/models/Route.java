@@ -1,21 +1,24 @@
 package com.atlas.models;
 
 import com.atlas.utils.IDGenerator;
+
 import java.util.LinkedList;
 
 public class Route {
-    int routeId;
-    String source;
-    String destination;
-    LinkedList<String> stops;
-    String time;
-    String eta;
-    public Route(String source, String destination, LinkedList<String> stops)
+    private int routeId;
+    private String source;
+    private String destination;
+    private LinkedList<String> stops;
+    private String time;
+    private String eta;
+    public Route(String source, String destination, LinkedList<String> stops, String time, String eta)
     {
         routeId= IDGenerator.getRouteID();
         this.source=source;
         this.destination=destination;
         this.stops=stops;
+        this.time=time;
+        this.eta=eta;
     }
 
     public int getRouteId() {
@@ -32,5 +35,13 @@ public class Route {
 
     public String getSource() {
         return source;
+    }
+
+    public String getEta() {
+        return eta;
+    }
+
+    public String getTime() {
+        return time;
     }
 }

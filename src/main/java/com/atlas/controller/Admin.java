@@ -1,26 +1,28 @@
 package com.atlas.controller;
 
+import java.util.LinkedList;
+
 public class Admin {
-    boolean isAuthenticated=;
+    boolean isAuthenticated=true;
     private static Admin admin;
-    private admin(){}
+    private Admin(){}
 
     private static Admin getInstance()
     {
-        if(adminobj==null)
+        if(admin==null)
         {
-            adminobj = new admin();
+            admin = new Admin();
         }
-        return adminobj;
+        return admin;
     }
 
 
-    public String routeAddOrChangeRequest(String userId, String source)
+    /*public String assignUserRoute(String userId, int routeId)
     {
         int routeNum;
         Routes route = Routes.getInstance();
-        routeNum = route.addRoutes(source);
-        route.assignUserRoute(userId, routeNum);
+        routeNum = route.route.get();
+        //route.assignUserRoute(userId, routeNum);
         return "Your updated Route number is :"+routeNum;
-    }
+    }*/
 }
