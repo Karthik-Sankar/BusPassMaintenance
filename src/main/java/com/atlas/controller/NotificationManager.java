@@ -4,6 +4,8 @@ import com.atlas.models.Notification;
 import com.atlas.models.Route;
 import com.atlas.models.User;
 
+import javax.crypto.spec.PSource;
+
 class BusPassApplyNotification implements Notification {
     String message;
     User u;
@@ -67,10 +69,10 @@ class ModifyRouteNotification implements Notification {
 
 class CreateNewRoute implements Notification {
     String message;
-    Route r;
-    CreateNewRoute(String message, Route r){
+    String route;
+    CreateNewRoute(String message, String route){
         this.message = message;
-        this.r = r;
+        this.route = route;
     }
     public String getType() {
         return "ROUTECREATE";
@@ -80,8 +82,8 @@ class CreateNewRoute implements Notification {
         return message;
     }
 
-    public Route getObj() {
-        return r;
+    public Object getObj() {
+        return route;
     }
 }
 
@@ -94,7 +96,7 @@ public class NotificationManager {
             case 1:
                 return new BusPassCancelNotification(message, (User)o);
             case 2:
-                return  new CreateNewRoute(message, (Route)o);
+                return  new CreateNewRoute(message, (String)o);
             case 3:
                 return new ModifyRouteNotification(message, (Route)o);
             default:
