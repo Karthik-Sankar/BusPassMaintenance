@@ -11,6 +11,6 @@ public class MainClass2 {
         list.add("Guindy");
         list.add("Velachery");
         list.add("Tharamani");
-        routes.addRoutes("Vadapalani", "Perungudi", list);
+        routes.addRoutes("Vadapalani", "Perungudi", list, "06:35PM", "6hrs");
     }
 }

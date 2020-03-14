@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class Routes {
     private static Routes routes;
-    HashMap<String, Route> route;
+    public HashMap<String, Route> route;
     private Routes(){
         route=new HashMap<String, Route>();
     }

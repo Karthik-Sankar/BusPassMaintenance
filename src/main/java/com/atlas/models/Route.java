@@ -44,4 +44,16 @@ public class Route {
     public String getTime() {
         return time;
     }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "routeId=" + routeId +
+                ", source='" + source + '\'' +
+                ", destination='" + destination + '\'' +
+                ", stops=" + stops +
+                ", time='" + time + '\'' +
+                ", eta='" + eta + '\'' +
+                '}';
+    }
 }
