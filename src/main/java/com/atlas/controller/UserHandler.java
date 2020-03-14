@@ -44,13 +44,9 @@ public class UserHandler {
         }
     }
 
-//    public void updateUserRoute(String uId,int rNum){
-//        for (User element : user) {
-//            if(element.getUserId().equals(uId)){
-//                element.setRouteNum(rNum);
-//            }
-//        }
-//    }
+    public void updateUserRoute(String userId, int routeId){
+        user.get(userId).setRouteNum(routeId);
+    }
 
 
 }

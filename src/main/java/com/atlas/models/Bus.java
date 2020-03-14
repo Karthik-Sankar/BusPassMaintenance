@@ -8,11 +8,11 @@ public class Bus {
     int totalCapacity;
     int seatFilled;
 
-    public Bus(int busId, String busType, int totalCapacity, int seatFilled) {
+    public Bus(String busType, int totalCapacity) {
         this.busId = IDGenerator.getBusID();
         this.busType = busType;
         this.totalCapacity = totalCapacity;
-        this.seatFilled = seatFilled;
+        this.seatFilled = 0;
     }
 
     public int getBusId() {

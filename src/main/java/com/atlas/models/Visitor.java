@@ -15,6 +15,10 @@ public class Visitor {
         this.destination = destination;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     public String toString() {
         return "Visitor{" +
                 "userId='" + userId + '\'' +

@@ -23,6 +23,30 @@ public class Route {
         this.bus = bus;
     }
 
+    public void setBus(Bus bus) {
+        this.bus = bus;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setRouteId(int routeId) {
+        this.routeId = routeId;
+    }
+
+    public void setEta(String eta) {
+        this.eta = eta;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public int getRouteId() {
         return routeId;
     }

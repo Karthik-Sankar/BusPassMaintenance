@@ -1,9 +1,8 @@
 package com.atlas.mainentry;
 
-import com.atlas.controller.NotificationStore;
-import com.atlas.controller.Routes;
-import com.atlas.controller.UserHandler;
+import com.atlas.controller.*;
 import com.atlas.models.Route;
+import com.atlas.models.Visitor;
 import com.atlas.utils.ScannerUtil;
 
 import java.util.LinkedList;
@@ -35,17 +34,21 @@ public class MainClass {
         while(session=='y') {
             System.out.println("Login Options");
             System.out.println("1. Admin");
-            System.out.println("2. User");
+            System.out.println("2. User (Yet to Implement)");
             System.out.println("3. Visitor");
-            System.out.println("Press any key to close!");
+            System.out.println("Press 0 key to close!");
             ScannerUtil input = ScannerUtil.getInstance();
             int choice = input.readInt();
             switch (choice) {
                 case 1:
+                    Admin admin = new Admin();
+                    admin.AdminEntry();
                     break;
                 case 2:
                     break;
                 case 3:
+                    VisitorHandler visitor = new VisitorHandler();
+                    visitor.VisitorEntry();
                     break;
                 default:
                     session='n';

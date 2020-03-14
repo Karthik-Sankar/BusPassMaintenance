@@ -4,6 +4,7 @@ public class IDGenerator {
     static int routeID = 0;
     static int busID = 0;
     static int busPassID = 0;
+    static int notifyID = 0;
 
     public static int getRouteID() {
         routeID++;
@@ -18,5 +19,10 @@ public class IDGenerator {
     public static int getBusPassID() {
         busPassID++;
         return busPassID;
+    }
+
+    public static int getNotifyID() {
+        notifyID++;
+        return notifyID;
     }
 }

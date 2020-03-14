@@ -1,19 +1,18 @@
 package com.atlas.models;
 
-
 import com.atlas.utils.IDGenerator;
 
 public class BusPass {
     int busPassId;
     int routeId;
     String userId;
-    int busId;
+    Bus bus;
 
-    public BusPass(int busPassId, int routeId, String userId, int busId) {
+    public BusPass(int busPassId, int routeId, String userId, Bus bus) {
         this.busPassId = IDGenerator.getBusPassID();
         this.routeId = routeId;
         this.userId = userId;
-        this.busId = busId;
+        this.bus = bus;
     }
 
     public int getBusPassId() {
@@ -28,13 +27,13 @@ public class BusPass {
         return userId;
     }
 
-    public int getBusId() {
-        return busId;
+    public Bus getBus() {
+        return bus;
     }
 
     public String toString() {
-        return "BusPassModel [busPassId=" + busPassId + ", routeId=" + routeId + ", userId=" + userId + ", busId="
-                + busId + "]";
+        return "BusPassModel [busPassId=" + busPassId + ", routeId=" + routeId + ", userId=" + userId + ", bus="
+                + bus + "]";
     }
 
 }

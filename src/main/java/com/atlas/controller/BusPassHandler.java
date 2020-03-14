@@ -34,7 +34,7 @@ public class BusPassHandler {
             System.out.println("---------------------------------------------------------------------------");
             System.out.println("Buspass Info : " + bp.getBusPassId());
             System.out.println("ID : " + bp.getUserId());
-            System.out.println("Bus ID : " + bp.getBusId());
+            System.out.println("Bus ID : " + bp.getBus().getBusId());
             System.out.println("Route ID :" + bp.getRouteId());
             System.out.println("---------------------------------------------------------------------------");
         }

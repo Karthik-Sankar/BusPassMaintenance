@@ -79,7 +79,7 @@ public class Routes {
     public void routeCapacityStatus() {
         System.out.println();
         System.out.println("---------------------------------------------------------------------------");
-        System.out.println("-----------------------------Route Seat Availability--------[--------------");
+        System.out.println("-----------------------------Route Seat Availability-----------------------");
         System.out.println("---------------------------------------------------------------------------");
         Set<String> keys = route.keySet();
         for (String key : keys) {
