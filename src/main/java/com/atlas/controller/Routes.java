@@ -47,6 +47,7 @@ public class Routes {
             System.out.println("Stops : " + r.getStops());
             System.out.println("Time : " + r.getTime());
             System.out.println("ETA : " + r.getEta());
+            System.out.println("Bus : " + r.getBus());
             System.out.println("---------------------------------------------------------------------------");
         }
         System.out.println("---------------------------------------------------------------------------");
@@ -65,9 +66,31 @@ public class Routes {
                 System.out.println("Source : " + r.getSource());
                 System.out.println("Destination : " + r.getDestination());
                 System.out.println("Stops : " + r.getStops());
+                System.out.println("Time : " + r.getTime());
+                System.out.println("ETA : " + r.getEta());
+                System.out.println("Bus : " + r.getBus());
                 System.out.println("---------------------------------------------------------------------------");
             }
 
+        }
+        System.out.println("---------------------------------------------------------------------------");
+    }
+
+    public void routeCapacityStatus() {
+        System.out.println();
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("-----------------------------Route Seat Availability--------[--------------");
+        System.out.println("---------------------------------------------------------------------------");
+        Set<String> keys = route.keySet();
+        for (String key : keys) {
+            Route r = route.get(key);
+            System.out.println("Route No : " + r.getRouteId());
+            System.out.println("Source : " + r.getSource());
+            System.out.println("Destination : " + r.getDestination());
+            Bus b = r.getBus();
+            double per = (b.getSeatFilled()/b.getTotalCapacity())*100;
+            System.out.println("Percentage Occupied : " +per+"%");
+            System.out.println("---------------------------------------------------------------------------");
         }
         System.out.println("---------------------------------------------------------------------------");
     }
