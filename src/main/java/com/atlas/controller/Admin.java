@@ -3,14 +3,14 @@ package com.atlas.controller;
 import java.util.LinkedList;
 
 public class Admin {
-    boolean isAuthenticated=true;
+    boolean isAuthenticated = true;
     private static Admin admin;
-    private Admin(){}
 
-    private static Admin getInstance()
-    {
-        if(admin==null)
-        {
+    private Admin() {
+    }
+
+    private static Admin getInstance() {
+        if (admin == null) {
             admin = new Admin();
         }
         return admin;

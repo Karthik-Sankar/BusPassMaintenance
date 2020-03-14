@@ -2,7 +2,7 @@ package com.atlas.models;
 
 import com.atlas.utils.IDGenerator;
 
-public class Bus{
+public class Bus {
     int busId;
     String busType;
     int totalCapacity;
@@ -14,15 +14,19 @@ public class Bus{
         this.totalCapacity = totalCapacity;
         this.seatFilled = seatFilled;
     }
+
     public int getBusId() {
         return busId;
     }
+
     public String getBusType() {
         return busType;
     }
+
     public int getTotalCapacity() {
         return totalCapacity;
     }
+
     public int getSeatFilled() {
         return seatFilled;
     }

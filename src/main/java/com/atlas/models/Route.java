@@ -6,19 +6,21 @@ import java.util.LinkedList;
 
 public class Route {
     private int routeId;
+    private Bus bus;
     private String source;
     private String destination;
     private LinkedList<String> stops;
     private String time;
     private String eta;
-    public Route(String source, String destination, LinkedList<String> stops, String time, String eta)
-    {
-        routeId= IDGenerator.getRouteID();
-        this.source=source;
-        this.destination=destination;
-        this.stops=stops;
-        this.time=time;
-        this.eta=eta;
+
+    public Route(String source, String destination, LinkedList<String> stops, String time, String eta, Bus bus) {
+        routeId = IDGenerator.getRouteID();
+        this.source = source;
+        this.destination = destination;
+        this.stops = stops;
+        this.time = time;
+        this.eta = eta;
+        this.bus = bus;
     }
 
     public int getRouteId() {
@@ -45,6 +47,10 @@ public class Route {
         return time;
     }
 
+    public Bus getBus() {
+        return bus;
+    }
+
     public String toString() {
         return "Route{" +
                 "routeId=" + routeId +
@@ -53,6 +59,7 @@ public class Route {
                 ", stops=" + stops +
                 ", time='" + time + '\'' +
                 ", eta='" + eta + '\'' +
+                ", Bus Info ='" + bus + '\'' +
                 '}';
     }
 }

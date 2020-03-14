@@ -7,12 +7,12 @@ public class User {
     private String phoneNumber;
     private int routeNum;
 
-    public User(BusPass busPass, String userId, String userName, String phoneNumber,int routeNum) {
+    public User(BusPass busPass, String userId, String userName, String phoneNumber, int routeNum) {
         this.busPass = busPass;
         this.userId = userId;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
-        this.routeNum=routeNum;
+        this.routeNum = routeNum;
     }
 
     public BusPass getBusPass() {
