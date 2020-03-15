@@ -91,6 +91,7 @@ public class VisitorHandler {
                     System.out.println("DESTINATION : ");
                     String destination = scannerUtil.readLine();
                     Visitor visitor = new Visitor(uid, userName, phoneNumber, source, destination);
+                    visitorHandler.addVisitor(uid, userName, phoneNumber, source, destination);
                     notification.createNotifications(0, "Apply Bus Pass", visitor, uid, "Admin");
                     break;
                 default:
