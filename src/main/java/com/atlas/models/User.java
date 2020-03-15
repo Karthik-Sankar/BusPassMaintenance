@@ -6,6 +6,7 @@ public class User {
     private String userName;
     private String phoneNumber;
     private int routeNum;
+    private int travelCost;
 
     public User(BusPass busPass, String userId, String userName, String phoneNumber, int routeNum) {
         this.busPass = busPass;
@@ -13,6 +14,14 @@ public class User {
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.routeNum = routeNum;
+    }
+
+    public void setTravelCost(int travelCost) {
+        this.travelCost = travelCost;
+    }
+
+    public int getTravelCost() {
+        return travelCost;
     }
 
     public BusPass getBusPass() {

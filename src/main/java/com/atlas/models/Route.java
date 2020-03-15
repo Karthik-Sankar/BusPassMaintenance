@@ -2,9 +2,10 @@ package com.atlas.models;
 
 import com.atlas.utils.IDGenerator;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Route {
+public class Route implements Serializable {
     private int routeId;
     private Bus bus;
     private String source;

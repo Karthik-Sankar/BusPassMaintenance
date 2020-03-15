@@ -2,6 +2,7 @@ package com.atlas.controller;
 
 import com.atlas.models.Bus;
 import com.atlas.models.BusPass;
+import com.atlas.utils.Lines;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -34,14 +35,14 @@ public class BusHandler {
         for(Integer key:keys){
             Bus bp = bus.get(key);
             System.out.println();
-            System.out.println("---------------------------------------------------------------------------");
-            System.out.println("-------------------------------Bus Info------------------------------");
-            System.out.println("---------------------------------------------------------------------------");
+            Lines.lines();
+            System.out.println("Bus Details Summary");
+            Lines.lines();
             System.out.println("Bus ID : " + bp.getBusId());
             System.out.println("Bus Type : " + bp.getBusType());
             System.out.println("Total Capacity : " + bp.getTotalCapacity());
             System.out.println("Seats Filled :" + bp.getSeatFilled());
-            System.out.println("---------------------------------------------------------------------------");
+            Lines.lines();
         }
     }
 }

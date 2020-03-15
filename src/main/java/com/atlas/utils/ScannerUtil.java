@@ -18,19 +18,20 @@ public class ScannerUtil {
     }
 
     public int readInt() {
-        return scan.nextInt();
+        return Integer.parseInt(scan.nextLine());
     }
 
     public String readLine() {
-        return scan.next();
+        return scan.nextLine();
     }
 
+
     public float readFloat() {
-        return scan.nextFloat();
+        return Float.parseFloat(scan.nextLine());
     }
 
     public double readDouble() {
-        return scan.nextDouble();
+        return Double.parseDouble(scan.nextLine());
     }
 }
 

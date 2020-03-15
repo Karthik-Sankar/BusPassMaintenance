@@ -6,11 +6,8 @@ import com.atlas.utils.ScannerUtil;
 
 public class VisitorHandler {
     ScannerUtil scannerUtil = ScannerUtil.getInstance();
-//    1. View Routes
-//    2. View Seat Availability %
-//    3. Request New Route Addition
-//    4. Apply Bus Pass
-
+    RouteHandler routeHandler = RouteHandler.getInstance();
+    NotificationHandler notification = NotificationHandler.getNotificationInstance();
     public void VisitorEntry()
     {
         System.out.println("Enter UserID : ");
@@ -29,21 +26,16 @@ public class VisitorHandler {
             int choice = input.readInt();
             switch (choice) {
                 case 1:
-                    Routes routes = Routes.getInstance();
-                    routes.displayRoute();
+                    routeHandler.displayRoute();
                     break;
                 case 2:
-                    Routes routes2 = Routes.getInstance();
-                    routes2.routeCapacityStatus();
+                    routeHandler.routeCapacityStatus();
                     break;
                 case 3:
-                    NotificationStore notification = NotificationStore.getNotificationInstance();
                     System.out.println("Enter new route as (Source-Destination) :");
                     notification.createNotifications(2, "New Route Request", scannerUtil.readLine(), uid, "Admin");
-                    System.out.println("");
                     break;
                 case 4:
-                    NotificationStore notification2 = NotificationStore.getNotificationInstance();
                     System.out.println("USER Name : ");
                     String userName = scannerUtil.readLine();
                     System.out.println("PHONE : ");
@@ -53,7 +45,7 @@ public class VisitorHandler {
                     System.out.println("DESTINATION : ");
                     String destination = scannerUtil.readLine();
                     Visitor visitor = new Visitor(uid, userName, phoneNumber, source, destination);
-                    notification2.createNotifications(0, "Apply Bus Pass", visitor, uid, "Admin");
+                    notification.createNotifications(0, "Apply Bus Pass", visitor, uid, "Admin");
                     break;
                 default:
                     session = 'n';

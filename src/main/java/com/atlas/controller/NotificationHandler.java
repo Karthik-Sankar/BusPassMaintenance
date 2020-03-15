@@ -1,21 +1,22 @@
 package com.atlas.controller;
 
 import com.atlas.models.Notification;
+import com.atlas.utils.Lines;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class NotificationStore {
-    private static NotificationStore notification;
+public class NotificationHandler {
+    private static NotificationHandler notification;
     LinkedList<Notification> note;
 
-    private NotificationStore() {
+    private NotificationHandler() {
         note = new LinkedList<Notification>();
     }
 
-    public static NotificationStore getNotificationInstance() {
+    public static NotificationHandler getNotificationInstance() {
         if (notification == null) {
-            notification = new NotificationStore();
+            notification = new NotificationHandler();
         }
         return notification;
     }
@@ -26,9 +27,10 @@ public class NotificationStore {
     }
 
     public void ListNotification(String to) {
-        System.out.println("---------------------------------------------------------------------------");
-        System.out.println("---------------------------------Notifications------------------------------");
-        System.out.println("---------------------------------------------------------------------------");
+        System.out.println();
+        Lines.lines();
+        System.out.println("Notifications for "+to);
+        Lines.lines();
         Iterator<Notification> itr = note.iterator();
         while (itr.hasNext()) {
             Notification notify = itr.next();
@@ -41,7 +43,6 @@ public class NotificationStore {
                 System.out.println("Supporting Data : " + notify.getObj());
             }
         }
-        System.out.println("---------------------------------------------------------------------------");
-        System.out.println("---------------------------------------------------------------------------");
+        Lines.lines();
     }
 }
