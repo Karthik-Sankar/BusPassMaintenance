@@ -91,7 +91,6 @@ class BusPassCancelNotification implements Notification {
 class ModifyRouteNotification implements Notification {
     String message;
     Route r;
-    String userId;
     int NotifyId;
     String from;
     String to;
@@ -99,7 +98,6 @@ class ModifyRouteNotification implements Notification {
     ModifyRouteNotification(String message, Route r, String from, String to) {
         this.message = message;
         this.r = r;
-        this.userId = userId;
         this.NotifyId = IDGenerator.getNotifyID();
         this.from = from;
         this.to = to;
@@ -133,7 +131,6 @@ class ModifyRouteNotification implements Notification {
 class CreateNewRoute implements Notification {
     String message;
     String route;
-    String userId;
     int NotifyId;
     String from;
     String to;
@@ -141,7 +138,6 @@ class CreateNewRoute implements Notification {
     CreateNewRoute(String message, String route, String from, String to) {
         this.message = message;
         this.route = route;
-        this.userId = userId;
         this.NotifyId = IDGenerator.getNotifyID();
         this.from = from;
         this.to = to;

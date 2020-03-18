@@ -3,6 +3,7 @@ package com.atlas.controller;
 import com.atlas.models.BusPass;
 import com.atlas.models.User;
 import com.atlas.models.Visitor;
+import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.Lines;
 import com.atlas.utils.ScannerUtil;
@@ -17,6 +18,7 @@ public class VisitorHandler {
 
     private VisitorHandler() {
         visitor = new HashMap<String,Visitor>();
+        initalize();
     }
 
     public static VisitorHandler getInstance() {
@@ -26,6 +28,18 @@ public class VisitorHandler {
         return visitorHandler;
     }
 
+    public void initalize(){
+        ObjectRetreiver retreiver = new ObjectRetreiver();
+        Object o = retreiver.getVisitorObj();
+        if(o!=null) {
+            HashMap<String, Visitor> temp = (HashMap<String, Visitor>) o;
+            Set<String> keys = temp.keySet();
+            for (String key : keys) {
+                Visitor v = temp.get(key);
+                addVisitor(v.getUserId(),v.getUserName(),v.getPhoneNumber(),v.getSource(),v.getDestination());
+            }
+        }
+    }
     public void addVisitor(String userId, String userName, String phoneNumber, String source, String destination) {
         Visitor v = new Visitor(userId, userName, phoneNumber, source, destination);
         visitor.put(userId, v);

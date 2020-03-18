@@ -4,6 +4,7 @@ import com.atlas.models.Bus;
 import com.atlas.models.BusPass;
 import com.atlas.models.Route;
 import com.atlas.persistance.ObjectRetreiver;
+import com.atlas.utils.IDGenerator;
 import com.atlas.utils.Lines;
 
 import java.sql.SQLOutput;
@@ -26,7 +27,7 @@ public class BusHandler {
             Set<Integer> keys = temp.keySet();
             for (Integer key : keys) {
                 Bus b = temp.get(key);
-                addBus(b.getBusId(),b.getBusType(), b.getTotalCapacity());
+                addBus(b.getBusId(), b.getBusType(), b.getTotalCapacity());
             }
         }
     }
@@ -37,9 +38,9 @@ public class BusHandler {
         }
         return busHandler;
     }
-    public void addBus(int busNo, String busType, int totalCapacity){
-        Bus b = new Bus(busNo, busType,totalCapacity);;
-        bus.put(busNo, b);
+    public void addBus(int busID, String busType, int totalCapacity){
+        Bus b = new Bus(busID, busType, totalCapacity);;
+        bus.put(b.getBusId(), b);
     }
     public void removeBus(int busID){
         bus.remove(busID);

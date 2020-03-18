@@ -5,13 +5,13 @@ import com.atlas.utils.IDGenerator;
 import java.io.Serializable;
 
 public class Bus implements Serializable {
-    int busId;
-    String busType;
-    int totalCapacity;
-    int seatFilled;
+    private int busId;
+    private String busType;
+    private int totalCapacity;
+    private int seatFilled;
 
-    public Bus(int busNo, String busType, int totalCapacity) {
-        this.busId = busNo;
+    public Bus(int busId, String busType, int totalCapacity) {
+        this.busId = busId;
         this.busType = busType;
         this.totalCapacity = totalCapacity;
         this.seatFilled = 0;
@@ -33,6 +33,9 @@ public class Bus implements Serializable {
         return seatFilled;
     }
 
+    public void incrementSeatFilled(){
+        seatFilled++;
+    }
     public String toString() {
         return "Bus{" +
                 "busId=" + busId +

@@ -2,6 +2,7 @@ package com.atlas.controller;
 
 import com.atlas.models.Bus;
 import com.atlas.models.BusPass;
+import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.utils.Lines;
 
 import java.util.HashMap;
@@ -13,6 +14,20 @@ public class BusPassHandler {
 
     private BusPassHandler() {
         busPass = new HashMap<Integer, BusPass>();
+        initalize();
+    }
+
+    public void initalize(){
+        ObjectRetreiver retreiver = new ObjectRetreiver();
+        Object o = retreiver.getBusPassObj();
+        if(o!=null) {
+            HashMap<Integer, BusPass> temp = (HashMap<Integer, BusPass>) o;
+            Set<Integer> keys = temp.keySet();
+            for (Integer key : keys) {
+                BusPass b = temp.get(key);
+                addBusPass(b.getBusPassId(), b.getRouteId(), b.getUserId(), b.getBus());
+            }
+        }
     }
 
     public static BusPassHandler getInstance() {
@@ -22,9 +37,9 @@ public class BusPassHandler {
         return busPassHandler;
     }
 
-    public void addBusPass(Bus busID, int busPassID, int routeID, String userID){
+    public void addBusPass(int busPassID, int routeID, String userID, Bus busID){
         BusPass bp = new BusPass(busPassID, routeID, userID, busID);
-        busPass.put(busPassID, bp);
+        busPass.put(bp.getBusPassId(), bp);
     }
 
     public BusPass getBusPass(int busPassId) {

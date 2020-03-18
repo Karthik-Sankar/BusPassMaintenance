@@ -1,6 +1,7 @@
 package com.atlas.persistance;
 
 import com.atlas.controller.*;
+import com.atlas.utils.IDGenerator;
 
 import java.io.Serializable;
 
@@ -37,4 +38,6 @@ public class ObjectSaver implements Serializable {
         saveUser();
         saveVisitor();
     }
+
+
 }

@@ -6,6 +6,7 @@ import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.persistance.ObjectStore;
+import com.atlas.utils.IDGenerator;
 import com.atlas.utils.ScannerUtil;
 
 import java.util.HashMap;
@@ -70,12 +71,12 @@ public class Admin {
                                 visitorHandler.displayVisitor();
                                 break;
                             case 2:
-                                System.out.println("Enter a Bus Pass ID :");
-                                int buspid = scannerUtil.readInt();
                                 System.out.println("Enter a vistor id to approve :");
                                 String userId = scannerUtil.readLine();
-                                Visitor v = visitorHandler.getVisitor(scannerUtil.readLine());
-                                busPasses.addBusPass(routeHandler.getBus(routeHandler.getRouteID(v.getSource())),buspid, routeHandler.getRouteID(v.getSource()), v.getUserId());
+                                Visitor v = visitorHandler.getVisitor(userId);
+                                int busPassID = IDGenerator.getBusPassID();
+                                busPasses.addBusPass(busPassID, routeHandler.getRouteID(v.getSource()), userId, routeHandler.getBus(routeHandler.getRouteID(v.getSource())));
+                                userHandler.addUser(busPasses.getBusPass(busPassID),userId,v.getUserName(),v.getPhoneNumber(),busPasses.getBusPass(busPassID).getRouteId());
                                 visitorHandler.visitor.remove(userId);
                                 System.out.println("User "+v.getUserName()+" Application Approved");
                                 break;
@@ -129,8 +130,6 @@ public class Admin {
     }
 
     private void routeAddition(RouteHandler routeHandler) {
-        System.out.println("Route ID : ");
-        int routeID = scannerUtil.readInt();
         System.out.println("Enter Bus No : ");
         BusHandler busHandler = BusHandler.getInstance();
         Bus bus = busHandler.getBus(scannerUtil.readInt());
@@ -150,17 +149,15 @@ public class Admin {
         String time = scannerUtil.readLine();
         System.out.println("Enter ETA : ");
         String eta = scannerUtil.readLine();
-        routeHandler.addRoutes(routeID, source, destination, stops, time, eta, bus);
+        routeHandler.addRoutes(IDGenerator.getRouteID(), source, destination, stops, time, eta, bus);
     }
 
     private void addBuses(BusHandler busHandler) {
-        System.out.println("Enter the bus number: ");
-        int busNo = scannerUtil.readInt();
         System.out.println("Enter the bus type: ");
         String busType = scannerUtil.readLine();
         System.out.println("Enter the seat capacity: ");
         int seatCapacity = scannerUtil.readInt();
-        busHandler.addBus(busNo, busType, seatCapacity);
+        busHandler.addBus(IDGenerator.getBusID(), busType, seatCapacity);
     }
 
     private void changeBusRoute(RouteHandler route) {

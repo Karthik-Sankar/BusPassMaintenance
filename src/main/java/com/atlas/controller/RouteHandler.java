@@ -41,8 +41,8 @@ public class RouteHandler {
     }
 
     public int addRoutes(int routeId, String source, String destination, LinkedList<String> stops, String time, String eta, Bus bus) {
-        if (!route.containsKey(routeId)) {
-            Route r = new Route(routeId,source, destination, stops, time, eta, bus);
+        if (!route.containsKey(getRouteID(source))) {
+            Route r = new Route(routeId, source, destination, stops, time, eta, bus);
             route.put(routeId, r);
             return r.getRouteId();
         } else {

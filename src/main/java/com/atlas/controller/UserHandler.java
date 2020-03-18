@@ -2,6 +2,7 @@ package com.atlas.controller;
 
 import com.atlas.models.BusPass;
 import com.atlas.models.User;
+import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.utils.Lines;
 import com.atlas.utils.ScannerUtil;
 
@@ -15,6 +16,20 @@ public class UserHandler {
 
     private UserHandler() {
         user = new HashMap<String, User>();
+        initalize();
+    }
+
+    public void initalize(){
+        ObjectRetreiver retreiver = new ObjectRetreiver();
+        Object o = retreiver.getUserObj();
+        if(o!=null) {
+            HashMap<String, User> temp = (HashMap<String, User>) o;
+            Set<String> keys = temp.keySet();
+                for (String key : keys) {
+                User u = temp.get(key);
+                addUser(u.getBusPass(), u.getUserId(), u.getUserName(), u.getPhoneNumber(), u.getRouteNum());
+            }
+        }
     }
 
     public static UserHandler getInstance() {
