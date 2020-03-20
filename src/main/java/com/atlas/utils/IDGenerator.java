@@ -1,7 +1,12 @@
 package com.atlas.utils;
 
+import com.atlas.models.User;
+import com.atlas.persistance.ObjectRetreiver;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Set;
 
 public class IDGenerator{
     private static IDGenerator idGenerator;
@@ -9,6 +14,7 @@ public class IDGenerator{
     static LinkedList<Integer> bus;
     static LinkedList<Integer> busPass;
     static LinkedList<Integer> notify;
+    LinkedList<LinkedList<Integer>> IDS;
     static int routeID;
     static int busID;
     static int busPassID;
@@ -19,6 +25,19 @@ public class IDGenerator{
         bus = new LinkedList<Integer>();
         busPass = new LinkedList<Integer>();
         notify =  new LinkedList<Integer>();
+        initalize();
+    }
+
+    public void initalize(){
+        ObjectRetreiver retreiver = new ObjectRetreiver();
+        Object o = retreiver.getIDSObj();
+        if(o!=null) {
+//            o = (LinkedList)o;
+//            route=((LinkedList<Integer>) o).get(0);
+//            bus.addAll(((LinkedList<Integer>) o).get(1));
+//            busPass.addAll(((LinkedList<Integer>) o).get(2));
+//            notify.addAll(((LinkedList<Integer>) o).get(3));
+        }
     }
 
     public static IDGenerator getInstance(){
@@ -78,6 +97,10 @@ public class IDGenerator{
     }
 
     public Object getObject(){
-        return idGenerator;
+        IDS.add(route);
+        IDS.add(bus);
+        IDS.add(busPass);
+        IDS.add(notify);
+        return IDS;
     }
 }
