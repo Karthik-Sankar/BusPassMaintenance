@@ -39,7 +39,7 @@ public class ObjectSaver implements Serializable {
         saveRoutes();
         saveUser();
         saveVisitor();
-        saveIDS();
+        //saveIDS();
     }
 
 

@@ -5,6 +5,7 @@ import com.atlas.models.Route;
 import com.atlas.models.User;
 import com.atlas.models.Visitor;
 import com.atlas.utils.IDGenerator;
+import com.atlas.utils.NotifyConstants;
 
 
 class BusPassApplyNotification implements Notification {
@@ -172,13 +173,13 @@ class CreateNewRoute implements Notification {
 public class NotificationManager {
     public static Notification getNotificationType(int type, String message, Object o, String from, String to) {
         switch (type) {
-            case 0:
+            case NotifyConstants.ApplyBusPass:
                 return new BusPassApplyNotification(message, (Visitor) o, from, to);
-            case 1:
+            case NotifyConstants.CancelBusPass:
                 return new BusPassCancelNotification(message, (User) o, from, to);
-            case 2:
+            case NotifyConstants.NewRoute:
                 return new CreateNewRoute(message, (String) o, from, to);
-            case 3:
+            case NotifyConstants.ModifyRoute:
                 return new ModifyRouteNotification(message, (Route) o, from, to);
             default:
                 return null;

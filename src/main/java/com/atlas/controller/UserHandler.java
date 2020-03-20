@@ -4,6 +4,7 @@ import com.atlas.models.BusPass;
 import com.atlas.models.User;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.utils.Lines;
+import com.atlas.utils.NotifyConstants;
 import com.atlas.utils.ScannerUtil;
 
 import java.util.HashMap;
@@ -49,29 +50,13 @@ public class UserHandler {
     }
 
     public void displayUsers() {
-        System.out.println();
-        Lines.lines();
-        System.out.println("Users Available");
-        Set<String> u = user.keySet();
-        for (String u1 : u) {
-            User element = user.get(u1);
+        if(!user.isEmpty()) {
+            System.out.println();
             Lines.lines();
-            System.out.println("Buspass Info : " + element.getBusPass());
-            System.out.println("ID : " + element.getUserId());
-            System.out.println("UserName : " + element.getUserName());
-            System.out.println("Phone Number :" + element.getPhoneNumber());
-            System.out.println("Route Number :" + element.getRouteNum());
-            Lines.lines();
-        }
-    }
-    public void displayUsers(User u) {
-        System.out.println();
-        Lines.lines();
-        System.out.println("Users Available");
-        Set<String> us = user.keySet();
-        for (String u1 : us) {
-            User element = user.get(u1);
-            if(u.getUserId().equals(element.getUserId())) {
+            System.out.println("Users Available");
+            Set<String> u = user.keySet();
+            for (String u1 : u) {
+                User element = user.get(u1);
                 Lines.lines();
                 System.out.println("Buspass Info : " + element.getBusPass());
                 System.out.println("ID : " + element.getUserId());
@@ -81,10 +66,42 @@ public class UserHandler {
                 Lines.lines();
             }
         }
+        else{
+            System.out.println("No Users registered yet!!");
+        }
+    }
+    public void displayUsers(User u) {
+        if(user.containsKey(u)) {
+            System.out.println();
+            Lines.lines();
+            System.out.println("Users Available");
+            Set<String> us = user.keySet();
+            for (String u1 : us) {
+                User element = user.get(u1);
+                if (u.getUserId().equals(element.getUserId())) {
+                    Lines.lines();
+                    System.out.println("Buspass Info : " + element.getBusPass());
+                    System.out.println("ID : " + element.getUserId());
+                    System.out.println("UserName : " + element.getUserName());
+                    System.out.println("Phone Number :" + element.getPhoneNumber());
+                    System.out.println("Route Number :" + element.getRouteNum());
+                    Lines.lines();
+                }
+            }
+        }
+        else{
+            System.out.println("Specified User is not available in the list!!");
+        }
     }
 
     public void updateUserRoute(String userId, int routeId) {
-        user.get(userId).setRouteNum(routeId);
+        RouteHandler routeHandler = RouteHandler.getInstance();
+        if(user.containsKey(userId) && routeHandler.route.containsKey(routeId)) {
+            user.get(userId).setRouteNum(routeId);
+        }
+        else{
+            System.out.println("Invalid UserID/RouteID!!");
+        }
     }
 
     public Object getObject(){
@@ -117,12 +134,12 @@ public class UserHandler {
                     routeHandler.displayRoute();
                     break;
                 case 2:
-                    ns.createNotifications(1, "Cancel bus pass for "+uname, getUser(uname), uname, "Admin");
+                    ns.createNotifications(NotifyConstants.CancelBusPass, "Cancel bus pass for "+uname, getUser(uname), uname, "Admin");
                     System.out.println("Admin notified to cancel pass!");
                     break;
                 case 3:
                     System.out.println("Enter new route as (Source-Destination) :");
-                    ns.createNotifications(2, "New Route Request", scannerUtil.readLine(), uname, "Admin");
+                    ns.createNotifications(NotifyConstants.NewRoute, "New Route Request", scannerUtil.readLine(), uname, "Admin");
                     break;
                 case 4:
                     break;

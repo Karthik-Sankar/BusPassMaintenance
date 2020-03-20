@@ -52,65 +52,38 @@ public class RouteHandler {
     }
 
     public Bus getBus(int routeID){
-        return route.get(routeID).getBus();
+        if(route.containsKey(routeID)) {
+            return route.get(routeID).getBus();
+        }
+        else{
+            System.out.println("There is no routeID Found");
+        }
+        return null;
     }
 
     public int getRouteID(String source) {
-        Set<Integer> keys = route.keySet();
-        for (Integer key : keys) {
-            Route r = route.get(key);
-            if (r.getSource().equals(source)) return r.getRouteId();
+        if(route.containsKey(source)) {
+            Set<Integer> keys = route.keySet();
+            for (Integer key : keys) {
+                Route r = route.get(key);
+                if (r.getSource().equals(source)) return r.getRouteId();
+            }
         }
-        return 0;
+        else{
+            System.out.println("No such routes available for the given source");
+        }
+        return -1;
     }
 
     public void displayRoute() {
-        System.out.println();
-        Lines.lines();
-        System.out.println("Route Chart");
-        Lines.lines();
-        Set<Integer> keys = route.keySet();
-        for (Integer key : keys) {
-            Route r = route.get(key);
-            System.out.println("Route No : " + r.getRouteId());
-            System.out.println("Source : " + r.getSource());
-            System.out.println("Destination : " + r.getDestination());
-            System.out.println("Stops : " + r.getStops());
-            System.out.println("Time : " + r.getTime());
-            System.out.println("ETA : " + r.getEta());
-            System.out.println("Bus : " + r.getBus());
+        if(!route.isEmpty()) {
+            System.out.println();
             Lines.lines();
-        }
-    }
-
-    public void modifyBusRoute(int routeId, int busId) {
-        if(route.containsKey(routeId)) {
-            BusHandler busHandler = BusHandler.getInstance();
-            route.get(routeId).setBus(busHandler.getBus(busId));
-        }
-        else{
-            System.out.println("\nNo such route available!!!");
-        }
-    }
-
-    public void deleteRoute(int routeId){
-        if(route.containsKey(routeId)){
-            route.remove(routeId);
-        }
-        else{
-            System.out.println("\nNo such route available!!!");
-        }
-    }
-
-    public void displayRoute(int route_id) {
-        System.out.println();
-        Lines.lines();
-        System.out.println("Route Details");
-        Lines.lines();
-        Set<Integer> keys = route.keySet();
-        for (Integer key : keys) {
-            Route r = route.get(key);
-            if (route_id == r.getRouteId()) {
+            System.out.println("Route Chart");
+            Lines.lines();
+            Set<Integer> keys = route.keySet();
+            for (Integer key : keys) {
+                Route r = route.get(key);
                 System.out.println("Route No : " + r.getRouteId());
                 System.out.println("Source : " + r.getSource());
                 System.out.println("Destination : " + r.getDestination());
@@ -121,26 +94,84 @@ public class RouteHandler {
                 Lines.lines();
             }
         }
+        else{
+            System.out.println("No Route Found to Display");
+        }
+    }
+
+    public void modifyBusRoute(int routeId, int busId) {
+        BusHandler busHandler = BusHandler.getInstance();
+        if(route.containsKey(routeId) && busHandler.bus.containsKey(busId)) {
+            if(route.get(routeId).getBus().getBusId() != busId) {
+                route.get(routeId).setBus(busHandler.getBus(busId));
+            }
+            else{
+                System.out.println("Route already assigned to this Bus");
+            }
+        }
+        else{
+            System.out.println("No such route/bus available!!!");
+        }
+    }
+
+    public void deleteRoute(int routeId){
+        if(route.containsKey(routeId)){
+            route.remove(routeId);
+        }
+        else{
+            System.out.println("No such route available!!!");
+        }
+    }
+
+    public void displayRoute(int routeId) {
+        if(route.containsKey(routeId)) {
+            System.out.println();
+            Lines.lines();
+            System.out.println("Route Details");
+            Lines.lines();
+            Set<Integer> keys = route.keySet();
+            for (Integer key : keys) {
+                Route r = route.get(key);
+                if (routeId == r.getRouteId()) {
+                    System.out.println("Route No : " + r.getRouteId());
+                    System.out.println("Source : " + r.getSource());
+                    System.out.println("Destination : " + r.getDestination());
+                    System.out.println("Stops : " + r.getStops());
+                    System.out.println("Time : " + r.getTime());
+                    System.out.println("ETA : " + r.getEta());
+                    System.out.println("Bus : " + r.getBus());
+                    Lines.lines();
+                }
+            }
+        }
+        else{
+            System.out.println("No such route available!!!");
+        }
     }
 
     public void routeCapacityStatus() {
-        System.out.println();
-        Lines.lines();
-        System.out.println("Route Seat Availability");
-        Lines.lines();
-        Set<Integer> keys = route.keySet();
-        for (Integer key : keys) {
-            Route r = route.get(key);
-            System.out.println("Route No : " + r.getRouteId());
-            System.out.println("Source : " + r.getSource());
-            System.out.println("Destination : " + r.getDestination());
-            Bus b = r.getBus();
-            double per;
-            if(b!=null)
-            per = (b.getSeatFilled() / b.getTotalCapacity()) * 100;
-            else per=0.0;
-            System.out.println("Percentage Occupied : " + per + "%");
+        if(!route.isEmpty()) {
+            System.out.println();
             Lines.lines();
+            System.out.println("Route Seat Availability");
+            Lines.lines();
+            Set<Integer> keys = route.keySet();
+            for (Integer key : keys) {
+                Route r = route.get(key);
+                System.out.println("Route No : " + r.getRouteId());
+                System.out.println("Source : " + r.getSource());
+                System.out.println("Destination : " + r.getDestination());
+                Bus b = r.getBus();
+                double per;
+                if (b != null)
+                    per = (b.getSeatFilled() / b.getTotalCapacity()) * 100;
+                else per = 0.0;
+                System.out.println("Percentage Occupied : " + per + "%");
+                Lines.lines();
+            }
+        }
+        else{
+            System.out.println("No Routes Found");
         }
     }
 

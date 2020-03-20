@@ -6,6 +6,7 @@ import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.Lines;
+import com.atlas.utils.NotifyConstants;
 import com.atlas.utils.ScannerUtil;
 
 import java.util.HashMap;
@@ -93,10 +94,10 @@ public class VisitorHandler {
                     break;
                 case 3:
                     System.out.println("Enter new route as (Source-Destination) :");
-                    notification.createNotifications(2, "New Route Request", scannerUtil.readLine(), uid, "Admin");
+                    notification.createNotifications(NotifyConstants.NewRoute, "New Route Request", scannerUtil.readLine(), uid, "Admin");
                     break;
                 case 4:
-                    System.out.println("USER Name : ");
+                    System.out.println("Name : ");
                     String userName = scannerUtil.readLine();
                     System.out.println("PHONE : ");
                     String phoneNumber = scannerUtil.readLine();
@@ -106,7 +107,7 @@ public class VisitorHandler {
                     String destination = scannerUtil.readLine();
                     Visitor visitor = new Visitor(uid, userName, phoneNumber, source, destination);
                     visitorHandler.addVisitor(uid, userName, phoneNumber, source, destination);
-                    notification.createNotifications(0, "Apply Bus Pass", visitor, uid, "Admin");
+                    notification.createNotifications(NotifyConstants.ApplyBusPass, "Apply Bus Pass", visitor, uid, "Admin");
                     break;
                 default:
                     session = 'n';

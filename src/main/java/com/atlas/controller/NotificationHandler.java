@@ -45,23 +45,41 @@ public class NotificationHandler {
     }
 
     public void ListNotification(String to) {
-        System.out.println();
-        Lines.lines();
-        System.out.println("Notifications for "+to);
-        Lines.lines();
-        Iterator<Notification> itr = note.iterator();
-        while (itr.hasNext()) {
-            Notification notify = itr.next();
-            if(to.equals(notify.getTo())) {
-                System.out.println("Message ID : " + notify.getID());
-                System.out.println("Message From : " + notify.getFrom());
-                System.out.println("Message To : " + notify.getTo());
-                System.out.println("Message Type : " + notify.getType());
-                System.out.println("Message : " + notify.getMessage());
-                System.out.println("Supporting Data : " + notify.getObj());
+        if(!note.isEmpty()) {
+            System.out.println();
+            Lines.lines();
+            System.out.println("Notifications for " + to);
+            Lines.lines();
+            Iterator<Notification> itr = note.iterator();
+            while (itr.hasNext()) {
+                Notification notify = itr.next();
+                if (to.equals(notify.getTo())) {
+                    System.out.println("Message ID : " + notify.getID());
+                    System.out.println("Message From : " + notify.getFrom());
+                    System.out.println("Message To : " + notify.getTo());
+                    System.out.println("Message Type : " + notify.getType());
+                    System.out.println("Message : " + notify.getMessage());
+                    System.out.println("Supporting Data : " + notify.getObj());
+                }
             }
+            Lines.lines();
         }
-        Lines.lines();
+        else{
+            System.out.println("There is No Notification to display");
+        }
+    }
+    public void clearNotification(int id){
+        if(note.contains(id)){
+            note.remove(id);
+            System.out.println("Notification Removed for the ID - "+id);
+        }
+        else{
+            System.out.println("Incorrect notification ID");
+        }
+    }
+    public void clearAllNotification(){
+        note.clear();
+        System.out.println("Cleared all the Notifications");
     }
 
     public Object getObject(){

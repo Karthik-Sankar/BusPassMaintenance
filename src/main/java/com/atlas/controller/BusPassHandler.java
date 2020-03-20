@@ -43,23 +43,33 @@ public class BusPassHandler {
     }
 
     public BusPass getBusPass(int busPassId) {
-        return busPass.get(busPassId);
-
+        if(busPass.containsKey(busPassId)){
+            return busPass.get(busPassId);
+        }
+        else{
+            System.out.println("Invalid buspass id!");
+        }
+        return null;
     }
 
     public void getBusPassInfo() {
-        Set<Integer> busspassm = busPass.keySet();
-        for (Integer bpobj : busspassm) {
-            BusPass bp = busPass.get(bpobj);
-            System.out.println();
-            Lines.lines();
-            System.out.println("Bus Pass Assigned Details");
-            Lines.lines();
-            System.out.println("Buspass Info : " + bp.getBusPassId());
-            System.out.println("ID : " + bp.getUserId());
-            System.out.println("Bus ID : " + bp.getBus().getBusId());
-            System.out.println("Route ID :" + bp.getRouteId());
-            Lines.lines();
+        if(!busPass.isEmpty()) {
+            Set<Integer> busspassm = busPass.keySet();
+            for (Integer bpobj : busspassm) {
+                BusPass bp = busPass.get(bpobj);
+                System.out.println();
+                Lines.lines();
+                System.out.println("Bus Pass Assigned Details");
+                Lines.lines();
+                System.out.println("Buspass Info : " + bp.getBusPassId());
+                System.out.println("ID : " + bp.getUserId());
+                System.out.println("Bus ID : " + bp.getBus().getBusId());
+                System.out.println("Route ID :" + bp.getRouteId());
+                Lines.lines();
+            }
+        }
+        else{
+            System.out.println("No bus passes registered!");
         }
     }
 
