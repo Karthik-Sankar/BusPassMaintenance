@@ -27,7 +27,4 @@ public class ObjectRetreiver  implements Serializable {
         return new ObjectStore().retreiveObject("Visitor");
     }
 
-    public Object getIDSObj() {
-        return new ObjectStore().retreiveObject("IDS");
-    }
 }

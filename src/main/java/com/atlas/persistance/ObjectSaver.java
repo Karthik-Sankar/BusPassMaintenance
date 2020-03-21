@@ -30,7 +30,6 @@ public class ObjectSaver implements Serializable {
         new ObjectStore().saveObject(VisitorHandler.getInstance().getObject(), "Visitor");
     }
 
-    public void saveIDS(){ new ObjectStore().saveObject(IDGenerator.getInstance().getObject(), "IDS"); }
 
     public void saveAll() {
         saveBus();
@@ -39,7 +38,7 @@ public class ObjectSaver implements Serializable {
         saveRoutes();
         saveUser();
         saveVisitor();
-        //saveIDS();
+        System.out.println("Data Stored!");
     }
 
 

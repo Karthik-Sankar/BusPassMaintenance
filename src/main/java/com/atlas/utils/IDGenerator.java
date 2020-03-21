@@ -29,15 +29,6 @@ public class IDGenerator{
     }
 
     public void initalize(){
-        ObjectRetreiver retreiver = new ObjectRetreiver();
-        Object o = retreiver.getIDSObj();
-        if(o!=null) {
-//            o = (LinkedList)o;
-//            route=((LinkedList<Integer>) o).get(0);
-//            bus.addAll(((LinkedList<Integer>) o).get(1));
-//            busPass.addAll(((LinkedList<Integer>) o).get(2));
-//            notify.addAll(((LinkedList<Integer>) o).get(3));
-        }
     }
 
     public static IDGenerator getInstance(){

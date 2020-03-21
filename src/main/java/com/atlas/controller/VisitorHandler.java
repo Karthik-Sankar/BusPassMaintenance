@@ -18,7 +18,7 @@ public class VisitorHandler {
     HashMap<String, Visitor> visitor;
 
     private VisitorHandler() {
-        visitor = new HashMap<String,Visitor>();
+        visitor = new HashMap<String, Visitor>();
         initalize();
     }
 
@@ -29,47 +29,52 @@ public class VisitorHandler {
         return visitorHandler;
     }
 
-    public void initalize(){
+    public void initalize() {
         ObjectRetreiver retreiver = new ObjectRetreiver();
         Object o = retreiver.getVisitorObj();
-        if(o!=null) {
+        if (o != null) {
             HashMap<String, Visitor> temp = (HashMap<String, Visitor>) o;
             Set<String> keys = temp.keySet();
             for (String key : keys) {
                 Visitor v = temp.get(key);
-                addVisitor(v.getUserId(),v.getUserName(),v.getPhoneNumber(),v.getSource(),v.getDestination());
+                addVisitor(v.getUserId(), v.getPassword(), v.getUserName(), v.getPhoneNumber(), v.getAddress(), v.getRouteID());
             }
         }
     }
-    public void addVisitor(String userId, String userName, String phoneNumber, String source, String destination) {
-        Visitor v = new Visitor(userId, userName, phoneNumber, source, destination);
+
+    public void addVisitor(String userId, String password, String userName, String phoneNumber, String address, int routeID) {
+        Visitor v = new Visitor(userId, password, userName, phoneNumber, address, routeID);
         visitor.put(userId, v);
     }
 
-    public Visitor getVisitor(String userID){
+    public Visitor getVisitor(String userID) {
         return visitor.get(userID);
     }
+
     public void displayVisitor() {
-        System.out.println();
-        Lines.lines();
-        System.out.println("Visitor Applied for Pass");
-        Set<String> u = visitor.keySet();
-        for (String u1 : u) {
-            Visitor element = visitor.get(u1);
+        if (!visitor.isEmpty()) {
+            System.out.println();
             Lines.lines();
-            System.out.println("User ID : " + element.getUserId());
-            System.out.println("Source : " + element.getSource());
-            System.out.println("Destination : " + element.getDestination());
-            System.out.println("User Name:" + element.getUserName());
-            System.out.println("Phone :" + element.getPhoneNumber());
-            Lines.lines();
+            System.out.println("Visitor Applied for Pass");
+            Set<String> u = visitor.keySet();
+            for (String u1 : u) {
+                Visitor element = visitor.get(u1);
+                Lines.lines();
+                System.out.println("User ID : " + element.getUserId());
+                System.out.println("User Name : " + element.getUserName());
+                System.out.println("Phone Number : " + element.getPhoneNumber());
+                System.out.println("Address:" + element.getAddress());
+                System.out.println("Route ID :" + element.getRouteID());
+                Lines.lines();
+            }
+        } else {
+            System.out.println("No Bus Pass Application Found!");
         }
     }
 
-    ScannerUtil scannerUtil = ScannerUtil.getInstance();
     RouteHandler routeHandler = RouteHandler.getInstance();
     NotificationHandler notification = NotificationHandler.getNotificationInstance();
-
+    UserHandler userHandler = UserHandler.getInstance();
     public void VisitorEntry() {
         System.out.println("Enter UserID : ");
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
@@ -82,6 +87,7 @@ public class VisitorHandler {
             System.out.println("2. View Seat Availability %");
             System.out.println("3. Request New Route Addition");
             System.out.println("4. Apply Bus Pass");
+            System.out.println("5. Check Application Status");
             System.out.println("Press 0 key to go to main menu!");
             ScannerUtil input = ScannerUtil.getInstance();
             int choice = input.readInt();
@@ -97,29 +103,65 @@ public class VisitorHandler {
                     notification.createNotifications(NotifyConstants.NewRoute, "New Route Request", scannerUtil.readLine(), uid, "Admin");
                     break;
                 case 4:
-                    System.out.println("Name : ");
+                    System.out.println("USER ID : \n" + uid);
+                    System.out.println("ENTER YOUR NAME : ");
                     String userName = scannerUtil.readLine();
-                    System.out.println("PHONE : ");
+                    System.out.println("ENTER PASSWORD : ");
+                    String password = scannerUtil.readLine();
+                    System.out.println("ENTER PHONE NUMBER : ");
                     String phoneNumber = scannerUtil.readLine();
-                    System.out.println("SOURCE : ");
-                    String source = scannerUtil.readLine();
-                    System.out.println("DESTINATION : ");
-                    String destination = scannerUtil.readLine();
-                    Visitor visitor = new Visitor(uid, userName, phoneNumber, source, destination);
-                    visitorHandler.addVisitor(uid, userName, phoneNumber, source, destination);
-                    notification.createNotifications(NotifyConstants.ApplyBusPass, "Apply Bus Pass", visitor, uid, "Admin");
+                    System.out.println("ENTER ADDRESS IN SINGLE LINE : ");
+                    String address = scannerUtil.readLine();
+                    System.out.println("ENTER ROUTE ID : ");
+                    int routeID = scannerUtil.readInt();
+                    String c = "y";
+                    while (!routeHandler.route.containsKey(routeID)) {
+                        System.out.println("You are entering invalid Route ID!! \nPress 'y' to continue and 'n' to cancel applying");
+                        c = scannerUtil.readLine();
+                        if (c.equals("y")) {
+                            System.out.println("ENTER ROUTE ID AGAIN: ");
+                            routeID = scannerUtil.readInt();
+                        } else if (c.equals("n")) {
+                            System.out.println("Bus pass application canceled!");
+                            break;
+                        } else {
+                            System.out.println("Press 'y' or 'n', invalid key pressed!");
+                        }
+                    }
+                    if (c.equals("y")) {
+                        Visitor v = new Visitor(uid, password, userName, phoneNumber, address, routeID);
+                        notification.createBusPassApplicationNotification("Bus pass application", uid, v);
+                        VisitorHandler visitorHandler = VisitorHandler.getInstance();
+                        visitorHandler.addVisitor(v.getUserId(),v.getPassword(),v.getUserName(),v.getPhoneNumber(),v.getAddress(),v.getRouteID());
+                    }
                     break;
-                default:
+                case 5:
+                    System.out.println("ENTER PASSWORD TO CHECK STATUS : ");
+                    String password2 = scannerUtil.readLine();
+                    if(userHandler.user.containsKey(uid)){
+                        if(userHandler.user.get(uid).getPassword().equals(password2)){
+                            System.out.println("Application of "+uid+" has been approved!");
+                        }
+                        else{
+                            System.out.println("Incorrect password!");
+                        }
+                    }
+                    else{
+                        System.out.println("Bus pass application rejected / Application not submitted yet!");
+                    }
+                    break;
+                case 0:
                     session = 'n';
                     break;
+                default:
+                    System.out.println("Invalid option!");
             }
         }
         ObjectSaver objectSaver = new ObjectSaver();
         objectSaver.saveVisitor();
         objectSaver.saveNotifications();
     }
-
-    public Object getObject(){
+    public Object getObject() {
         return visitor;
     }
 }

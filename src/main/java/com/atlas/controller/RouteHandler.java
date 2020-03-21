@@ -41,12 +41,13 @@ public class RouteHandler {
     }
 
     public int addRoutes(int routeId, String source, String destination, LinkedList<String> stops, String time, String eta, Bus bus) {
-        if (!route.containsKey(getRouteID(source))) {
+        if (!route.containsKey(getRouteID_S(source)) && !route.containsKey(getRouteID_D(destination))) {
             Route r = new Route(routeId, source, destination, stops, time, eta, bus);
             route.put(routeId, r);
             return r.getRouteId();
         } else {
             System.out.println("Already have a route in same location with id : " + route.get(routeId).getRouteId());
+            displayRoute(route.get(routeId).getRouteId());
             return route.get(routeId).getRouteId();
         }
     }
@@ -61,16 +62,20 @@ public class RouteHandler {
         return null;
     }
 
-    public int getRouteID(String source) {
-        if(route.containsKey(source)) {
-            Set<Integer> keys = route.keySet();
-            for (Integer key : keys) {
-                Route r = route.get(key);
-                if (r.getSource().equals(source)) return r.getRouteId();
-            }
+    public int getRouteID_S(String source) {
+        Set<Integer> keys = route.keySet();
+        for (Integer key : keys) {
+            Route r = route.get(key);
+            if (r.getSource().equals(source)) return r.getRouteId();
         }
-        else{
-            System.out.println("No such routes available for the given source");
+        return -1;
+    }
+
+    public int getRouteID_D(String destination) {
+        Set<Integer> keys = route.keySet();
+        for (Integer key : keys) {
+            Route r = route.get(key);
+            if (r.getDestination().equals(destination)) return r.getRouteId();
         }
         return -1;
     }

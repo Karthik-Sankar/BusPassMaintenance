@@ -22,7 +22,7 @@ public class BusHandler {
             Set<Integer> keys = temp.keySet();
             for (Integer key : keys) {
                 Bus b = temp.get(key);
-                addBus(b.getBusId(), b.getBusType(), b.getTotalCapacity());
+                addBus(b.getBusId(),b.getRegNo(), b.getBusType(), b.getTotalCapacity(), b.getBusCoOrdinatorID());
             }
         }
     }
@@ -33,8 +33,8 @@ public class BusHandler {
         }
         return busHandler;
     }
-    public void addBus(int busID, String busType, int totalCapacity){
-        Bus b = new Bus(busID, busType, totalCapacity);;
+    public void addBus(int busId, String regNo, String busType, int totalCapacity, String busCordinatorID){
+        Bus b = new Bus(busId,regNo, busType, totalCapacity, busCordinatorID);
         bus.put(b.getBusId(), b);
     }
     public void removeBus(int busID){
@@ -65,6 +65,7 @@ public class BusHandler {
                 System.out.println("Bus Details Summary");
                 Lines.lines();
                 System.out.println("Bus ID : " + bp.getBusId());
+                System.out.println("Bus Registration Number : " + bp.getRegNo());
                 System.out.println("Bus Type : " + bp.getBusType());
                 System.out.println("Total Capacity : " + bp.getTotalCapacity());
                 System.out.println("Seats Filled :" + bp.getSeatFilled());

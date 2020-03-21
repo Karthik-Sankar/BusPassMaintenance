@@ -11,12 +11,11 @@ public class ObjectStore {
                 FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(o);
-                System.out.println("Session data stored!");
                 objectOutputStream.close();
                 fileOutputStream.close();
             }
             else{
-                System.out.println("\nAlert, Data storage error! - File doesn't exist - "+file.getAbsolutePath());
+                System.out.println("Running For First Time Hence Creating Database : "+file.getAbsolutePath());
             }
         }catch (Exception e){
             e.printStackTrace();
