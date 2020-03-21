@@ -1,7 +1,6 @@
 package com.atlas.models;
 
 import com.atlas.utils.BusPassConstants;
-import com.atlas.utils.IDGenerator;
 
 import java.io.Serializable;
 
@@ -17,7 +16,7 @@ public class BusPass implements Serializable {
         this.routeId = routeId;
         this.userId = userId;
         this.bus = bus;
-        busPassStatus= BusPassConstants.ACTIVE;
+        busPassStatus = BusPassConstants.ACTIVE;
     }
 
     public int getBusPassId() {

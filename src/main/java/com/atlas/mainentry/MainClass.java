@@ -1,17 +1,14 @@
 package com.atlas.mainentry;
 
-import com.atlas.controller.*;
-import com.atlas.models.Route;
-import com.atlas.models.Visitor;
+import com.atlas.controller.Admin;
+import com.atlas.controller.UserHandler;
+import com.atlas.controller.VisitorHandler;
 import com.atlas.utils.ScannerUtil;
-
-import java.util.LinkedList;
-import java.util.Scanner;
 
 public class MainClass {
     public static void main(String[] args) {
-        char session='y';
-        while(session=='y') {
+        char session = 'y';
+        while (session == 'y') {
             System.out.println("Login Options");
             System.out.println("1. Admin");
             System.out.println("2. User");
@@ -31,7 +28,7 @@ public class MainClass {
                     VisitorHandler.getInstance().VisitorEntry();
                     break;
                 default:
-                    session='n';
+                    session = 'n';
                     break;
             }
         }

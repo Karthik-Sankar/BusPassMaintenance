@@ -1,7 +1,5 @@
 package com.atlas.controller;
 
-import com.atlas.models.BusPass;
-import com.atlas.models.User;
 import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
@@ -75,6 +73,7 @@ public class VisitorHandler {
     RouteHandler routeHandler = RouteHandler.getInstance();
     NotificationHandler notification = NotificationHandler.getNotificationInstance();
     UserHandler userHandler = UserHandler.getInstance();
+
     public void VisitorEntry() {
         System.out.println("Enter UserID : ");
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
@@ -132,21 +131,19 @@ public class VisitorHandler {
                         Visitor v = new Visitor(uid, password, userName, phoneNumber, address, routeID);
                         notification.createBusPassApplicationNotification("Bus pass application", uid, v);
                         VisitorHandler visitorHandler = VisitorHandler.getInstance();
-                        visitorHandler.addVisitor(v.getUserId(),v.getPassword(),v.getUserName(),v.getPhoneNumber(),v.getAddress(),v.getRouteID());
+                        visitorHandler.addVisitor(v.getUserId(), v.getPassword(), v.getUserName(), v.getPhoneNumber(), v.getAddress(), v.getRouteID());
                     }
                     break;
                 case 5:
                     System.out.println("ENTER PASSWORD TO CHECK STATUS : ");
                     String password2 = scannerUtil.readLine();
-                    if(userHandler.user.containsKey(uid)){
-                        if(userHandler.user.get(uid).getPassword().equals(password2)){
-                            System.out.println("Application of "+uid+" has been approved!");
-                        }
-                        else{
+                    if (userHandler.user.containsKey(uid)) {
+                        if (userHandler.user.get(uid).getPassword().equals(password2)) {
+                            System.out.println("Application of " + uid + " has been approved!");
+                        } else {
                             System.out.println("Incorrect password!");
                         }
-                    }
-                    else{
+                    } else {
                         System.out.println("Bus pass application rejected / Application not submitted yet!");
                     }
                     break;
@@ -161,6 +158,7 @@ public class VisitorHandler {
         objectSaver.saveVisitor();
         objectSaver.saveNotifications();
     }
+
     public Object getObject() {
         return visitor;
     }

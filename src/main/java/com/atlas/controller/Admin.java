@@ -1,15 +1,12 @@
 package com.atlas.controller;
 
-import com.atlas.models.*;
-import com.atlas.persistance.ObjectRetreiver;
+import com.atlas.models.Bus;
+import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectSaver;
-import com.atlas.persistance.ObjectStore;
 import com.atlas.utils.IDGenerator;
 import com.atlas.utils.ScannerUtil;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Set;
 
 public class Admin {
     boolean isAuthenticated = false;
@@ -21,6 +18,7 @@ public class Admin {
     UserHandler userHandler = UserHandler.getInstance();
     NotificationHandler ns = NotificationHandler.getNotificationInstance();
     VisitorHandler visitorHandler = VisitorHandler.getInstance();
+
     public void AdminEntry() {
         System.out.println("Enter Credentials : ");
         System.out.println("Username : ");
@@ -39,14 +37,9 @@ public class Admin {
             System.out.println("Admin Controls:");
             System.out.println("1: Notification");
             System.out.println("2: Approve/Reject Application");
-            System.out.println("3: Add Route");
-            System.out.println("4: Change Bus Route");
-            System.out.println("5: Delete Route");
-            System.out.println("6: List route details");
-            System.out.println("7: List User details");
-            System.out.println("8: Add Buses");
-            System.out.println("9: Remove Buses");
-            System.out.println("10: List Buses");
+            System.out.println("3: Route Operations");
+            System.out.println("4: List User details");
+            System.out.println("5: Bus Operations");
             System.out.println("Press 0 key to go to main menu!");
             int choice = scannerUtil.readInt();
             switch (choice) {
@@ -72,7 +65,7 @@ public class Admin {
                                 notificationHandler.clearAllNotification();
                                 break;
                             case 0:
-                                session3='n';
+                                session3 = 'n';
                                 System.out.println("Press 0 key to go to previous menu!");
                                 break;
                             default:
@@ -81,8 +74,8 @@ public class Admin {
                     }
                     break;
                 case 2:
-                    char session2='y';
-                    while(session2=='y') {
+                    char session2 = 'y';
+                    while (session2 == 'y') {
                         System.out.println("Accept / Reject Routes");
                         System.out.println("1. List Visitor Application");
                         System.out.println("2. Approve visitor application");
@@ -112,46 +105,93 @@ public class Admin {
                                 System.out.println("User Created, Enter Fare (\u20b9) :  ");
                                 userHandler.getUser(v.getUserId()).setTravelCost(scannerUtil.readDouble());
                                 visitorHandler.visitor.remove(userId);
-                                System.out.println("User "+v.getUserName()+" Application Approved");
+                                System.out.println("User " + v.getUserName() + " Application Approved");
                                 break;
                             case 3:
                                 System.out.println("Enter a vistor id to reject :");
                                 String userId2 = scannerUtil.readLine();
                                 visitorHandler.visitor.remove(userId2);
-                                System.out.println("User "+userId2+" Application Rejected");
+                                System.out.println("User " + userId2 + " Application Rejected");
+                                break;
+                            case 0:
+                                session2 = 'n';
                                 break;
                             default:
-                                session2='n';
-                                break;
+                                System.out.println("Invalid option!");
                         }
                     }
                     break;
                 case 3:
-                    admin.routeAddition(routeHandler);
+                    char session4 = 'y';
+                    while (session4 == 'y') {
+                        System.out.println("Route operations");
+                        System.out.println("1. List Routes");
+                        System.out.println("2. Add route");
+                        System.out.println("3. Delete route");
+                        System.out.println("4. Change bus in route");
+                        System.out.println("Press 0 key to previous menu!");
+                        ScannerUtil input = ScannerUtil.getInstance();
+                        int choice4 = input.readInt();
+                        switch (choice4) {
+                            case 1:
+                                routeHandler.displayRoute();
+                                break;
+                            case 2:
+                                admin.routeAddition(routeHandler);
+                                break;
+                            case 3:
+                                admin.deleteRoute(routeHandler);
+                                break;
+                            case 4:
+                                admin.changeBusRoute(routeHandler);
+                                break;
+                            case 0:
+                                session4 = 'n';
+                                break;
+                            default:
+                                System.out.println("Invalid option!");
+                        }
+                    }
                     break;
                 case 4:
-                    admin.changeBusRoute(routeHandler);
-                    break;
-                case 5:
-                    admin.deleteRoute(routeHandler);
-                    break;
-                case 6:
-                    routeHandler.displayRoute();
-                    break;
-                case 7:
                     userHandler.displayUsers();
                     break;
-                case 8:
-                    admin.addBuses(buses);
-                    break;
-                case 9:
-                    System.out.println("Enter bus number: ");
-                    buses.removeBus(scannerUtil.readInt());
-                    break;
-                case 10:
-                    buses.listBuses();
-                    break;
-                case 11:
+                case 5:
+                    char session5 = 'y';
+                    while (session5 == 'y') {
+                        System.out.println("Bus operations");
+                        System.out.println("1. List Available Buses");
+                        System.out.println("2. Add Bus");
+                        System.out.println("3. Delete Bus");
+                        System.out.println("4. Change bus coordinator");
+                        System.out.println("Press 0 key to previous menu!");
+                        ScannerUtil input = ScannerUtil.getInstance();
+                        int choice5 = input.readInt();
+                        switch (choice5) {
+                            case 1:
+                                buses.listBuses();
+                                break;
+                            case 2:
+                                admin.addBuses(buses);
+                                System.out.println("Bus added successfully!");
+                                break;
+                            case 3:
+                                System.out.println("Enter bus number: ");
+                                buses.removeBus(scannerUtil.readInt());
+                                System.out.println("Bus removed successfully!");
+                                break;
+                            case 4:
+                                System.out.println("Enter bus number: ");
+                                int busNo = scannerUtil.readInt();
+                                System.out.println("Enter bus coordinator user ID: ");
+                                buses.getBus(busNo).setBusCoOrdinatorID(scannerUtil.readLine());
+                                System.out.println("Bus co-ordinator changed successfully!");
+                                break;
+                            default:
+                                session5 = 'n';
+                                break;
+                        }
+                    }
                     break;
                 default:
                     session = 'n';
@@ -167,7 +207,7 @@ public class Admin {
         System.out.println("Enter Bus ID : ");
         BusHandler busHandler = BusHandler.getInstance();
         Bus bus = busHandler.getBus(scannerUtil.readInt());
-        if(bus!=null) {
+        if (bus != null) {
             System.out.println("Enter source : ");
             String source = scannerUtil.readLine();
             System.out.println("Enter destination : ");
@@ -185,8 +225,7 @@ public class Admin {
             System.out.println("Enter ETA : ");
             String eta = scannerUtil.readLine();
             routeHandler.addRoutes(IDGenerator.getRouteID(), source, destination, stops, time, eta, bus);
-        }
-        else{
+        } else {
             System.out.println("Are you choosing the right bus! Please first create a bus or give correct ID");
         }
     }
@@ -200,7 +239,7 @@ public class Admin {
         int seatCapacity = scannerUtil.readInt();
         System.out.println("Enter the bus co-ordinator ID: ");
         String busCoordinator = scannerUtil.readLine();
-        busHandler.addBus(IDGenerator.getBusID(),regno, busType, seatCapacity, busCoordinator);
+        busHandler.addBus(IDGenerator.getBusID(), regno, busType, seatCapacity, busCoordinator);
     }
 
     private void changeBusRoute(RouteHandler route) {
@@ -212,7 +251,7 @@ public class Admin {
     }
 
     private void deleteRoute(RouteHandler route) {
-        System.out.println("Enter the route number to perform change :");
+        System.out.println("Enter the route number to delete :");
         int routeId = scannerUtil.readInt();
         route.deleteRoute(routeId);
     }

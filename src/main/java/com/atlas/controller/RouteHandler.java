@@ -3,10 +3,8 @@ package com.atlas.controller;
 import com.atlas.models.Bus;
 import com.atlas.models.Route;
 import com.atlas.persistance.ObjectRetreiver;
-import com.atlas.persistance.ObjectStore;
 import com.atlas.utils.Lines;
 
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
@@ -27,15 +25,15 @@ public class RouteHandler {
         return routeHandler;
     }
 
-    public void initalize(){
+    public void initalize() {
         ObjectRetreiver retreiver = new ObjectRetreiver();
         Object o = retreiver.getRoutesObj();
-        if(o!=null) {
+        if (o != null) {
             HashMap<Integer, Route> temp = (HashMap<Integer, Route>) o;
             Set<Integer> keys = temp.keySet();
             for (Integer key : keys) {
                 Route r = temp.get(key);
-                addRoutes(r.getRouteId(),r.getSource(), r.getDestination(), r.getStops(), r.getTime(), r.getEta(), r.getBus());
+                addRoutes(r.getRouteId(), r.getSource(), r.getDestination(), r.getStops(), r.getTime(), r.getEta(), r.getBus());
             }
         }
     }
@@ -52,11 +50,10 @@ public class RouteHandler {
         }
     }
 
-    public Bus getBus(int routeID){
-        if(route.containsKey(routeID)) {
+    public Bus getBus(int routeID) {
+        if (route.containsKey(routeID)) {
             return route.get(routeID).getBus();
-        }
-        else{
+        } else {
             System.out.println("There is no routeID Found");
         }
         return null;
@@ -81,7 +78,7 @@ public class RouteHandler {
     }
 
     public void displayRoute() {
-        if(!route.isEmpty()) {
+        if (!route.isEmpty()) {
             System.out.println();
             Lines.lines();
             System.out.println("Route Chart");
@@ -98,38 +95,34 @@ public class RouteHandler {
                 System.out.println("Bus : " + r.getBus());
                 Lines.lines();
             }
-        }
-        else{
+        } else {
             System.out.println("No Route Found to Display");
         }
     }
 
     public void modifyBusRoute(int routeId, int busId) {
         BusHandler busHandler = BusHandler.getInstance();
-        if(route.containsKey(routeId) && busHandler.bus.containsKey(busId)) {
-            if(route.get(routeId).getBus().getBusId() != busId) {
+        if (route.containsKey(routeId) && busHandler.bus.containsKey(busId)) {
+            if (route.get(routeId).getBus().getBusId() != busId) {
                 route.get(routeId).setBus(busHandler.getBus(busId));
-            }
-            else{
+            } else {
                 System.out.println("Route already assigned to this Bus");
             }
-        }
-        else{
+        } else {
             System.out.println("No such route/bus available!!!");
         }
     }
 
-    public void deleteRoute(int routeId){
-        if(route.containsKey(routeId)){
+    public void deleteRoute(int routeId) {
+        if (route.containsKey(routeId)) {
             route.remove(routeId);
-        }
-        else{
+        } else {
             System.out.println("No such route available!!!");
         }
     }
 
     public void displayRoute(int routeId) {
-        if(route.containsKey(routeId)) {
+        if (route.containsKey(routeId)) {
             System.out.println();
             Lines.lines();
             System.out.println("Route Details");
@@ -148,14 +141,13 @@ public class RouteHandler {
                     Lines.lines();
                 }
             }
-        }
-        else{
+        } else {
             System.out.println("No such route available!!!");
         }
     }
 
     public void routeCapacityStatus() {
-        if(!route.isEmpty()) {
+        if (!route.isEmpty()) {
             System.out.println();
             Lines.lines();
             System.out.println("Route Seat Availability");
@@ -174,13 +166,12 @@ public class RouteHandler {
                 System.out.println("Percentage Occupied : " + per + "%");
                 Lines.lines();
             }
-        }
-        else{
+        } else {
             System.out.println("No Routes Found");
         }
     }
 
-    public Object getObject(){
+    public Object getObject() {
         return route;
     }
 }

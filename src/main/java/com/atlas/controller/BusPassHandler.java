@@ -17,10 +17,10 @@ public class BusPassHandler {
         initalize();
     }
 
-    public void initalize(){
+    public void initalize() {
         ObjectRetreiver retreiver = new ObjectRetreiver();
         Object o = retreiver.getBusPassObj();
-        if(o!=null) {
+        if (o != null) {
             HashMap<Integer, BusPass> temp = (HashMap<Integer, BusPass>) o;
             Set<Integer> keys = temp.keySet();
             for (Integer key : keys) {
@@ -37,23 +37,22 @@ public class BusPassHandler {
         return busPassHandler;
     }
 
-    public void addBusPass(int busPassID, int routeID, String userID, Bus busID){
+    public void addBusPass(int busPassID, int routeID, String userID, Bus busID) {
         BusPass bp = new BusPass(busPassID, routeID, userID, busID);
         busPass.put(bp.getBusPassId(), bp);
     }
 
     public BusPass getBusPass(int busPassId) {
-        if(busPass.containsKey(busPassId)){
+        if (busPass.containsKey(busPassId)) {
             return busPass.get(busPassId);
-        }
-        else{
+        } else {
             System.out.println("Invalid buspass id!");
         }
         return null;
     }
 
     public void getBusPassInfo() {
-        if(!busPass.isEmpty()) {
+        if (!busPass.isEmpty()) {
             Set<Integer> busspassm = busPass.keySet();
             for (Integer bpobj : busspassm) {
                 BusPass bp = busPass.get(bpobj);
@@ -67,13 +66,12 @@ public class BusPassHandler {
                 System.out.println("Route ID :" + bp.getRouteId());
                 Lines.lines();
             }
-        }
-        else{
+        } else {
             System.out.println("No bus passes registered!");
         }
     }
 
-    public Object getObject(){
+    public Object getObject() {
         return busPass;
     }
 }

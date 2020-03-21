@@ -1,7 +1,5 @@
 package com.atlas.models;
 
-import com.atlas.utils.IDGenerator;
-
 import java.io.Serializable;
 
 public class Bus implements Serializable {
@@ -27,6 +25,10 @@ public class Bus implements Serializable {
 
     public String getBusCoOrdinatorID() {
         return busCoOrdinatorID;
+    }
+
+    public void setBusCoOrdinatorID(String busCoOrdinatorID) {
+        this.busCoOrdinatorID = busCoOrdinatorID;
     }
 
     public void setBusId(int busId) {
@@ -65,11 +67,11 @@ public class Bus implements Serializable {
         this.seatFilled = seatFilled;
     }
 
-    public void incrementSeatFilled(){
+    public void incrementSeatFilled() {
         seatFilled++;
     }
 
-    public void deccrementSeatFilled(){
+    public void deccrementSeatFilled() {
         seatFilled--;
     }
 

@@ -1,7 +1,5 @@
 package com.atlas.models;
 
-import com.atlas.utils.IDGenerator;
-
 import java.io.Serializable;
 import java.util.LinkedList;
 

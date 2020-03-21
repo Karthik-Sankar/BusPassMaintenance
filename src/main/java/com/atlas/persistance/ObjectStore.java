@@ -3,43 +3,41 @@ package com.atlas.persistance;
 import java.io.*;
 
 public class ObjectStore {
-    public void saveObject(Object o, String fileName){
-        try{
+    public void saveObject(Object o, String fileName) {
+        try {
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             File file = new File(classLoader.getResource(fileName).getFile());
-            if(file.exists()) {
+            if (file.exists()) {
                 FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(o);
                 objectOutputStream.close();
                 fileOutputStream.close();
+            } else {
+                System.out.println("Running For First Time Hence Creating Database : " + file.getAbsolutePath());
             }
-            else{
-                System.out.println("Running For First Time Hence Creating Database : "+file.getAbsolutePath());
-            }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("\nAlert, Data storage error!");
         }
     }
 
-    public Object retreiveObject(String fileName){
-        Object o=null;
-        try{
+    public Object retreiveObject(String fileName) {
+        Object o = null;
+        try {
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             File file = new File(classLoader.getResource(fileName).getFile());
-            if(file.exists() && file.length()!=0) {
+            if (file.exists() && file.length() != 0) {
                 FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 o = objectInputStream.readObject();
                 objectInputStream.close();
                 fileInputStream.close();
-            }
-            else{
-                System.out.println("\nAlert, Data storage error! - File doesn't exist - "+file.getAbsolutePath());
+            } else {
+                System.out.println("\nRunning For First Time Hence Creating Database : " + file.getAbsolutePath());
             }
             return o;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("\nAlert, Data storage error!");
             return o;

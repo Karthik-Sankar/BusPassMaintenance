@@ -26,15 +26,15 @@ public class NotificationHandler {
         return notification;
     }
 
-    public void initalize(){
+    public void initalize() {
         ObjectRetreiver retreiver = new ObjectRetreiver();
         Object o = retreiver.getNotificationObj();
-        if(o!=null) {
+        if (o != null) {
             HashMap<Integer, Notification> temp = (HashMap<Integer, Notification>) o;
             Set<Integer> keys = temp.keySet();
             for (Integer key : keys) {
                 Notification n = temp.get(key);
-                createNotifications(n.getType(),n.getMessage(),n.getObj(),n.getFrom(),n.getTo());
+                createNotifications(n.getType(), n.getMessage(), n.getObj(), n.getFrom(), n.getTo());
             }
         }
     }
@@ -44,34 +44,34 @@ public class NotificationHandler {
         note.put(n.getID(), n);
     }
 
-    public void createBusPassApplicationNotification(String message, String UserID, Visitor visitor){
-        Notification n = NotificationManager.getNotificationType(NotifyConstants.ApplyBusPass,message,visitor,UserID,"Admin");
+    public void createBusPassApplicationNotification(String message, String UserID, Visitor visitor) {
+        Notification n = NotificationManager.getNotificationType(NotifyConstants.ApplyBusPass, message, visitor, UserID, "Admin");
         note.put(n.getID(), n);
     }
 
-    public void cancelBusPassNotification(User user){
-        Notification n = NotificationManager.getNotificationType(NotifyConstants.CancelBusPass,"User "+user.getUserId()+" has cancelled their Bus pass!",user,user.getUserId(),"Admin");
+    public void cancelBusPassNotification(User user) {
+        Notification n = NotificationManager.getNotificationType(NotifyConstants.CancelBusPass, "User " + user.getUserId() + " has cancelled their Bus pass!", user, user.getUserId(), "Admin");
         note.put(n.getID(), n);
     }
 
-    public void suspendBusPassNotification(User user){
-        Notification n = NotificationManager.getNotificationType(NotifyConstants.SuspendBusPass,"User "+user.getUserId()+" has suspended their Bus pass!",user,user.getUserId(),"Admin");
+    public void suspendBusPassNotification(User user) {
+        Notification n = NotificationManager.getNotificationType(NotifyConstants.SuspendBusPass, "User " + user.getUserId() + " has suspended their Bus pass!", user, user.getUserId(), "Admin");
         note.put(n.getID(), n);
     }
 
-    public void createFeedBack(String feedback, User user){
-        Notification n = NotificationManager.getNotificationType(NotifyConstants.Feedback,feedback, user ,user.getUserId(),"Admin");
+    public void createFeedBack(String feedback, User user) {
+        Notification n = NotificationManager.getNotificationType(NotifyConstants.Feedback, feedback, user, user.getUserId(), "Admin");
         note.put(n.getID(), n);
     }
 
     public void ListNotification(String to) {
-        if(!note.isEmpty()) {
+        if (!note.isEmpty()) {
             System.out.println();
             Lines.lines();
             System.out.println("Notifications for " + to);
             Lines.lines();
             Set<Integer> keys = note.keySet();
-            for (Integer key:keys) {
+            for (Integer key : keys) {
                 Notification notify = note.get(key);
                 if (to.equals(notify.getTo())) {
                     System.out.println("Message ID : " + notify.getID());
@@ -84,27 +84,27 @@ public class NotificationHandler {
                 }
             }
             Lines.lines();
-        }
-        else{
+        } else {
             System.out.println("There is No Notification to display");
         }
     }
-    public void clearNotification(int id){
-        if(note.containsKey(id)){
+
+    public void clearNotification(int id) {
+        if (note.containsKey(id)) {
             note.remove(id);
-            System.out.println("Notification Removed for the ID - "+id);
+            System.out.println("Notification Removed for the ID - " + id);
             System.out.println("Notification Deleted!");
-        }
-        else{
+        } else {
             System.out.println("Incorrect notification ID");
         }
     }
-    public void clearAllNotification(){
+
+    public void clearAllNotification() {
         note.clear();
         System.out.println("Cleared all the Notifications");
     }
 
-    public Object getObject(){
+    public Object getObject() {
         return note;
     }
 }

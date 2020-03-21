@@ -267,7 +267,7 @@ public class NotificationManager {
             case NotifyConstants.ModifyRoute:
                 return new ModifyRouteNotification(message, (Route) o, from, to);
             case NotifyConstants.SuspendBusPass:
-                return new BusPassSuspendNotification(message, (User)o, from, to);
+                return new BusPassSuspendNotification(message, (User) o, from, to);
             case NotifyConstants.Feedback:
                 return new Feedback(message, o, from, to);
             default:

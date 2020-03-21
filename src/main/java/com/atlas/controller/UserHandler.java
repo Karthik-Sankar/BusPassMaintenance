@@ -4,7 +4,6 @@ import com.atlas.models.BusPass;
 import com.atlas.models.User;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
-import com.atlas.utils.CredsMasker;
 import com.atlas.utils.Lines;
 import com.atlas.utils.NotifyConstants;
 import com.atlas.utils.ScannerUtil;
@@ -22,15 +21,15 @@ public class UserHandler {
         initalize();
     }
 
-    public void initalize(){
+    public void initalize() {
         ObjectRetreiver retreiver = new ObjectRetreiver();
         Object o = retreiver.getUserObj();
-        if(o!=null) {
+        if (o != null) {
             HashMap<String, User> temp = (HashMap<String, User>) o;
             Set<String> keys = temp.keySet();
-                for (String key : keys) {
+            for (String key : keys) {
                 User u = temp.get(key);
-                addUser(u.getBusPass(), u.getUserId(), u.getPassword(),u.getUserName(), u.getPhoneNumber(), u.getAddress(),u.getRouteNum());
+                addUser(u.getBusPass(), u.getUserId(), u.getPassword(), u.getUserName(), u.getPhoneNumber(), u.getAddress(), u.getRouteNum());
             }
         }
     }
@@ -43,7 +42,7 @@ public class UserHandler {
     }
 
     public void addUser(BusPass bid, String userId, String password, String userName, String phoneNumber, String address, int routeNum) {
-        User addUser = new User(bid, userId, password,userName, phoneNumber, address,routeNum);
+        User addUser = new User(bid, userId, password, userName, phoneNumber, address, routeNum);
         user.put(userId, addUser);
     }
 
@@ -52,7 +51,7 @@ public class UserHandler {
     }
 
     public void displayUsers() {
-        if(!user.isEmpty()) {
+        if (!user.isEmpty()) {
             System.out.println();
             Lines.lines();
             System.out.println("Users Available");
@@ -67,13 +66,13 @@ public class UserHandler {
                 System.out.println("Route Number :" + element.getRouteNum());
                 Lines.lines();
             }
-        }
-        else{
+        } else {
             System.out.println("No Users registered yet!!");
         }
     }
+
     public void displayUsers(User u) {
-        if(user.containsKey(u.getUserId())) {
+        if (user.containsKey(u.getUserId())) {
             System.out.println();
             Lines.lines();
             System.out.println("Users Available");
@@ -90,23 +89,21 @@ public class UserHandler {
                     Lines.lines();
                 }
             }
-        }
-        else{
+        } else {
             System.out.println("Specified User is not available in the list!!");
         }
     }
 
     public void updateUserRoute(String userId, int routeId) {
         RouteHandler routeHandler = RouteHandler.getInstance();
-        if(user.containsKey(userId) && routeHandler.route.containsKey(routeId)) {
+        if (user.containsKey(userId) && routeHandler.route.containsKey(routeId)) {
             user.get(userId).setRouteNum(routeId);
-        }
-        else{
+        } else {
             System.out.println("Invalid UserID/RouteID!!");
         }
     }
 
-    public Object getObject(){
+    public Object getObject() {
         return user;
     }
 
@@ -154,8 +151,8 @@ public class UserHandler {
                             System.out.println("New route request placed!");
                             break;
                         case 5:
-                            char session2='y';
-                            while(session2=='y') {
+                            char session2 = 'y';
+                            while (session2 == 'y') {
                                 System.out.println("Update User Details");
                                 System.out.println("1. Update User Name");
                                 System.out.println("2. Update Phone");
@@ -180,27 +177,25 @@ public class UserHandler {
                                     case 4:
                                         System.out.println("Enter your old password : ");
                                         String oldPassword = scannerUtil.readLine();
-                                        if(user.getPassword().equals(oldPassword)){
+                                        if (user.getPassword().equals(oldPassword)) {
                                             System.out.println("Enter New Password :");
                                             String newPassword = scannerUtil.readLine();
                                             System.out.println("Confirm New Password :");
                                             String newCPassword = scannerUtil.readLine();
-                                            if(newPassword.equals(newCPassword)){
+                                            if (newPassword.equals(newCPassword)) {
                                                 user.setPassword(newPassword);
                                                 System.out.println("Password changed successfully!");
-                                            }
-                                            else{
+                                            } else {
                                                 System.out.println("Password mismatch try again!");
                                             }
-                                        }
-                                        else {
-                                            session='n';
-                                            session2='n';
+                                        } else {
+                                            session = 'n';
+                                            session2 = 'n';
                                             System.out.println("Wrong Password!\n Logging you out! \n Please login with correct password again!");
                                         }
                                         break;
                                     case 0:
-                                        session2='n';
+                                        session2 = 'n';
                                         System.out.println("Press 0 key to go to previous menu!");
                                         break;
                                     default:
@@ -227,12 +222,10 @@ public class UserHandler {
                             System.out.println("Invalid option!");
                     }
                 }
-            }
-            else{
+            } else {
                 System.out.println("Incorrect password!");
             }
-        }
-        else{
+        } else {
             System.out.println("Your Application Not Approved Yet!");
         }
         ObjectSaver objectSaver = new ObjectSaver();

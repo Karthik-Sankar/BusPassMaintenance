@@ -1,14 +1,9 @@
 package com.atlas.utils;
 
-import com.atlas.models.User;
-import com.atlas.persistance.ObjectRetreiver;
-
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Set;
 
-public class IDGenerator{
+public class IDGenerator {
     private static IDGenerator idGenerator;
     static LinkedList<Integer> route;
     static LinkedList<Integer> bus;
@@ -20,19 +15,19 @@ public class IDGenerator{
     static int busPassID;
     static int notifyID;
 
-    private IDGenerator(){
+    private IDGenerator() {
         route = new LinkedList<Integer>();
         bus = new LinkedList<Integer>();
         busPass = new LinkedList<Integer>();
-        notify =  new LinkedList<Integer>();
+        notify = new LinkedList<Integer>();
         initalize();
     }
 
-    public void initalize(){
+    public void initalize() {
     }
 
-    public static IDGenerator getInstance(){
-        if(idGenerator==null){
+    public static IDGenerator getInstance() {
+        if (idGenerator == null) {
             idGenerator = new IDGenerator();
         }
         return idGenerator;
@@ -41,8 +36,7 @@ public class IDGenerator{
     public static int getRouteID() {
         getInstance();
         routeID = IDGenerator.generateID();
-        while(route.contains(routeID))
-        {
+        while (route.contains(routeID)) {
             routeID = IDGenerator.generateID();
         }
         route.add(routeID);
@@ -52,8 +46,7 @@ public class IDGenerator{
     public static int getBusID() {
         getInstance();
         busID = IDGenerator.generateID();
-        while(bus.contains(busID))
-        {
+        while (bus.contains(busID)) {
             busID = IDGenerator.generateID();
         }
         bus.add(busID);
@@ -63,8 +56,7 @@ public class IDGenerator{
     public static int getBusPassID() {
         getInstance();
         busPassID = IDGenerator.generateID();
-        while(busPass.contains(busPassID))
-        {
+        while (busPass.contains(busPassID)) {
             busPassID = IDGenerator.generateID();
         }
         busPass.add(busPassID);
@@ -74,8 +66,7 @@ public class IDGenerator{
     public static int getNotifyID() {
         getInstance();
         notifyID = IDGenerator.generateID();
-        while(notify.contains(notifyID))
-        {
+        while (notify.contains(notifyID)) {
             notifyID = IDGenerator.generateID();
         }
         notify.add(notifyID);
@@ -87,7 +78,7 @@ public class IDGenerator{
         return r.nextInt(9000) + 1000;
     }
 
-    public Object getObject(){
+    public Object getObject() {
         IDS.add(route);
         IDS.add(bus);
         IDS.add(busPass);

@@ -2,7 +2,7 @@ package com.atlas.persistance;
 
 import java.io.Serializable;
 
-public class ObjectRetreiver  implements Serializable {
+public class ObjectRetreiver implements Serializable {
     public Object getRoutesObj() {
         return new ObjectStore().retreiveObject("Route");
     }
