@@ -1,5 +1,6 @@
 package com.atlas.controller;
 
+import com.atlas.models.Bus;
 import com.atlas.models.BusPass;
 import com.atlas.models.User;
 import com.atlas.persistance.ObjectRetreiver;
@@ -26,11 +27,7 @@ public class UserHandler {
         Object o = retreiver.getUserObj();
         if (o != null) {
             HashMap<String, User> temp = (HashMap<String, User>) o;
-            Set<String> keys = temp.keySet();
-            for (String key : keys) {
-                User u = temp.get(key);
-                addUser(u.getBusPass(), u.getUserId(), u.getPassword(), u.getUserName(), u.getPhoneNumber(), u.getAddress(), u.getRouteNum());
-            }
+            user = temp;
         }
     }
 
@@ -41,7 +38,7 @@ public class UserHandler {
         return users;
     }
 
-    public void addUser(BusPass bid, String userId, String password, String userName, String phoneNumber, String address, int routeNum) {
+    public void addUser(int bid, String userId, String password, String userName, String phoneNumber, String address, int routeNum) {
         User addUser = new User(bid, userId, password, userName, phoneNumber, address, routeNum);
         user.put(userId, addUser);
     }
@@ -103,11 +100,16 @@ public class UserHandler {
         }
     }
 
+    public void assignRouteToUser(String userId, int routeId) {
+
+    }
+
     public Object getObject() {
         return user;
     }
 
     public void UserEntry() {
+        ObjectSaver objectSaver = new ObjectSaver();
         RouteHandler routeHandler = RouteHandler.getInstance();
         NotificationHandler ns = NotificationHandler.getNotificationInstance();
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
@@ -138,17 +140,20 @@ public class UserHandler {
                             routeHandler.displayRoute();
                             break;
                         case 2:
-                            ns.cancelBusPassNotification(user.get(uname));
+                            ns.createCancelPassNotification(uname, user.get(uname));
                             System.out.println("Bus pass cancelled!!");
+                            objectSaver.saveAll();
                             break;
                         case 3:
-                            ns.suspendBusPassNotification(user.get(uname));
+                            ns.createSuspendPassNotification(uname, user.get(uname));
                             System.out.println("Bus pass suspended!!");
+                            objectSaver.saveAll();
                             break;
                         case 4:
                             System.out.println("Enter new route as (Source-Destination) :");
-                            ns.createNotifications(NotifyConstants.NewRoute, "New Route Request", scannerUtil.readLine(), uname, "Admin");
+                            ns.createNotification(uname,"Admin", "Create a new route between "+scannerUtil.readLine());
                             System.out.println("New route request placed!");
+                            objectSaver.saveAll();
                             break;
                         case 5:
                             char session2 = 'y';
@@ -165,14 +170,17 @@ public class UserHandler {
                                     case 1:
                                         System.out.println("Enter New User Name :");
                                         user.setUserName(scannerUtil.readLine());
+                                        objectSaver.saveAll();
                                         break;
                                     case 2:
                                         System.out.println("Enter New Phone :");
                                         user.setPhoneNumber(scannerUtil.readLine());
+                                        objectSaver.saveAll();
                                         break;
                                     case 3:
                                         System.out.println("Enter Address in a single line :");
                                         user.setAddress(scannerUtil.readLine());
+                                        objectSaver.saveAll();
                                         break;
                                     case 4:
                                         System.out.println("Enter your old password : ");
@@ -193,6 +201,7 @@ public class UserHandler {
                                             session2 = 'n';
                                             System.out.println("Wrong Password!\n Logging you out! \n Please login with correct password again!");
                                         }
+                                        objectSaver.saveAll();
                                         break;
                                     case 0:
                                         session2 = 'n';
@@ -208,12 +217,14 @@ public class UserHandler {
                             break;
                         case 7:
                             System.out.println("Enter your single line feedback : ");
-                            ns.createFeedBack(scannerUtil.readLine(), getUser(uname));
+                            ns.createFeedback(uname, scannerUtil.readLine());
                             System.out.println("Feedback sent to Admin!");
+                            objectSaver.saveAll();
                             break;
                         case 8:
                             NotificationHandler notificationHandler = NotificationHandler.getNotificationInstance();
                             notificationHandler.ListNotification(uname);
+                            objectSaver.saveAll();
                             break;
                         case 0:
                             session = 'n';
@@ -228,7 +239,5 @@ public class UserHandler {
         } else {
             System.out.println("Your Application Not Approved Yet!");
         }
-        ObjectSaver objectSaver = new ObjectSaver();
-        objectSaver.saveAll();
     }
 }

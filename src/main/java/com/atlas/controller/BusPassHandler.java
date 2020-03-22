@@ -22,11 +22,7 @@ public class BusPassHandler {
         Object o = retreiver.getBusPassObj();
         if (o != null) {
             HashMap<Integer, BusPass> temp = (HashMap<Integer, BusPass>) o;
-            Set<Integer> keys = temp.keySet();
-            for (Integer key : keys) {
-                BusPass b = temp.get(key);
-                addBusPass(b.getBusPassId(), b.getRouteId(), b.getUserId(), b.getBus());
-            }
+            busPass = temp;
         }
     }
 
@@ -37,7 +33,7 @@ public class BusPassHandler {
         return busPassHandler;
     }
 
-    public void addBusPass(int busPassID, int routeID, String userID, Bus busID) {
+    public void addBusPass(int busPassID, int routeID, String userID, int busID) {
         BusPass bp = new BusPass(busPassID, routeID, userID, busID);
         busPass.put(bp.getBusPassId(), bp);
     }
@@ -51,7 +47,7 @@ public class BusPassHandler {
         return null;
     }
 
-    public void getBusPassInfo() {
+    public void listBusPasses() {
         if (!busPass.isEmpty()) {
             Set<Integer> busspassm = busPass.keySet();
             for (Integer bpobj : busspassm) {
@@ -61,8 +57,8 @@ public class BusPassHandler {
                 System.out.println("Bus Pass Assigned Details");
                 Lines.lines();
                 System.out.println("Buspass Info : " + bp.getBusPassId());
-                System.out.println("ID : " + bp.getUserId());
-                System.out.println("Bus ID : " + bp.getBus().getBusId());
+                System.out.println("User : " + bp.getUserId());
+                System.out.println("Bus ID : " + bp.getBus());
                 System.out.println("Route ID :" + bp.getRouteId());
                 Lines.lines();
             }

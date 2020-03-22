@@ -2,7 +2,9 @@ package com.atlas.controller;
 
 import com.atlas.models.Bus;
 import com.atlas.persistance.ObjectRetreiver;
+import com.atlas.utils.IDGenerator;
 import com.atlas.utils.Lines;
+import com.atlas.utils.ScannerUtil;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -21,11 +23,7 @@ public class BusHandler {
         Object o = retreiver.getBusObj();
         if (o != null) {
             HashMap<Integer, Bus> temp = (HashMap<Integer, Bus>) o;
-            Set<Integer> keys = temp.keySet();
-            for (Integer key : keys) {
-                Bus b = temp.get(key);
-                addBus(b.getBusId(), b.getRegNo(), b.getBusType(), b.getTotalCapacity(), b.getBusCoOrdinatorID());
-            }
+            bus = temp;
         }
     }
 
@@ -43,6 +41,8 @@ public class BusHandler {
 
     public void removeBus(int busID) {
         if (bus.containsKey(busID)) {
+            RouteHandler routeHandler = RouteHandler.getInstance();
+            routeHandler.route.get(bus.get(busID).getRouteID()).setBus(-1);
             bus.remove(busID);
         } else {
             System.out.println("Invalid bus ID");
@@ -51,6 +51,7 @@ public class BusHandler {
 
     public Bus getBus(int busID) {
         if (bus.containsKey(busID)) {
+            //System.out.println(bus.get(busID).hashCode());
             return bus.get(busID);
         } else {
             System.out.println("\nInvalid bus ID");
@@ -77,6 +78,23 @@ public class BusHandler {
         } else {
             System.out.println("No buses added yet!");
         }
+    }
+
+    public boolean isSeatsAvailable(int busID){
+        return bus.get(busID).getTotalCapacity() > bus.get(busID).getSeatFilled();
+    }
+
+    public void addBuses() {
+        ScannerUtil scannerUtil = ScannerUtil.getInstance();
+        System.out.println("Enter the bus type: ");
+        String busType = scannerUtil.readLine();
+        System.out.println("Enter the bus registration number: ");
+        String regno = scannerUtil.readLine();
+        System.out.println("Enter the seat capacity: ");
+        int seatCapacity = scannerUtil.readInt();
+        System.out.println("Enter the bus co-ordinator ID: ");
+        String busCoordinator = scannerUtil.readLine();
+        addBus(IDGenerator.getBusID(), regno, busType, seatCapacity, busCoordinator);
     }
 
     public Object getObject() {

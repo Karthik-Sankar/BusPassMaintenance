@@ -1,21 +1,18 @@
 package com.atlas.controller;
 
-import com.atlas.models.Notification;
-import com.atlas.models.User;
-import com.atlas.models.Visitor;
+import com.atlas.models.*;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.utils.Lines;
-import com.atlas.utils.NotifyConstants;
 
 import java.util.HashMap;
 import java.util.Set;
 
 public class NotificationHandler {
     private static NotificationHandler notification;
-    HashMap<Integer, Notification> note;
+    HashMap<Integer, Notifications> note;
 
     private NotificationHandler() {
-        note = new HashMap<Integer, Notification>();
+        note = new HashMap<Integer, Notifications>();
         initalize();
     }
 
@@ -30,38 +27,49 @@ public class NotificationHandler {
         ObjectRetreiver retreiver = new ObjectRetreiver();
         Object o = retreiver.getNotificationObj();
         if (o != null) {
-            HashMap<Integer, Notification> temp = (HashMap<Integer, Notification>) o;
-            Set<Integer> keys = temp.keySet();
-            for (Integer key : keys) {
-                Notification n = temp.get(key);
-                createNotifications(n.getType(), n.getMessage(), n.getObj(), n.getFrom(), n.getTo());
-            }
+            HashMap<Integer, Notifications> temp = (HashMap<Integer, Notifications>) o;
+            note = temp;
         }
     }
 
-    public void createNotifications(int type, String message, Object o, String from, String to) {
-        Notification n = NotificationManager.getNotificationType(type, message, o, from, to);
-        note.put(n.getID(), n);
+    public void createApplyPassNotification(String from, Visitor v){
+        NotificationBuilder notificationBuilder = new BusPassApplyNotification(from,v);
+        NotificationManager manager = new NotificationManager(notificationBuilder);
+        manager.makeNotification();
+        Notifications notifications = manager.getNotification();
+        note.put(notifications.getID(), notifications);
     }
 
-    public void createBusPassApplicationNotification(String message, String UserID, Visitor visitor) {
-        Notification n = NotificationManager.getNotificationType(NotifyConstants.ApplyBusPass, message, visitor, UserID, "Admin");
-        note.put(n.getID(), n);
+    public void createCancelPassNotification(String from, User u){
+        NotificationBuilder notificationBuilder = new BusPassCancelNotification(from,u);
+        NotificationManager manager = new NotificationManager(notificationBuilder);
+        manager.makeNotification();
+        Notifications notifications = manager.getNotification();
+        note.put(notifications.getID(), notifications);
     }
 
-    public void cancelBusPassNotification(User user) {
-        Notification n = NotificationManager.getNotificationType(NotifyConstants.CancelBusPass, "User " + user.getUserId() + " has cancelled their Bus pass!", user, user.getUserId(), "Admin");
-        note.put(n.getID(), n);
+    public void createSuspendPassNotification(String from, User u){
+        NotificationBuilder notificationBuilder = new BusPassSuspendNotification(from,u);
+        NotificationManager manager = new NotificationManager(notificationBuilder);
+        manager.makeNotification();
+        Notifications notifications = manager.getNotification();
+        note.put(notifications.getID(), notifications);
     }
 
-    public void suspendBusPassNotification(User user) {
-        Notification n = NotificationManager.getNotificationType(NotifyConstants.SuspendBusPass, "User " + user.getUserId() + " has suspended their Bus pass!", user, user.getUserId(), "Admin");
-        note.put(n.getID(), n);
+    public void createFeedback(String from, String message){
+        NotificationBuilder notificationBuilder = new Feedback(from,message);
+        NotificationManager manager = new NotificationManager(notificationBuilder);
+        manager.makeNotification();
+        Notifications notifications = manager.getNotification();
+        note.put(notifications.getID(), notifications);
     }
 
-    public void createFeedBack(String feedback, User user) {
-        Notification n = NotificationManager.getNotificationType(NotifyConstants.Feedback, feedback, user, user.getUserId(), "Admin");
-        note.put(n.getID(), n);
+    public void createNotification(String from, String to, String message){
+        NotificationBuilder notificationBuilder = new PrimaryNotification(from,to,message);
+        NotificationManager manager = new NotificationManager(notificationBuilder);
+        manager.makeNotification();
+        Notifications notifications = manager.getNotification();
+        note.put(notifications.getID(), notifications);
     }
 
     public void ListNotification(String to) {
@@ -72,14 +80,15 @@ public class NotificationHandler {
             Lines.lines();
             Set<Integer> keys = note.keySet();
             for (Integer key : keys) {
-                Notification notify = note.get(key);
+                Notifications notify = note.get(key);
                 if (to.equals(notify.getTo())) {
                     System.out.println("Message ID : " + notify.getID());
                     System.out.println("Message From : " + notify.getFrom());
                     System.out.println("Message To : " + notify.getTo());
-                    System.out.println("Message Type : " + notify.getType());
                     System.out.println("Message : " + notify.getMessage());
-                    System.out.println("Supporting Data : " + notify.getObj());
+                    if(notify.getSupportingParameters()!=null) {
+                        System.out.println("Supporting Data : " + notify.getSupportingParameters());
+                    }
                     Lines.lines();
                 }
             }

@@ -5,18 +5,17 @@ import com.atlas.utils.CredsMasker;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private BusPass busPass;
+    private int busPassID;
     private String userId;
     private String userName;
     private String password;
     private String address;
     private String phoneNumber;
     private int routeNum;
-    private double travelCost;
 
-    public User(BusPass busPass, String userId, String password, String userName, String phoneNumber, String address,
+    public User(int busPassID, String userId, String password, String userName, String phoneNumber, String address,
                 int routeNum) {
-        this.busPass = busPass;
+        this.busPassID = busPassID;
         this.userId = userId;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
@@ -25,12 +24,12 @@ public class User implements Serializable {
         this.password = CredsMasker.encrypt(password);
     }
 
-    public BusPass getBusPass() {
-        return busPass;
+    public int getBusPass() {
+        return busPassID;
     }
 
-    public void setBusPass(BusPass busPass) {
-        this.busPass = busPass;
+    public void setBusPass(int busPassID) {
+        this.busPassID = busPassID;
     }
 
     public String getUserId() {
@@ -81,24 +80,15 @@ public class User implements Serializable {
         this.routeNum = routeNum;
     }
 
-    public double getTravelCost() {
-        return travelCost;
-    }
-
-    public void setTravelCost(double travelCost) {
-        this.travelCost = travelCost;
-    }
-
     @Override
     public String toString() {
         return "User{" +
-                "busPass=" + busPass +
+                "busPassID=" + busPassID +
                 ", userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
                 ", address='" + address + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", routeNum=" + routeNum +
-                ", travelCost=" + travelCost +
                 '}';
     }
 }

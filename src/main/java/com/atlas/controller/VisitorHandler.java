@@ -32,11 +32,7 @@ public class VisitorHandler {
         Object o = retreiver.getVisitorObj();
         if (o != null) {
             HashMap<String, Visitor> temp = (HashMap<String, Visitor>) o;
-            Set<String> keys = temp.keySet();
-            for (String key : keys) {
-                Visitor v = temp.get(key);
-                addVisitor(v.getUserId(), v.getPassword(), v.getUserName(), v.getPhoneNumber(), v.getAddress(), v.getRouteID());
-            }
+            visitor = temp;
         }
     }
 
@@ -75,6 +71,7 @@ public class VisitorHandler {
     UserHandler userHandler = UserHandler.getInstance();
 
     public void VisitorEntry() {
+        ObjectSaver objectSaver = new ObjectSaver();
         System.out.println("Enter UserID : ");
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
         String uid = scannerUtil.readLine();
@@ -99,47 +96,53 @@ public class VisitorHandler {
                     break;
                 case 3:
                     System.out.println("Enter new route as (Source-Destination) :");
-                    notification.createNotifications(NotifyConstants.NewRoute, "New Route Request", scannerUtil.readLine(), uid, "Admin");
+                    notification.createNotification(uid,"Admin", "Create a new route between "+scannerUtil.readLine());
+                    objectSaver.saveAll();
                     break;
                 case 4:
-                    System.out.println("USER ID : \n" + uid);
-                    System.out.println("ENTER YOUR NAME : ");
-                    String userName = scannerUtil.readLine();
-                    System.out.println("ENTER PASSWORD : ");
-                    String password = scannerUtil.readLine();
-                    System.out.println("ENTER PHONE NUMBER : ");
-                    String phoneNumber = scannerUtil.readLine();
-                    System.out.println("ENTER ADDRESS IN SINGLE LINE : ");
-                    String address = scannerUtil.readLine();
-                    System.out.println("ENTER ROUTE ID : ");
-                    int routeID = scannerUtil.readInt();
-                    String c = "y";
-                    while (!routeHandler.route.containsKey(routeID)) {
-                        System.out.println("You are entering invalid Route ID!! \nPress 'y' to continue and 'n' to cancel applying");
-                        c = scannerUtil.readLine();
+                    if(!userHandler.user.containsKey(uid)) {
+                        System.out.println("USER ID : \n" + uid);
+                        System.out.println("ENTER ROUTE ID : ");
+                        int routeID = scannerUtil.readInt();
+                        String c = "y";
+                        while (!routeHandler.route.containsKey(routeID)) {
+                            System.out.println("You are entering invalid Route ID / Route has no seats available!! \nPress 'y' to continue and 'n' to cancel applying");
+                            c = scannerUtil.readLine();
+                            if (c.equals("y")) {
+                                routeHandler.availableValidRoutes();
+                                System.out.println("ENTER ROUTE ID AGAIN: ");
+                                routeID = scannerUtil.readInt();
+                            } else if (c.equals("n")) {
+                                System.out.println("Bus pass application canceled!");
+                                break;
+                            } else {
+                                System.out.println("Press 'y' or 'n', invalid key pressed!");
+                            }
+                        }
+                        System.out.println("ENTER YOUR NAME : ");
+                        String userName = scannerUtil.readLine();
+                        System.out.println("ENTER PASSWORD : ");
+                        String password = scannerUtil.readLine();
+                        System.out.println("ENTER PHONE NUMBER : ");
+                        String phoneNumber = scannerUtil.readLine();
+                        System.out.println("ENTER ADDRESS IN SINGLE LINE : ");
+                        String address = scannerUtil.readLine();
                         if (c.equals("y")) {
-                            System.out.println("ENTER ROUTE ID AGAIN: ");
-                            routeID = scannerUtil.readInt();
-                        } else if (c.equals("n")) {
-                            System.out.println("Bus pass application canceled!");
-                            break;
-                        } else {
-                            System.out.println("Press 'y' or 'n', invalid key pressed!");
+                            Visitor v = new Visitor(uid, password, userName, phoneNumber, address, routeID);
+                            notification.createApplyPassNotification(uid, v);
                         }
                     }
-                    if (c.equals("y")) {
-                        Visitor v = new Visitor(uid, password, userName, phoneNumber, address, routeID);
-                        notification.createBusPassApplicationNotification("Bus pass application", uid, v);
-                        VisitorHandler visitorHandler = VisitorHandler.getInstance();
-                        visitorHandler.addVisitor(v.getUserId(), v.getPassword(), v.getUserName(), v.getPhoneNumber(), v.getAddress(), v.getRouteID());
+                    else{
+                        System.out.println("An existing user cant apply! Please cancel you exixting bus pass and try again!");
                     }
+                    objectSaver.saveAll();
                     break;
                 case 5:
-                    System.out.println("ENTER PASSWORD TO CHECK STATUS : ");
-                    String password2 = scannerUtil.readLine();
                     if (userHandler.user.containsKey(uid)) {
+                        System.out.println("ENTER PASSWORD TO CHECK STATUS : ");
+                        String password2 = scannerUtil.readLine();
                         if (userHandler.user.get(uid).getPassword().equals(password2)) {
-                            System.out.println("Application of " + uid + " has been approved!");
+                            System.out.println("Application of " + uid + " has been approved! Please login as user!");
                         } else {
                             System.out.println("Incorrect password!");
                         }
@@ -154,9 +157,6 @@ public class VisitorHandler {
                     System.out.println("Invalid option!");
             }
         }
-        ObjectSaver objectSaver = new ObjectSaver();
-        objectSaver.saveVisitor();
-        objectSaver.saveNotifications();
     }
 
     public Object getObject() {

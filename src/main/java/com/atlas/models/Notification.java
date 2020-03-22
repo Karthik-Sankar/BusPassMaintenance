@@ -3,15 +3,13 @@ package com.atlas.models;
 import java.io.Serializable;
 
 public interface Notification extends Serializable {
-    int getID();
+    void setID(int ID);
 
-    String getFrom();
+    void setFrom(String From);
 
-    String getTo();
+    void setTo(String To);
 
-    int getType();
+    void setMessage(String Message);
 
-    String getMessage();
-
-    Object getObj();
+    void setSupportingObject(Object SupportingParameters);
 }

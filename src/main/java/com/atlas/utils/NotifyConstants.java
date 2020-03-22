@@ -9,6 +9,5 @@ public class NotifyConstants {
     public static final int NewRoute = 2;
     public static final int ModifyRoute = 3;
     public static final int Feedback = 4;
-    public static final int Complaints = 5;
-    public static final int SuspendBusPass = 6;
+    public static final int SuspendBusPass = 5;
 }

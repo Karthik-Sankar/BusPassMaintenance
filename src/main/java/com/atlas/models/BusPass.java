@@ -5,17 +5,17 @@ import com.atlas.utils.BusPassConstants;
 import java.io.Serializable;
 
 public class BusPass implements Serializable {
-    int busPassId;
-    int routeId;
-    String userId;
-    Bus bus;
-    int busPassStatus;
+    private int busPassId;
+    private int routeId;
+    private String userId;
+    private int busID;
+    private int busPassStatus;
 
-    public BusPass(int busPassId, int routeId, String userId, Bus bus) {
+    public BusPass(int busPassId, int routeId, String userId, int busID) {
         this.busPassId = busPassId;
         this.routeId = routeId;
         this.userId = userId;
-        this.bus = bus;
+        this.busID = busID;
         busPassStatus = BusPassConstants.ACTIVE;
     }
 
@@ -29,11 +29,12 @@ public class BusPass implements Serializable {
 
     @Override
     public String toString() {
+
         return "BusPass{" +
                 "busPassId=" + busPassId +
                 ", routeId=" + routeId +
                 ", userId='" + userId + '\'' +
-                ", bus=" + bus +
+                ", busID=" + busID +
                 ", busPassStatus=" + busPassStatus +
                 '}';
     }
@@ -62,12 +63,12 @@ public class BusPass implements Serializable {
         this.userId = userId;
     }
 
-    public Bus getBus() {
-        return bus;
+    public int getBus() {
+        return busID;
     }
 
-    public void setBus(Bus bus) {
-        this.bus = bus;
+    public void setBus(int busID) {
+        this.busID = busID;
     }
 
 }

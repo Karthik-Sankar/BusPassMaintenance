@@ -27,9 +27,11 @@ public class MainClass {
                 case 3:
                     VisitorHandler.getInstance().VisitorEntry();
                     break;
-                default:
+                case 0:
                     session = 'n';
                     break;
+                default:
+                    System.out.println("Invalid option!");
             }
         }
     }

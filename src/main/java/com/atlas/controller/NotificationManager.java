@@ -1,277 +1,231 @@
 package com.atlas.controller;
 
-import com.atlas.models.Notification;
-import com.atlas.models.Route;
-import com.atlas.models.User;
-import com.atlas.models.Visitor;
+import com.atlas.models.*;
+import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.BusPassConstants;
 import com.atlas.utils.IDGenerator;
-import com.atlas.utils.NotifyConstants;
 
 
-class BusPassApplyNotification implements Notification {
-    String message;
-    Visitor v;
-    int NotifyId;
-    String from;
-    String to;
 
-    BusPassApplyNotification(String message, Visitor v, String from, String to) {
-        this.message = message;
-        this.v = v;
-        this.NotifyId = IDGenerator.getNotifyID();
-        this.from = from;
-        this.to = to;
+class BusPassApplyNotification implements NotificationBuilder {
+
+    private Notifications notifications;
+    private String From;
+    private Visitor user;
+
+    public BusPassApplyNotification(String From, Visitor user) {
+        this.notifications = new Notifications();
+        this.From = From;
+        this.user = user;
     }
 
-    public int getID() {
-        return NotifyId;
+    public void buildID() {
+        notifications.setID(IDGenerator.getNotifyID());
     }
 
-    public String getFrom() {
-        return from;
+    public void buildFrom() {
+        notifications.setFrom(From);
     }
 
-    public String getTo() {
-        return to;
+    public void buildTo() {
+        notifications.setTo("Admin");
     }
 
-    public int getType() {
-        return NotifyConstants.ApplyBusPass;
+    public void buildMessage() {
+        notifications.setMessage("New user "+user.getUserId()+" has applied for bus pass!");
     }
 
-    public String getMessage() {
-        return message;
+    public void buildSupportingObject() {
+        notifications.setSupportingObject(user);
+        VisitorHandler visitorHandler = VisitorHandler.getInstance();
+        visitorHandler.addVisitor(user.getUserId(), user.getPassword(), user.getUserName(), user.getPhoneNumber(), user.getAddress(), user.getRouteID());
+        ObjectSaver saver = new ObjectSaver();
+        saver.saveVisitor();
     }
 
-    public Visitor getObj() {
-        return v;
-    }
-}
-
-class BusPassCancelNotification implements Notification {
-    String message;
-    User u;
-    int NotifyId;
-    String from;
-    String to;
-
-    BusPassCancelNotification(String message, User u, String from, String to) {
-        this.message = message;
-        this.u = u;
-        this.NotifyId = IDGenerator.getNotifyID();
-        this.from = from;
-        this.to = to;
-        u.getBusPass().setBusPassStatus(BusPassConstants.CANCEL);
-        u.getBusPass().getBus().deccrementSeatFilled();
-    }
-
-    public int getID() {
-        return NotifyId;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public int getType() {
-        return NotifyConstants.CancelBusPass;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public User getObj() {
-        return u;
+    public Notifications getNotification(){
+        return this.notifications;
     }
 }
 
-class BusPassSuspendNotification implements Notification {
-    String message;
-    User u;
-    int NotifyId;
-    String from;
-    String to;
+class BusPassCancelNotification implements NotificationBuilder {
 
-    BusPassSuspendNotification(String message, User u, String from, String to) {
-        this.message = message;
-        this.u = u;
-        this.NotifyId = IDGenerator.getNotifyID();
-        this.from = from;
-        this.to = to;
-        u.getBusPass().setBusPassStatus(BusPassConstants.SUSPEND);
-        u.getBusPass().getBus().deccrementSeatFilled();
+    private Notifications notifications;
+    private String From;
+    private User user;
+
+    public BusPassCancelNotification(String From, User user) {
+        this.notifications = new Notifications();
+        this.From = From;
+        this.user = user;
     }
 
-    public int getID() {
-        return NotifyId;
+    public void buildID() {
+        notifications.setID(IDGenerator.getNotifyID());
     }
 
-    public String getFrom() {
-        return from;
+    public void buildFrom() {
+        notifications.setFrom(From);
     }
 
-    public String getTo() {
-        return to;
+    public void buildTo() {
+        notifications.setTo("Admin");
     }
 
-    public int getType() {
-        return NotifyConstants.SuspendBusPass;
+    public void buildMessage() {
+        notifications.setMessage("User "+ user.getUserName()+" has cancelled their bus pass! \n User Removed from subscriber list!");
     }
 
-    public String getMessage() {
-        return message;
+    public void buildSupportingObject() {
+        notifications.setSupportingObject(user);
+        BusPassHandler busPassHandler = BusPassHandler.getInstance();
+        busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.CANCEL);
+        BusHandler busHandler = BusHandler.getInstance();
+        RouteHandler routeHandler = RouteHandler.getInstance();
+        busHandler.bus.get(routeHandler.getBus(user.getRouteNum())).deccrementSeatFilled();
+        UserHandler userHandler = UserHandler.getInstance();
+        userHandler.user.remove(user.getUserId());
     }
 
-    public User getObj() {
-        return u;
+    public Notifications getNotification(){
+        return this.notifications;
+    }
+}
+
+class BusPassSuspendNotification implements NotificationBuilder {
+
+    private Notifications notifications;
+    private String From;
+    private User user;
+
+    public BusPassSuspendNotification(String From, User user) {
+        this.notifications = new Notifications();
+        this.From = From;
+        this.user = user;
+    }
+
+    public void buildID() {
+        notifications.setID(IDGenerator.getNotifyID());
+    }
+
+    public void buildFrom() {
+        notifications.setFrom(From);
+    }
+
+    public void buildTo() {
+        notifications.setFrom("Admin");
+    }
+
+    public void buildMessage() {
+        notifications.setMessage("User "+ user.getUserName()+" has suspended their bus pass!");
+    }
+
+    public void buildSupportingObject() {
+        notifications.setSupportingObject(user);
+        BusPassHandler busPassHandler = BusPassHandler.getInstance();
+        busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.CANCEL);
+        BusHandler busHandler = BusHandler.getInstance();
+        RouteHandler routeHandler = RouteHandler.getInstance();
+        busHandler.bus.get(routeHandler.getBus(user.getRouteNum())).deccrementSeatFilled();
+    }
+
+    public Notifications getNotification(){
+        return this.notifications;
     }
 }
 
 
-class ModifyRouteNotification implements Notification {
-    String message;
-    Route r;
-    int NotifyId;
-    String from;
-    String to;
+class PrimaryNotification implements NotificationBuilder {
+    private Notifications notifications;
+    private int ID;
+    private String From;
+    private String To;
+    private String Message;
 
-    ModifyRouteNotification(String message, Route r, String from, String to) {
-        this.message = message;
-        this.r = r;
-        this.NotifyId = IDGenerator.getNotifyID();
-        this.from = from;
-        this.to = to;
+    public PrimaryNotification(String from, String to, String message) {
+        this.notifications = new Notifications();
+        this.ID = IDGenerator.getNotifyID();
+        From = from;
+        To = to;
+        Message = message;
     }
 
-    public int getID() {
-        return NotifyId;
+    public void buildID() {
+        notifications.setID(ID);
     }
 
-    public String getFrom() {
-        return from;
+    public void buildFrom() {
+        notifications.setFrom(From);
     }
 
-    public String getTo() {
-        return to;
+    public void buildTo() {
+        notifications.setTo(To);
     }
 
-    public int getType() {
-        return NotifyConstants.ModifyRoute;
+    public void buildMessage() {
+        notifications.setMessage(Message);
     }
 
-    public String getMessage() {
-        return message;
+    public void buildSupportingObject() {
+        notifications.setSupportingObject(null);
     }
 
-    public Route getObj() {
-        return r;
-    }
-}
-
-class CreateNewRoute implements Notification {
-    String message;
-    String route;
-    int NotifyId;
-    String from;
-    String to;
-
-    CreateNewRoute(String message, String route, String from, String to) {
-        this.message = message;
-        this.route = route;
-        this.NotifyId = IDGenerator.getNotifyID();
-        this.from = from;
-        this.to = to;
-    }
-
-    public int getID() {
-        return NotifyId;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public int getType() {
-        return NotifyConstants.NewRoute;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public Object getObj() {
-        return route;
+    public Notifications getNotification(){
+        return this.notifications;
     }
 }
 
-class Feedback implements Notification {
-    String message;
-    Object o;
-    int NotifyId;
-    String from;
-    String to;
+class Feedback implements NotificationBuilder {
+    private Notifications notifications;
+    private int ID;
+    private String From;
+    private String Message;
 
-    Feedback(String message, Object o, String from, String to) {
-        this.message = message;
-        this.o = o;
-        this.NotifyId = IDGenerator.getNotifyID();
-        this.from = from;
-        this.to = to;
+    public Feedback(String from, String message) {
+        this.notifications = new Notifications();
+        this.ID = IDGenerator.getNotifyID();
+        From = from;
+        Message = message;
     }
 
-    public int getID() {
-        return NotifyId;
+    public void buildID() {
+        notifications.setID(ID);
     }
 
-    public String getFrom() {
-        return from;
+    public void buildFrom() {
+        notifications.setFrom(From);
     }
 
-    public String getTo() {
-        return to;
+    public void buildTo() {
+        notifications.setTo("Admin");
     }
 
-    public int getType() {
-        return NotifyConstants.Feedback;
+    public void buildMessage() {
+        notifications.setMessage(Message);
     }
 
-    public String getMessage() {
-        return message;
+    public void buildSupportingObject() {
+        notifications.setSupportingObject(null);
     }
-
-    public Object getObj() {
-        return o;
+    public Notifications getNotification(){
+        return this.notifications;
     }
 }
 
 
 public class NotificationManager {
-    public static Notification getNotificationType(int type, String message, Object o, String from, String to) {
-        switch (type) {
-            case NotifyConstants.ApplyBusPass:
-                return new BusPassApplyNotification(message, (Visitor) o, from, to);
-            case NotifyConstants.CancelBusPass:
-                return new BusPassCancelNotification(message, (User) o, from, to);
-            case NotifyConstants.NewRoute:
-                return new CreateNewRoute(message, (String) o, from, to);
-            case NotifyConstants.ModifyRoute:
-                return new ModifyRouteNotification(message, (Route) o, from, to);
-            case NotifyConstants.SuspendBusPass:
-                return new BusPassSuspendNotification(message, (User) o, from, to);
-            case NotifyConstants.Feedback:
-                return new Feedback(message, o, from, to);
-            default:
-                return null;
-        }
+    private NotificationBuilder notificationBuilder;
+    public NotificationManager(NotificationBuilder notificationBuilder){
+        this.notificationBuilder = notificationBuilder;
+    }
+    public Notifications getNotification(){
+        return this.notificationBuilder.getNotification();
+    }
+    public void makeNotification(){
+        this.notificationBuilder.buildID();
+        this.notificationBuilder.buildFrom();
+        this.notificationBuilder.buildTo();
+        this.notificationBuilder.buildMessage();
+        this.notificationBuilder.buildSupportingObject();
     }
 }

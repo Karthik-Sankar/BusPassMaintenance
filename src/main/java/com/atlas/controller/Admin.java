@@ -1,6 +1,7 @@
 package com.atlas.controller;
 
 import com.atlas.models.Bus;
+import com.atlas.models.User;
 import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.IDGenerator;
@@ -18,7 +19,7 @@ public class Admin {
     UserHandler userHandler = UserHandler.getInstance();
     NotificationHandler ns = NotificationHandler.getNotificationInstance();
     VisitorHandler visitorHandler = VisitorHandler.getInstance();
-
+    ObjectSaver objectSaver = new ObjectSaver();
     public void AdminEntry() {
         System.out.println("Enter Credentials : ");
         System.out.println("Username : ");
@@ -60,9 +61,11 @@ public class Admin {
                             case 2:
                                 System.out.println("Enter Notification ID to delete : ");
                                 notificationHandler.clearNotification(scannerUtil.readInt());
+                                objectSaver.saveAll();
                                 break;
                             case 3:
                                 notificationHandler.clearAllNotification();
+                                objectSaver.saveAll();
                                 break;
                             case 0:
                                 session3 = 'n';
@@ -88,30 +91,12 @@ public class Admin {
                                 visitorHandler.displayVisitor();
                                 break;
                             case 2:
-                                System.out.println("Enter a vistor id to approve :");
-                                String userId = scannerUtil.readLine();
-                                Visitor v = visitorHandler.getVisitor(userId);
-                                int routeID = v.getRouteID();
-                                String userID = v.getUserId();
-                                String paswd = v.getPassword();
-                                String usname = v.getUserName();
-                                String phone = v.getPhoneNumber();
-                                String addr = v.getAddress();
-                                int busPassID = IDGenerator.getBusPassID();
-                                Bus b = routeHandler.getBus(v.getRouteID());
-                                busPasses.addBusPass(busPassID, routeID, userID, b);
-                                userHandler.addUser(busPasses.getBusPass(busPassID), userID, paswd, usname, phone, addr, routeID);
-                                routeHandler.getBus(v.getRouteID()).incrementSeatFilled();
-                                System.out.println("User Created, Enter Fare (\u20b9) :  ");
-                                userHandler.getUser(v.getUserId()).setTravelCost(scannerUtil.readDouble());
-                                visitorHandler.visitor.remove(userId);
-                                System.out.println("User " + v.getUserName() + " Application Approved");
+                                approveUserApplication();
+                                objectSaver.saveAll();
                                 break;
                             case 3:
-                                System.out.println("Enter a vistor id to reject :");
-                                String userId2 = scannerUtil.readLine();
-                                visitorHandler.visitor.remove(userId2);
-                                System.out.println("User " + userId2 + " Application Rejected");
+                                rejectUserApplication();
+                                objectSaver.saveAll();
                                 break;
                             case 0:
                                 session2 = 'n';
@@ -137,13 +122,16 @@ public class Admin {
                                 routeHandler.displayRoute();
                                 break;
                             case 2:
-                                admin.routeAddition(routeHandler);
+                                routeHandler.routeAddition();
+                                objectSaver.saveAll();
                                 break;
                             case 3:
-                                admin.deleteRoute(routeHandler);
+                                routeHandler.deleteRoute();
+                                objectSaver.saveAll();
                                 break;
                             case 4:
-                                admin.changeBusRoute(routeHandler);
+                                routeHandler.changeBusRoute();
+                                objectSaver.saveAll();
                                 break;
                             case 0:
                                 session4 = 'n';
@@ -172,13 +160,15 @@ public class Admin {
                                 buses.listBuses();
                                 break;
                             case 2:
-                                admin.addBuses(buses);
+                                buses.addBuses();
                                 System.out.println("Bus added successfully!");
+                                objectSaver.saveAll();
                                 break;
                             case 3:
                                 System.out.println("Enter bus number: ");
                                 buses.removeBus(scannerUtil.readInt());
                                 System.out.println("Bus removed successfully!");
+                                objectSaver.saveAll();
                                 break;
                             case 4:
                                 System.out.println("Enter bus number: ");
@@ -186,6 +176,7 @@ public class Admin {
                                 System.out.println("Enter bus coordinator user ID: ");
                                 buses.getBus(busNo).setBusCoOrdinatorID(scannerUtil.readLine());
                                 System.out.println("Bus co-ordinator changed successfully!");
+                                objectSaver.saveAll();
                                 break;
                             default:
                                 session5 = 'n';
@@ -199,60 +190,31 @@ public class Admin {
 
             }
         }
-        ObjectSaver objectSaver = new ObjectSaver();
-        objectSaver.saveAll();
     }
 
-    private void routeAddition(RouteHandler routeHandler) {
-        System.out.println("Enter Bus ID : ");
-        BusHandler busHandler = BusHandler.getInstance();
-        Bus bus = busHandler.getBus(scannerUtil.readInt());
-        if (bus != null) {
-            System.out.println("Enter source : ");
-            String source = scannerUtil.readLine();
-            System.out.println("Enter destination : ");
-            String destination = scannerUtil.readLine();
-            System.out.println("Enter number of stops : ");
-            int nos = scannerUtil.readInt();
-            LinkedList<String> stops = new LinkedList<String>();
-            System.out.println("Enter " + nos + " stops : ");
-            while (nos > 0) {
-                stops.add(scannerUtil.readLine());
-                nos--;
-            }
-            System.out.println("Enter start time : ");
-            String time = scannerUtil.readLine();
-            System.out.println("Enter ETA : ");
-            String eta = scannerUtil.readLine();
-            routeHandler.addRoutes(IDGenerator.getRouteID(), source, destination, stops, time, eta, bus);
-        } else {
-            System.out.println("Are you choosing the right bus! Please first create a bus or give correct ID");
-        }
+
+    private void approveUserApplication(){
+        System.out.println("Enter a vistor id to approve :");
+        String userId = scannerUtil.readLine();
+        Visitor v = visitorHandler.getVisitor(userId);
+        int routeID = v.getRouteID();
+        String userID = v.getUserId();
+        String paswd = v.getPassword();
+        String usname = v.getUserName();
+        String phone = v.getPhoneNumber();
+        String addr = v.getAddress();
+        int busPassID = IDGenerator.getBusPassID();
+        buses.getBus(routeHandler.getBus(routeID)).incrementSeatFilled();
+        busPasses.addBusPass(busPassID, routeID, userID, routeHandler.getBus(routeID));
+        userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
+        visitorHandler.visitor.remove(userId);
+        System.out.println("User " + v.getUserName() + " Application Approved");
     }
 
-    private void addBuses(BusHandler busHandler) {
-        System.out.println("Enter the bus type: ");
-        String busType = scannerUtil.readLine();
-        System.out.println("Enter the bus registration number: ");
-        String regno = scannerUtil.readLine();
-        System.out.println("Enter the seat capacity: ");
-        int seatCapacity = scannerUtil.readInt();
-        System.out.println("Enter the bus co-ordinator ID: ");
-        String busCoordinator = scannerUtil.readLine();
-        busHandler.addBus(IDGenerator.getBusID(), regno, busType, seatCapacity, busCoordinator);
-    }
-
-    private void changeBusRoute(RouteHandler route) {
-        System.out.println("Enter the route number to perform change :");
-        int routeId = scannerUtil.readInt();
-        System.out.println("Enter the bus number to change :");
-        int busId = scannerUtil.readInt();
-        route.modifyBusRoute(routeId, busId);
-    }
-
-    private void deleteRoute(RouteHandler route) {
-        System.out.println("Enter the route number to delete :");
-        int routeId = scannerUtil.readInt();
-        route.deleteRoute(routeId);
+    private void rejectUserApplication(){
+        System.out.println("Enter a vistor id to reject :");
+        String userId2 = scannerUtil.readLine();
+        visitorHandler.visitor.remove(userId2);
+        System.out.println("User " + userId2 + " Application Rejected");
     }
 }

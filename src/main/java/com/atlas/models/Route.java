@@ -5,25 +5,25 @@ import java.util.LinkedList;
 
 public class Route implements Serializable {
     private int routeId;
-    private Bus bus;
+    private int busID;
     private String source;
     private String destination;
     private LinkedList<String> stops;
     private String time;
     private String eta;
 
-    public Route(int routeId, String source, String destination, LinkedList<String> stops, String time, String eta, Bus bus) {
+    public Route(int routeId, String source, String destination, LinkedList<String> stops, String time, String eta, int busID) {
         this.routeId = routeId;
         this.source = source;
         this.destination = destination;
         this.stops = stops;
         this.time = time;
         this.eta = eta;
-        this.bus = bus;
+        this.busID = busID;
     }
 
-    public void setBus(Bus bus) {
-        this.bus = bus;
+    public void setBus(int busID) {
+        this.busID = busID;
     }
 
     public void setDestination(String destination) {
@@ -70,8 +70,8 @@ public class Route implements Serializable {
         return time;
     }
 
-    public Bus getBus() {
-        return bus;
+    public int getBus() {
+        return busID;
     }
 
     public String toString() {
@@ -82,7 +82,7 @@ public class Route implements Serializable {
                 ", stops=" + stops +
                 ", time='" + time + '\'' +
                 ", eta='" + eta + '\'' +
-                ", Bus Info ='" + bus + '\'' +
+                ", Bus ='" + busID + '\'' +
                 '}';
     }
 }
