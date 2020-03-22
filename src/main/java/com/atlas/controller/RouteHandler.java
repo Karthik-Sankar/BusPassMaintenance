@@ -141,14 +141,16 @@ public class RouteHandler {
     public void modifyBusRoute(int routeId, int newbusID) {
         RouteHandler routeHandler = RouteHandler.getInstance();
         BusHandler busHandler = BusHandler.getInstance();
+        //checking if current route has a bus already!
         if (routeHandler.getBus(routeId) != -1) {
+            //checking is new bus can accomodate previous users.
             if(busHandler.bus.get(newbusID).getTotalCapacity() > busHandler.bus.get(routeHandler.route.get(routeId).getBus()).getSeatFilled()){
                 System.out.println("Route already has bus assigned (BusID : "+routeHandler.getBus(routeId)+")");
                 int oldBus = routeHandler.route.get(routeId).getBus();
+                int oldRouteID = busHandler.bus.get(newbusID).getRouteID();
                 routeHandler.route.get(routeId).setBus(newbusID);
                 busHandler.bus.get(newbusID).setRouteID(routeId);
                 busHandler.bus.get(newbusID).setSeatFilled(busHandler.bus.get(routeHandler.route.get(routeId).getBus()).getSeatFilled());
-                int oldRouteID = busHandler.bus.get(oldBus).getRouteID();
                 routeHandler.route.get(oldRouteID).setBus(-1);
                 System.out.println("Route "+ routeHandler.route.get(routeId) + " has tagged with Bus "+ busHandler.bus.get(newbusID));
                 System.out.println("Alert route "+oldRouteID+" which previously used this bus has no bus tagged now!");
