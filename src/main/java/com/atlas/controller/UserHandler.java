@@ -2,9 +2,11 @@ package com.atlas.controller;
 
 import com.atlas.models.Bus;
 import com.atlas.models.BusPass;
+import com.atlas.models.Route;
 import com.atlas.models.User;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
+import com.atlas.utils.ColourMe;
 import com.atlas.utils.Lines;
 import com.atlas.utils.NotifyConstants;
 import com.atlas.utils.ScannerUtil;
@@ -51,43 +53,44 @@ public class UserHandler {
         if (!user.isEmpty()) {
             System.out.println();
             Lines.lines();
-            System.out.println("Users Available");
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Users Available")+ColourMe.ANSI_RESET);
+            Lines.lines();
             Set<String> u = user.keySet();
             for (String u1 : u) {
                 User element = user.get(u1);
-                Lines.lines();
-                System.out.println("Buspass Info : " + element.getBusPass());
-                System.out.println("ID : " + element.getUserId());
-                System.out.println("UserName : " + element.getUserName());
-                System.out.println("Phone Number :" + element.getPhoneNumber());
-                System.out.println("Route Number :" + element.getRouteNum());
+                System.out.println("Buspass Info   : " + String.format("%25s",element.getBusPass()));
+                System.out.println("Employee ID    : " + String.format("%25s",element.getUserId())+"\t\t\t"+"UserName       : " + String.format("%25s",element.getUserName()));
+                System.out.println("Phone Number   : " + String.format("%25s",element.getPhoneNumber())+"\t\t\t"+"Route Number   : " + String.format("%25s",element.getRouteNum()));
+                System.out.println("Address        : "+String.format("%25s",element.getAddress()));
                 Lines.lines();
             }
+            Lines.lines();
+            System.out.println();
         } else {
-            System.out.println("No Users registered yet!!");
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"No Users registered yet!!"+ColourMe.ANSI_RESET);
         }
     }
 
     public void displayUsers(User u) {
         if (user.containsKey(u.getUserId())) {
+            RouteHandler routeHandler = RouteHandler.getInstance();
+            Route r = routeHandler.route.get(u.getRouteNum());
             System.out.println();
             Lines.lines();
-            System.out.println("Users Available");
-            Set<String> us = user.keySet();
-            for (String u1 : us) {
-                User element = user.get(u1);
-                if (u.getUserId().equals(element.getUserId())) {
-                    Lines.lines();
-                    System.out.println("Buspass Info : " + element.getBusPass());
-                    System.out.println("ID : " + element.getUserId());
-                    System.out.println("UserName : " + element.getUserName());
-                    System.out.println("Phone Number :" + element.getPhoneNumber());
-                    System.out.println("Route Number :" + element.getRouteNum());
-                    Lines.lines();
-                }
-            }
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s",u.getUserId()+"\'s Profile")+ColourMe.ANSI_RESET);
+            Lines.lines();
+            System.out.println("Buspass Info   : " + String.format("%25s",u.getBusPass()));
+            System.out.println("Employee ID    : " + String.format("%25s",u.getUserId())+"\t\t\t"+"UserName       : " + String.format("%25s",u.getUserName()));
+            System.out.println("Phone Number   : " + String.format("%25s",u.getPhoneNumber())+"\t\t\t"+"Route Number   : " + String.format("%25s",u.getRouteNum()));
+            if(r.getBus()!=-1)
+            System.out.println("Route          : " + String.format("%25s",r.getSource()+"-"+r.getDestination())+"\t\t\t"+"Bus No         : "+String.format("%25s", r.getBus()));
+            else
+            System.out.println("Route          : " + String.format("%25s",r.getSource()+"-"+r.getDestination())+"\t\t\t"+"Bus No         : "+ColourMe.ANSI_BRIGHT_RED+String.format("%25s", "No bus assigned yet!")+ColourMe.ANSI_RESET);
+            System.out.println("Address        : " + String.format("%25s",u.getAddress()));
+            Lines.lines();
+            System.out.println();
         } else {
-            System.out.println("Specified User is not available in the list!!");
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"Specified User is not available in the list!!"+ColourMe.ANSI_RESET);
         }
     }
 

@@ -1,8 +1,10 @@
 package com.atlas.controller;
 
+import com.atlas.models.Bus;
 import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
+import com.atlas.utils.ColourMe;
 import com.atlas.utils.Lines;
 import com.atlas.utils.NotifyConstants;
 import com.atlas.utils.ScannerUtil;
@@ -46,23 +48,34 @@ public class VisitorHandler {
     }
 
     public void displayVisitor() {
+        RouteHandler routeHandler = RouteHandler.getInstance();
+        BusHandler busHandler = BusHandler.getInstance();
         if (!visitor.isEmpty()) {
             System.out.println();
             Lines.lines();
-            System.out.println("Visitor Applied for Pass");
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Visitor Applied for Pass")+ColourMe.ANSI_RESET);
+            Lines.lines();
             Set<String> u = visitor.keySet();
             for (String u1 : u) {
                 Visitor element = visitor.get(u1);
-                Lines.lines();
                 System.out.println("User ID : " + element.getUserId());
                 System.out.println("User Name : " + element.getUserName());
                 System.out.println("Phone Number : " + element.getPhoneNumber());
                 System.out.println("Address:" + element.getAddress());
                 System.out.println("Route ID :" + element.getRouteID());
                 Lines.lines();
+                Bus b = busHandler.bus.get(routeHandler.route.get(element.getRouteID()).getBus());
+                if(b.getSeatFilled() < b.getTotalCapacity()){
+                    System.out.println(ColourMe.ANSI_GREEN+"*** ALERT : SEATS AVAILABLE IN ROUTE ***"+ColourMe.ANSI_RESET);
+                }
+                else{
+                    System.out.println(ColourMe.ANSI_BRIGHT_RED+"*** ALERT : SEATS AVAILABLE IN ROUTE ***"+ColourMe.ANSI_RESET);
+                }
+                Lines.lines();
             }
+            Lines.lines();
         } else {
-            System.out.println("No Bus Pass Application Found!");
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"No Bus Pass Application Found!"+ColourMe.ANSI_RESET);
         }
     }
 

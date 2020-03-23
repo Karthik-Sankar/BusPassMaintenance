@@ -47,25 +47,25 @@ public class BusPassHandler {
         return null;
     }
 
-    public void listBusPasses() {
-        if (!busPass.isEmpty()) {
-            Set<Integer> busspassm = busPass.keySet();
-            for (Integer bpobj : busspassm) {
-                BusPass bp = busPass.get(bpobj);
-                System.out.println();
-                Lines.lines();
-                System.out.println("Bus Pass Assigned Details");
-                Lines.lines();
-                System.out.println("Buspass Info : " + bp.getBusPassId());
-                System.out.println("User : " + bp.getUserId());
-                System.out.println("Bus ID : " + bp.getBus());
-                System.out.println("Route ID :" + bp.getRouteId());
-                Lines.lines();
-            }
-        } else {
-            System.out.println("No bus passes registered!");
-        }
-    }
+//    public void listBusPasses() {
+//        if (!busPass.isEmpty()) {
+//            Set<Integer> busspassm = busPass.keySet();
+//            for (Integer bpobj : busspassm) {
+//                BusPass bp = busPass.get(bpobj);
+//                System.out.println();
+//                Lines.lines();
+//                System.out.println("Bus Pass Assigned Details");
+//                Lines.lines();
+//                System.out.println("Buspass Info : " + bp.getBusPassId());
+//                System.out.println("User : " + bp.getUserId());
+//                System.out.println("Bus ID : " + bp.getBus());
+//                System.out.println("Route ID :" + bp.getRouteId());
+//                Lines.lines();
+//            }
+//        } else {
+//            System.out.println("No bus passes registered!");
+//        }
+//    }
 
     public Object getObject() {
         return busPass;

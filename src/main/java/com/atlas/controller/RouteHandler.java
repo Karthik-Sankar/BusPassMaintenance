@@ -3,10 +3,12 @@ package com.atlas.controller;
 import com.atlas.models.Bus;
 import com.atlas.models.Route;
 import com.atlas.persistance.ObjectRetreiver;
+import com.atlas.utils.ColourMe;
 import com.atlas.utils.IDGenerator;
 import com.atlas.utils.Lines;
 import com.atlas.utils.ScannerUtil;
 
+import javax.sound.sampled.Line;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
@@ -68,9 +70,9 @@ public class RouteHandler {
                     stops.add(scannerUtil.readLine());
                     nos--;
                 }
-                System.out.println("Enter start time : ");
+                System.out.println("Enter Shift [SHIFT1, SHIFT2, SHIFT3] : ");
                 String time = scannerUtil.readLine();
-                System.out.println("Enter ETA : ");
+                System.out.println("Enter Cab Arrival time at Source : ");
                 String eta = scannerUtil.readLine();
                 int routeID = IDGenerator.getRouteID();
                 addRoutes(routeID, source, destination, stops, time, eta, bus.getBusId());
@@ -114,27 +116,34 @@ public class RouteHandler {
 
     public void displayRoute() {
         if (!route.isEmpty()) {
+            BusHandler busHandler = BusHandler.getInstance();
             System.out.println();
             Lines.lines();
-            System.out.println("Route Chart");
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Route Chart")+ColourMe.ANSI_RESET);
+            Lines.lines();
+            System.out.println(ColourMe.ANSI_BRIGHT_PURPLE+"Shift 1 - 06:00 AM - 03:00 PM \t Shift 2 - 08:00 AM - 05:00 PM \t Shift 3 - 12:00 PM - 09:00 AM"+ColourMe.ANSI_RESET);
             Lines.lines();
             Set<Integer> keys = route.keySet();
             for (Integer key : keys) {
                 Route r = route.get(key);
-                System.out.println("Route No : " + r.getRouteId());
-                System.out.println("Source : " + r.getSource());
-                System.out.println("Destination : " + r.getDestination());
-                System.out.println("Stops : " + r.getStops());
-                System.out.println("Time : " + r.getTime());
-                System.out.println("ETA : " + r.getEta());
+                Bus b = busHandler.getBus(r.getBus());
+                System.out.println(ColourMe.ANSI_GREEN+String.format("%55s","Route No : " + r.getRouteId())+ColourMe.ANSI_RESET);
+                System.out.println();
+                System.out.println("Source   : "+String.format("%10s",r.getSource())+"\t\t\t"+"Destination  : " + String.format("%20s", r.getDestination()));
                 if(r.getBus()!=-1)
-                    System.out.println("Bus : " + r.getBus());
+                System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+String.format("%20s",b.getBusId()));
                 else
-                    System.out.println("Route has no bus currently");
+                System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+ColourMe.ANSI_BRIGHT_RED+String.format("%20s","No Buses Available!")+ColourMe.ANSI_RESET);
+                System.out.println("\n Additional Info :\n-------------------");
+                System.out.println("Stops    : " +r.getStops());
+                System.out.println("ETA      : " +r.getEta());
                 Lines.lines();
             }
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"***Cab takes 15-20 mins to travel from one stop to another"+ColourMe.ANSI_RESET);
+            Lines.lines();
+            System.out.println();
         } else {
-            System.out.println("No Route Found to Display");
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"No Route Found to Display"+ColourMe.ANSI_RESET);
         }
     }
 
@@ -197,55 +206,59 @@ public class RouteHandler {
 
     public void displayRoute(int routeId) {
         if (route.containsKey(routeId)) {
+            BusHandler busHandler = BusHandler.getInstance();
             System.out.println();
             Lines.lines();
-            System.out.println("Route Details");
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Route Chart")+ColourMe.ANSI_RESET);
             Lines.lines();
-            Set<Integer> keys = route.keySet();
-            for (Integer key : keys) {
-                Route r = route.get(key);
-                if (routeId == r.getRouteId()) {
-                    System.out.println("Route No : " + r.getRouteId());
-                    System.out.println("Source : " + r.getSource());
-                    System.out.println("Destination : " + r.getDestination());
-                    System.out.println("Stops : " + r.getStops());
-                    System.out.println("Time : " + r.getTime());
-                    System.out.println("ETA : " + r.getEta());
-                    if(r.getBus()!=-1)
-                        System.out.println("Bus : " + r.getBus());
-                    else
-                        System.out.println("Route has no bus currently");
-                    Lines.lines();
-                }
-            }
+            System.out.println(ColourMe.ANSI_BRIGHT_PURPLE+"Shift 1 - 06:00 AM - 03:00 PM \t Shift 2 - 08:00 AM - 05:00 PM \t Shift 3 - 12:00 PM - 09:00 AM"+ColourMe.ANSI_RESET);
+            Lines.lines();
+            Route r = route.get(routeId);
+            Bus b = busHandler.getBus(r.getBus());
+            System.out.println(ColourMe.ANSI_GREEN+String.format("%55s","Route No : " + r.getRouteId())+ColourMe.ANSI_RESET);
+            System.out.println();
+            System.out.println("Source   : "+String.format("%10s",r.getSource())+"\t\t\t"+"Destination  : " + String.format("%20s", r.getDestination()));
+            if(r.getBus()!=-1)
+                System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+String.format("%20s",b.getBusId()));
+            else
+                System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+ColourMe.ANSI_BRIGHT_RED+String.format("%20s","No Buses Available!")+ColourMe.ANSI_RESET);
+            System.out.println("\n Additional Info :\n-------------------");
+            System.out.println("Stops    : " +r.getStops());
+            System.out.println("ETA      : " +r.getEta());
+            Lines.lines();
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"***Cab takes 15-20 mins to travel from one stop to another"+ColourMe.ANSI_RESET);
+            Lines.lines();
+            System.out.println();
         } else {
-            System.out.println("No such route available!!!");
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"No Such Route Available!"+ColourMe.ANSI_RESET);
         }
     }
 
     public void routeCapacityStatus() {
         if (!route.isEmpty()) {
+            BusHandler busHandler = BusHandler.getInstance();
             System.out.println();
             Lines.lines();
-            System.out.println("Route Seat Availability");
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Route Availability Chart")+ColourMe.ANSI_RESET);
             Lines.lines();
             Set<Integer> keys = route.keySet();
             for (Integer key : keys) {
                 Route r = route.get(key);
-                System.out.println("Route No : " + r.getRouteId());
-                System.out.println("Source : " + r.getSource());
-                System.out.println("Destination : " + r.getDestination());
-                BusHandler busHandler = BusHandler.getInstance();
                 Bus b = busHandler.getBus(r.getBus());
+                System.out.println(ColourMe.ANSI_GREEN+String.format("%55s","Route No : " + r.getRouteId())+ColourMe.ANSI_RESET);
+                System.out.println();
+                System.out.println("Source   : "+String.format("%10s",r.getSource())+"\t\t\t"+"Destination  : " + String.format("%20s", r.getDestination()));
                 double per;
                 if (b != null)
                     per = (b.getSeatFilled() / b.getTotalCapacity()) * 100;
                 else per = 0.0;
-                System.out.println("Percentage Occupied : " + per + "%");
+                System.out.println(ColourMe.ANSI_BRIGHT_RED+"Percentage Occupied : " + per + "%"+ColourMe.ANSI_RESET);
                 Lines.lines();
             }
+            Lines.lines();
+            System.out.println();
         } else {
-            System.out.println("No Routes Found");
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"No Route Found to Display"+ColourMe.ANSI_RESET);
         }
     }
 

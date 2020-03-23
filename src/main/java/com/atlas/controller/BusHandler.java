@@ -1,7 +1,9 @@
 package com.atlas.controller;
 
 import com.atlas.models.Bus;
+import com.atlas.models.Route;
 import com.atlas.persistance.ObjectRetreiver;
+import com.atlas.utils.ColourMe;
 import com.atlas.utils.IDGenerator;
 import com.atlas.utils.Lines;
 import com.atlas.utils.ScannerUtil;
@@ -51,32 +53,38 @@ public class BusHandler {
 
     public Bus getBus(int busID) {
         if (bus.containsKey(busID)) {
-            //System.out.println(bus.get(busID).hashCode());
             return bus.get(busID);
         } else {
-            System.out.println("\nInvalid bus ID");
+            return null;
         }
-        return null;
     }
 
     public void listBuses() {
         if (!bus.isEmpty()) {
+            System.out.println();
+            Lines.lines();
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Bus Details Summary")+ColourMe.ANSI_RESET);
+            Lines.lines();
+            RouteHandler routeHandler = RouteHandler.getInstance();
             Set<Integer> keys = bus.keySet();
             for (Integer key : keys) {
                 Bus bp = bus.get(key);
-                System.out.println();
-                Lines.lines();
-                System.out.println("Bus Details Summary");
-                Lines.lines();
-                System.out.println("Bus ID : " + bp.getBusId());
-                System.out.println("Bus Registration Number : " + bp.getRegNo());
-                System.out.println("Bus Type : " + bp.getBusType());
-                System.out.println("Total Capacity : " + bp.getTotalCapacity());
-                System.out.println("Seats Filled :" + bp.getSeatFilled());
+                System.out.println("Bus ID         : " + String.format("%10d",bp.getBusId())+"\t\t\tBus Registration Number : " + String.format("%25s",bp.getRegNo()));
+                System.out.println("Bus Type       : " + String.format("%10s",bp.getBusType())+"\t\t\tBus co-ordinator        : " + String.format("%25s",bp.getBusCoOrdinatorID()));
+                System.out.println("Total Capacity : " + String.format("%10d",bp.getTotalCapacity())+"\t\t\tSeats Filled            : " + String.format("%25d",bp.getSeatFilled()));
+                Route r =  routeHandler.route.get(bp.getRouteID());
+                if(bp.getRouteID()!=-1)
+                    System.out.println("Route ID       : "+ String.format("%10d",bp.getRouteID())+"\t\t\tRoute Details           : "+String.format("%25s",routeHandler.route.get(bp.getRouteID()).getSource()+"-"+routeHandler.route.get(bp.getRouteID()).getDestination()));
+                else {
+                    System.out.println(ColourMe.ANSI_RED+"Bus is not tagged to a route yet!"+ColourMe.ANSI_RESET);
+                }
                 Lines.lines();
             }
+            Lines.lines();
+            System.out.println();
         } else {
-            System.out.println("No buses added yet!");
+            System.out.println(ColourMe.ANSI_RED+"No buses added yet!"+ColourMe.ANSI_RESET);
+            System.out.println();
         }
     }
 

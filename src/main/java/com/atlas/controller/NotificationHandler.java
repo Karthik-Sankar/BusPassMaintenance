@@ -2,6 +2,7 @@ package com.atlas.controller;
 
 import com.atlas.models.*;
 import com.atlas.persistance.ObjectRetreiver;
+import com.atlas.utils.ColourMe;
 import com.atlas.utils.Lines;
 
 import java.util.HashMap;
@@ -76,7 +77,7 @@ public class NotificationHandler {
         if (!note.isEmpty()) {
             System.out.println();
             Lines.lines();
-            System.out.println("Notifications for " + to);
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Notifications for " + to)+ColourMe.ANSI_RESET);
             Lines.lines();
             Set<Integer> keys = note.keySet();
             for (Integer key : keys) {
@@ -93,8 +94,9 @@ public class NotificationHandler {
                 }
             }
             Lines.lines();
+            System.out.println();
         } else {
-            System.out.println("There is No Notification to display");
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"There is No Notification to display"+ColourMe.ANSI_RESET);
         }
     }
 
