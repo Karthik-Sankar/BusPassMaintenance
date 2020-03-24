@@ -126,6 +126,7 @@ public class UserHandler {
             if (user.get(uname).getPassword().equals(password)) {
                 char session = 'y';
                 while (session == 'y') {
+                    System.out.println(ColourMe.ANSI_BLUE);
                     System.out.println("User options");
                     System.out.println("1. View all the routes");
                     System.out.println("2. Cancel a bus pass");
@@ -136,6 +137,7 @@ public class UserHandler {
                     System.out.println("7. Submit feedback");
                     System.out.println("8. Notifications");
                     System.out.println("Press 0 key to go to main menu!");
+                    System.out.println(ColourMe.ANSI_RESET);
                     ScannerUtil input = ScannerUtil.getInstance();
                     int choice = input.readInt();
                     switch (choice) {
@@ -144,29 +146,31 @@ public class UserHandler {
                             break;
                         case 2:
                             ns.createCancelPassNotification(uname, user.get(uname));
-                            System.out.println("Bus pass cancelled!!");
+                            System.out.println(ColourMe.ANSI_GREEN+"Bus pass cancelled!!"+ColourMe.ANSI_RESET);
                             objectSaver.saveAll();
                             break;
                         case 3:
                             ns.createSuspendPassNotification(uname, user.get(uname));
-                            System.out.println("Bus pass suspended!!");
+                            System.out.println(ColourMe.ANSI_GREEN+"Bus pass suspended!!"+ColourMe.ANSI_RESET);
                             objectSaver.saveAll();
                             break;
                         case 4:
                             System.out.println("Enter new route as (Source-Destination) :");
                             ns.createNotification(uname,"Admin", "Create a new route between "+scannerUtil.readLine());
-                            System.out.println("New route request placed!");
+                            System.out.println(ColourMe.ANSI_GREEN+"New route request placed!"+ColourMe.ANSI_RESET);
                             objectSaver.saveAll();
                             break;
                         case 5:
                             char session2 = 'y';
                             while (session2 == 'y') {
+                                System.out.println(ColourMe.ANSI_BLUE);
                                 System.out.println("Update User Details");
                                 System.out.println("1. Update User Name");
                                 System.out.println("2. Update Phone");
                                 System.out.println("3. Update Address");
                                 System.out.println("4. Change Password");
                                 System.out.println("Press 0 key to go to previous menu!");
+                                System.out.println(ColourMe.ANSI_RESET);
                                 int choice2 = scannerUtil.readInt();
                                 User user = getUser(uname);
                                 switch (choice2) {
@@ -195,23 +199,22 @@ public class UserHandler {
                                             String newCPassword = scannerUtil.readLine();
                                             if (newPassword.equals(newCPassword)) {
                                                 user.setPassword(newPassword);
-                                                System.out.println("Password changed successfully!");
+                                                System.out.println(ColourMe.ANSI_GREEN+"Password changed successfully!"+ColourMe.ANSI_RESET);
                                             } else {
-                                                System.out.println("Password mismatch try again!");
+                                                System.out.println(ColourMe.ANSI_RED+"Password mismatch try again!"+ColourMe.ANSI_RESET);
                                             }
                                         } else {
                                             session = 'n';
                                             session2 = 'n';
-                                            System.out.println("Wrong Password!\n Logging you out! \n Please login with correct password again!");
+                                            System.out.println(ColourMe.ANSI_RED+"Wrong Password!\n Logging you out! \n Please login with correct password again!"+ColourMe.ANSI_RESET);
                                         }
                                         objectSaver.saveAll();
                                         break;
                                     case 0:
                                         session2 = 'n';
-                                        System.out.println("Press 0 key to go to previous menu!");
                                         break;
                                     default:
-                                        System.out.println("Invalid option!");
+                                        System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
                                 }
                             }
                             break;
@@ -221,7 +224,7 @@ public class UserHandler {
                         case 7:
                             System.out.println("Enter your single line feedback : ");
                             ns.createFeedback(uname, scannerUtil.readLine());
-                            System.out.println("Feedback sent to Admin!");
+                            System.out.println(ColourMe.ANSI_GREEN+"Feedback sent to Admin!"+ColourMe.ANSI_RESET);
                             objectSaver.saveAll();
                             break;
                         case 8:
@@ -233,14 +236,14 @@ public class UserHandler {
                             session = 'n';
                             break;
                         default:
-                            System.out.println("Invalid option!");
+                            System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
                     }
                 }
             } else {
-                System.out.println("Incorrect password!");
+                System.out.println(ColourMe.ANSI_RED+"Incorrect password!"+ColourMe.ANSI_RESET);
             }
         } else {
-            System.out.println("Your Application Not Approved Yet!");
+            System.out.println(ColourMe.ANSI_RED+"Your Application Not Approved Yet!"+ColourMe.ANSI_RESET);
         }
     }
 }

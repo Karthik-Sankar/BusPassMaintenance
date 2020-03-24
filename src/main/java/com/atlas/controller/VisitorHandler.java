@@ -64,12 +64,16 @@ public class VisitorHandler {
                 System.out.println("Address:" + element.getAddress());
                 System.out.println("Route ID :" + element.getRouteID());
                 Lines.lines();
-                Bus b = busHandler.bus.get(routeHandler.route.get(element.getRouteID()).getBus());
+                int busid = routeHandler.route.get(element.getRouteID()).getBus();
+                Bus b=null;
+                if(busid!=-1)
+                    b = busHandler.bus.get(busid);
+                if(b!=null)
                 if(b.getSeatFilled() < b.getTotalCapacity()){
                     System.out.println(ColourMe.ANSI_GREEN+"*** ALERT : SEATS AVAILABLE IN ROUTE ***"+ColourMe.ANSI_RESET);
                 }
                 else{
-                    System.out.println(ColourMe.ANSI_BRIGHT_RED+"*** ALERT : SEATS AVAILABLE IN ROUTE ***"+ColourMe.ANSI_RESET);
+                    System.out.println(ColourMe.ANSI_BRIGHT_RED+"*** ALERT : NO SEATS AVAILABLE IN ROUTE ***"+ColourMe.ANSI_RESET);
                 }
                 Lines.lines();
             }
@@ -94,6 +98,7 @@ public class VisitorHandler {
         char session;
         session = 'y';
         while (session == 'y') {
+            System.out.println(ColourMe.ANSI_BLUE);
             System.out.println("Visitor Options");
             System.out.println("1. View Routes");
             System.out.println("2. View Seat Availability %");
@@ -101,6 +106,7 @@ public class VisitorHandler {
             System.out.println("4. Apply Bus Pass");
             System.out.println("5. Check Application Status");
             System.out.println("Press 0 key to go to main menu!");
+            System.out.println(ColourMe.ANSI_RESET);
             ScannerUtil input = ScannerUtil.getInstance();
             int choice = input.readInt();
             switch (choice) {
@@ -122,17 +128,17 @@ public class VisitorHandler {
                         int routeID = scannerUtil.readInt();
                         String c = "y";
                         while (!routeHandler.route.containsKey(routeID)) {
-                            System.out.println("You are entering invalid Route ID / Route has no seats available!! \nPress 'y' to continue and 'n' to cancel applying");
+                            System.out.println(ColourMe.ANSI_RED+"You are entering invalid Route ID / Route has no seats available!! \nPress 'y' to continue and 'n' to cancel applying"+ColourMe.ANSI_RESET);
                             c = scannerUtil.readLine();
                             if (c.equals("y")) {
                                 routeHandler.availableValidRoutes();
                                 System.out.println("ENTER ROUTE ID AGAIN: ");
                                 routeID = scannerUtil.readInt();
                             } else if (c.equals("n")) {
-                                System.out.println("Bus pass application canceled!");
+                                System.out.println(ColourMe.ANSI_RED+"Bus pass application canceled!"+ColourMe.ANSI_RESET);
                                 break;
                             } else {
-                                System.out.println("Press 'y' or 'n', invalid key pressed!");
+                                System.out.println(ColourMe.ANSI_RED+"Press 'y' or 'n', invalid key pressed!"+ColourMe.ANSI_RESET);
                             }
                         }
                         System.out.println("ENTER YOUR NAME : ");
@@ -149,7 +155,7 @@ public class VisitorHandler {
                         }
                     }
                     else{
-                        System.out.println("An existing user cant apply! Please cancel you exixting bus pass and try again!");
+                        System.out.println(ColourMe.ANSI_RED+"An existing user cant apply! Please cancel you exixting bus pass and try again!"+ColourMe.ANSI_RESET);
                     }
                     objectSaver.saveAll();
                     break;
@@ -158,19 +164,19 @@ public class VisitorHandler {
                         System.out.println("ENTER PASSWORD TO CHECK STATUS : ");
                         String password2 = scannerUtil.readLine();
                         if (userHandler.user.get(uid).getPassword().equals(password2)) {
-                            System.out.println("Application of " + uid + " has been approved! Please login as user!");
+                            System.out.println(ColourMe.ANSI_GREEN+"Application of " + uid + " has been approved! Please login as user!"+ColourMe.ANSI_RESET);
                         } else {
-                            System.out.println("Incorrect password!");
+                            System.out.println(ColourMe.ANSI_RED+"Incorrect password!"+ColourMe.ANSI_RESET);
                         }
                     } else {
-                        System.out.println("Bus pass application rejected / Application not submitted yet!");
+                        System.out.println(ColourMe.ANSI_RED+"Bus pass application rejected / Application not submitted yet!"+ColourMe.ANSI_RESET);
                     }
                     break;
                 case 0:
                     session = 'n';
                     break;
                 default:
-                    System.out.println("Invalid option!");
+                    System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
             }
         }
     }

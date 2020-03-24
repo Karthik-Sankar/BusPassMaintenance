@@ -44,7 +44,7 @@ public class BusPassHandler {
         if (busPass.containsKey(busPassId)) {
             return busPass.get(busPassId);
         } else {
-            System.out.println("Invalid buspass id!");
+            System.out.println(ColourMe.ANSI_RED+"Invalid buspass id!"+ColourMe.ANSI_RESET);
         }
         return null;
     }

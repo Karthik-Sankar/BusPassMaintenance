@@ -42,7 +42,7 @@ public class RouteHandler {
             route.put(routeId, r);
             return r.getRouteId();
         } else {
-            System.out.println("Already have a route in same location with id : " + route.get(getRouteID_S(source)).getRouteId());
+            System.out.println(ColourMe.ANSI_RED+"Already have a route in same location with id : " + route.get(getRouteID_S(source)).getRouteId()+""+ColourMe.ANSI_RESET);
             displayRoute(route.get(getRouteID_S(source)).getRouteId());
             return route.get(routeId).getRouteId();
         }
@@ -77,11 +77,11 @@ public class RouteHandler {
                 busHandler.bus.get(bus.getBusId()).setRouteID(routeID);
             }
             else{
-                System.out.println("Already assigned to a different route : "+ bus.getRouteID());
+                System.out.println(ColourMe.ANSI_RED+"Already assigned to a different route : "+ bus.getRouteID()+ColourMe.ANSI_RESET);
             }
             //System.out.println("RH :"+routeHandler.getBus(routeID).hashCode());
         } else {
-            System.out.println("Are you choosing the right bus! Please first create a bus or give correct ID");
+            System.out.println(ColourMe.ANSI_RED+"Are you choosing the right bus! Please first create a bus or give correct ID"+ColourMe.ANSI_RESET);
         }
     }
 
@@ -89,7 +89,7 @@ public class RouteHandler {
         if (route.containsKey(routeID)) {
             return route.get(routeID).getBus();
         } else {
-            System.out.println("There is no routeID Found");
+            System.out.println(ColourMe.ANSI_RED+"There is no such routeID Found"+ColourMe.ANSI_RESET);
         }
         return -1;
     }
@@ -165,28 +165,28 @@ public class RouteHandler {
         if (routeHandler.getBus(routeId) != -1) {
             //checking is new bus can accomodate previous users.
             if(busHandler.bus.get(newbusID).getTotalCapacity() > busHandler.bus.get(routeHandler.route.get(routeId).getBus()).getSeatFilled()){
-                System.out.println("Route already has bus assigned (BusID : "+routeHandler.getBus(routeId)+")");
+                System.out.println(ColourMe.ANSI_RED+"Route already has bus assigned (BusID : "+routeHandler.getBus(routeId)+")"+ColourMe.ANSI_RESET);
                 int oldBus = routeHandler.route.get(routeId).getBus();
                 int oldRouteID = busHandler.bus.get(newbusID).getRouteID();
                 routeHandler.route.get(routeId).setBus(newbusID);
                 busHandler.bus.get(newbusID).setRouteID(routeId);
                 busHandler.bus.get(newbusID).setSeatFilled(busHandler.bus.get(routeHandler.route.get(routeId).getBus()).getSeatFilled());
                 routeHandler.route.get(oldRouteID).setBus(-1);
-                System.out.println("Route "+ routeHandler.route.get(routeId) + " has tagged with Bus "+ busHandler.bus.get(newbusID));
-                System.out.println("Alert route "+oldRouteID+" which previously used this bus has no bus tagged now!");
+                System.out.println(ColourMe.ANSI_GREEN+"Route "+ routeHandler.route.get(routeId) + " has tagged with Bus "+ busHandler.bus.get(newbusID)+ColourMe.ANSI_RESET);
+                System.out.println(ColourMe.ANSI_RED+"Alert route "+oldRouteID+" which previously used this bus has no bus tagged now!"+ColourMe.ANSI_RESET);
             }
             else{
-                System.out.println("Seat capacity not met! \nChoose a different bus!");
+                System.out.println(ColourMe.ANSI_RED+"Seat capacity not met! \nChoose a different bus!"+ColourMe.ANSI_RESET);
             }
         }
         else{
-            System.out.println("Route doesn't have any bus linked!");
+            System.out.println(ColourMe.ANSI_YELLOW+"Route doesn't have any bus linked!"+ColourMe.ANSI_RESET);
             routeHandler.route.get(routeId).setBus(newbusID);
             if(busHandler.bus.get(newbusID).getRouteID()!=-1)
             routeHandler.route.get(busHandler.bus.get(newbusID).getRouteID()).setBus(-1);
             busHandler.bus.get(newbusID).setRouteID(routeId);
             busHandler.bus.get(newbusID).setSeatFilled(0);
-            System.out.println("Route "+ routeHandler.route.get(routeId) + " has tagged with Bus "+ busHandler.bus.get(newbusID));
+            System.out.println(ColourMe.ANSI_GREEN+"Route "+ routeHandler.route.get(routeId) + " has tagged with Bus "+ busHandler.bus.get(newbusID)+ColourMe.ANSI_RESET);
         }
     }
 
@@ -196,7 +196,7 @@ public class RouteHandler {
             busHandler.bus.get(route.get(routeId).getBus()).setRouteID(-1);
             route.remove(routeId);
         } else {
-            System.out.println("No such route available!!!");
+            System.out.println(ColourMe.ANSI_RED+"No such route available!!!"+ColourMe.ANSI_RESET);
         }
     }
 
@@ -207,13 +207,15 @@ public class RouteHandler {
                 Route r = route.get(key);
                 BusHandler busHandler = BusHandler.getInstance();
                 if(busHandler.isSeatsAvailable(r.getBus())) {
+                    System.out.println(ColourMe.ANSI_GREEN);
                     System.out.println("[Route No : " + r.getRouteId());
                     System.out.print("Source : " + r.getSource());
                     System.out.println("Destination : " + r.getDestination() + "]\t");
+                    System.out.println(ColourMe.ANSI_RESET);
                 }
             }
         } else {
-            System.out.println("No Routes Available currently!");
+            System.out.println(ColourMe.ANSI_RED+"No Routes Available currently!"+ColourMe.ANSI_RESET);
         }
     }
 
@@ -287,14 +289,14 @@ public class RouteHandler {
         System.out.println("Enter the route number to perform change :");
         int routeId = scannerUtil.readInt();
         if(!routeHandler.route.containsKey(routeId)){
-            System.out.println("No such routes!");
+            System.out.println(ColourMe.ANSI_RED+"No such routes!"+ColourMe.ANSI_RESET);
             return;
         }
         System.out.println("Enter the bus number to change :");
         int busId = scannerUtil.readInt();
         BusHandler busHandler = BusHandler.getInstance();
         if(!busHandler.bus.containsKey(busId)){
-            System.out.println("No such bus!");
+            System.out.println(ColourMe.ANSI_RED+"No such bus!"+ColourMe.ANSI_RESET);
             return;
         }
         modifyBusRoute(routeId, busId);

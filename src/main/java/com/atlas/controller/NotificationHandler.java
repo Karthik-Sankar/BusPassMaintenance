@@ -103,16 +103,15 @@ public class NotificationHandler {
     public void clearNotification(int id) {
         if (note.containsKey(id)) {
             note.remove(id);
-            System.out.println("Notification Removed for the ID - " + id);
-            System.out.println("Notification Deleted!");
+            System.out.println(ColourMe.ANSI_GREEN+"Notification Removed for the ID - " + id + "" +ColourMe.ANSI_RESET);
         } else {
-            System.out.println("Incorrect notification ID");
+            System.out.println(ColourMe.ANSI_RED+"Incorrect notification ID"+ColourMe.ANSI_RESET);
         }
     }
 
     public void clearAllNotification() {
         note.clear();
-        System.out.println("Cleared all the Notifications");
+        System.out.println(ColourMe.ANSI_GREEN+"Cleared all the Notifications"+ColourMe.ANSI_RESET);
     }
 
     public Object getObject() {

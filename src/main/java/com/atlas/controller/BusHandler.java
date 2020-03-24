@@ -39,7 +39,7 @@ public class BusHandler {
     public void addBus(int busId, String regNo, String busType, int totalCapacity, String busCordinatorID) {
         Bus b = new Bus(busId, regNo, busType, totalCapacity, busCordinatorID);
         bus.put(b.getBusId(), b);
-        System.out.println("Bus Added Sucessfully!");
+        System.out.println(ColourMe.ANSI_GREEN+"Bus Added Sucessfully!"+ColourMe.ANSI_RESET);
     }
 
     public void removeBus(int busID) {
@@ -47,9 +47,9 @@ public class BusHandler {
             RouteHandler routeHandler = RouteHandler.getInstance();
             routeHandler.route.get(bus.get(busID).getRouteID()).setBus(-1);
             bus.remove(busID);
-            System.out.println("Bus removed successfully!");
+            System.out.println(ColourMe.ANSI_GREEN+"Bus removed successfully!"+ColourMe.ANSI_RESET);
         } else {
-            System.out.println("Invalid bus ID");
+            System.out.println(ColourMe.ANSI_RED+"Invalid bus ID"+ColourMe.ANSI_RESET);
         }
     }
 
@@ -91,7 +91,10 @@ public class BusHandler {
     }
 
     public boolean isSeatsAvailable(int busID){
-        return bus.get(busID).getTotalCapacity() > bus.get(busID).getSeatFilled();
+        if(busID!=-1)
+            return bus.get(busID).getTotalCapacity() > bus.get(busID).getSeatFilled();
+        else
+            return false;
     }
 
     public boolean getUnAssignedBuses(){

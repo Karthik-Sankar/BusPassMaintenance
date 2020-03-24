@@ -3,6 +3,7 @@ package com.atlas.controller;
 import com.atlas.models.*;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.BusPassConstants;
+import com.atlas.utils.ColourMe;
 import com.atlas.utils.IDGenerator;
 
 
@@ -32,7 +33,7 @@ class BusPassApplyNotification implements NotificationBuilder {
     }
 
     public void buildMessage() {
-        notifications.setMessage("New user "+user.getUserId()+" has applied for bus pass!");
+        notifications.setMessage(ColourMe.ANSI_GREEN+"New user "+user.getUserId()+" has applied for bus pass!"+ColourMe.ANSI_RESET);
     }
 
     public void buildSupportingObject() {
@@ -73,7 +74,7 @@ class BusPassCancelNotification implements NotificationBuilder {
     }
 
     public void buildMessage() {
-        notifications.setMessage("User "+ user.getUserName()+" has cancelled their bus pass! \n User Removed from subscriber list!");
+        notifications.setMessage(ColourMe.ANSI_RED+"User "+ user.getUserName()+" has cancelled their bus pass! \n User Removed from subscriber list!"+ColourMe.ANSI_RESET);
     }
 
     public void buildSupportingObject() {
@@ -82,7 +83,9 @@ class BusPassCancelNotification implements NotificationBuilder {
         busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.CANCEL);
         BusHandler busHandler = BusHandler.getInstance();
         RouteHandler routeHandler = RouteHandler.getInstance();
-        busHandler.bus.get(routeHandler.getBus(user.getRouteNum())).deccrementSeatFilled();
+        Bus b = busHandler.getBus(routeHandler.getBus(user.getRouteNum()));
+        if(b!=null)
+            b.deccrementSeatFilled();
         UserHandler userHandler = UserHandler.getInstance();
         userHandler.user.remove(user.getUserId());
     }
@@ -117,7 +120,7 @@ class BusPassSuspendNotification implements NotificationBuilder {
     }
 
     public void buildMessage() {
-        notifications.setMessage("User "+ user.getUserName()+" has suspended their bus pass!");
+        notifications.setMessage(ColourMe.ANSI_YELLOW+"User "+ user.getUserName()+" has suspended their bus pass!"+ColourMe.ANSI_RESET);
     }
 
     public void buildSupportingObject() {
@@ -126,7 +129,9 @@ class BusPassSuspendNotification implements NotificationBuilder {
         busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.CANCEL);
         BusHandler busHandler = BusHandler.getInstance();
         RouteHandler routeHandler = RouteHandler.getInstance();
-        busHandler.bus.get(routeHandler.getBus(user.getRouteNum())).deccrementSeatFilled();
+        Bus b = busHandler.getBus(routeHandler.getBus(user.getRouteNum()));
+        if(b!=null)
+            b.deccrementSeatFilled();
     }
 
     public Notifications getNotification(){
