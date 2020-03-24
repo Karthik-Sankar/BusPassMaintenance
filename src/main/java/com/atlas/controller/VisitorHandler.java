@@ -88,6 +88,9 @@ public class VisitorHandler {
         System.out.println("Enter UserID : ");
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
         String uid = scannerUtil.readLine();
+        if(userHandler.user.containsKey(uid)){
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+" Your are already an office transport user! Please login as a user to view more options!"+ColourMe.ANSI_RESET);
+        }
         char session;
         session = 'y';
         while (session == 'y') {
