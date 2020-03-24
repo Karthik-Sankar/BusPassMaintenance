@@ -129,6 +129,7 @@ public class Admin {
                                     String c = scannerUtil.readLine();
                                     if(c.equals("y")){
                                         buses.addBuses();
+                                        routeHandler.routeAddition();
                                     }
                                     else if (c.equals("n")) {
                                         System.out.println("operations canceled!");
@@ -174,22 +175,25 @@ public class Admin {
                                 break;
                             case 2:
                                 buses.addBuses();
-                                System.out.println("Bus added successfully!");
                                 objectSaver.saveAll();
                                 break;
                             case 3:
                                 System.out.println("Enter bus number: ");
                                 buses.removeBus(scannerUtil.readInt());
-                                System.out.println("Bus removed successfully!");
                                 objectSaver.saveAll();
                                 break;
                             case 4:
                                 System.out.println("Enter bus number: ");
                                 int busNo = scannerUtil.readInt();
-                                System.out.println("Enter bus coordinator user ID: ");
-                                buses.getBus(busNo).setBusCoOrdinatorID(scannerUtil.readLine());
-                                System.out.println("Bus co-ordinator changed successfully!");
-                                objectSaver.saveAll();
+                                if(buses.bus.containsKey(busNo)) {
+                                    System.out.println("Enter bus coordinator user ID: ");
+                                    buses.getBus(busNo).setBusCoOrdinatorID(scannerUtil.readLine());
+                                    System.out.println("Bus co-ordinator changed successfully!");
+                                    objectSaver.saveAll();
+                                }
+                                else{
+                                    System.out.println("No such bus available!");
+                                }
                                 break;
                             default:
                                 session5 = 'n';
@@ -222,6 +226,8 @@ public class Admin {
             busPasses.addBusPass(busPassID, routeID, userID, routeHandler.getBus(routeID));
             userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
             visitorHandler.visitor.remove(userId);
+            NotificationHandler handler = NotificationHandler.getNotificationInstance();
+            handler.createNotification("Amazon Transport",userID, "Your bus pass has been approved!");
             System.out.println("User " + v.getUserName() + " Application Approved");
         }
         else{
@@ -234,6 +240,8 @@ public class Admin {
         String userId2 = scannerUtil.readLine();
         if(visitorHandler.visitor.containsKey(userId2)) {
             visitorHandler.visitor.remove(userId2);
+            NotificationHandler handler = NotificationHandler.getNotificationInstance();
+            handler.createNotification("Amazon Transport",userId2, "Your bus pass has been rejected!");
             System.out.println("User " + userId2 + " Application Rejected");
         }
         else{

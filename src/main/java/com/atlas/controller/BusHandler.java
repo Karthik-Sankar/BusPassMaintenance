@@ -39,6 +39,7 @@ public class BusHandler {
     public void addBus(int busId, String regNo, String busType, int totalCapacity, String busCordinatorID) {
         Bus b = new Bus(busId, regNo, busType, totalCapacity, busCordinatorID);
         bus.put(b.getBusId(), b);
+        System.out.println("Bus Added Sucessfully!");
     }
 
     public void removeBus(int busID) {
@@ -46,6 +47,7 @@ public class BusHandler {
             RouteHandler routeHandler = RouteHandler.getInstance();
             routeHandler.route.get(bus.get(busID).getRouteID()).setBus(-1);
             bus.remove(busID);
+            System.out.println("Bus removed successfully!");
         } else {
             System.out.println("Invalid bus ID");
         }
