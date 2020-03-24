@@ -92,6 +92,24 @@ public class BusHandler {
         return bus.get(busID).getTotalCapacity() > bus.get(busID).getSeatFilled();
     }
 
+    public boolean getUnAssignedBuses(){
+        boolean flag = false;
+        if(!bus.isEmpty()) {
+            Set<Integer> keys = bus.keySet();
+            for (Integer key : keys) {
+                Bus b = bus.get(key);
+                if (b.getRouteID() == -1) {
+                    System.out.print(ColourMe.ANSI_BRIGHT_GREEN+"Bus - " + b.getBusId()+ " is free!"+ColourMe.ANSI_RESET);
+                    flag = true;
+                }
+                System.out.println();
+            }
+            if(!flag)
+                System.out.println(ColourMe.ANSI_BRIGHT_RED+"No bus is free!"+ColourMe.ANSI_RESET);
+        }
+        return flag;
+    }
+
     public void addBuses() {
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
         System.out.println("Enter the bus type: ");

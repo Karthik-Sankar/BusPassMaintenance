@@ -7,8 +7,6 @@ import com.atlas.utils.ColourMe;
 import com.atlas.utils.IDGenerator;
 import com.atlas.utils.Lines;
 import com.atlas.utils.ScannerUtil;
-
-import javax.sound.sampled.Line;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
@@ -114,6 +112,19 @@ public class RouteHandler {
         return -1;
     }
 
+    public void getNoBusRoutes(){
+        if(!route.isEmpty()) {
+            Set<Integer> keys = route.keySet();
+            for (Integer key : keys) {
+                Route r = route.get(key);
+                if (r.getBus() == -1) {
+                    System.out.print(ColourMe.ANSI_BRIGHT_RED+"Alert : Route ID - " + r.getRouteId()+ " has bo buses tagged to it currently please allocate a bus soon!"+ColourMe.ANSI_RESET);
+                }
+                System.out.println();
+            }
+        }
+    }
+
     public void displayRoute() {
         if (!route.isEmpty()) {
             BusHandler busHandler = BusHandler.getInstance();
@@ -130,13 +141,13 @@ public class RouteHandler {
                 System.out.println(ColourMe.ANSI_GREEN+String.format("%55s","Route No : " + r.getRouteId())+ColourMe.ANSI_RESET);
                 System.out.println();
                 System.out.println("Source   : "+String.format("%10s",r.getSource())+"\t\t\t"+"Destination  : " + String.format("%20s", r.getDestination()));
-                if(r.getBus()!=-1)
-                System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+String.format("%20s",b.getBusId()));
+                if(r.getBus()!=-1 && b != null)
+                System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+String.format("%20s",r.getBus()));
                 else
                 System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+ColourMe.ANSI_BRIGHT_RED+String.format("%20s","No Buses Available!")+ColourMe.ANSI_RESET);
-                System.out.println("\n Additional Info :\n-------------------");
-                System.out.println("Stops    : " +r.getStops());
-                System.out.println("ETA      : " +r.getEta());
+                System.out.println("\n Additional Info :\n---------------------------");
+                System.out.println("Stops              : " +r.getStops());
+                System.out.println("Cab Arrival Time   : " +r.getEta());
                 Lines.lines();
             }
             System.out.println(ColourMe.ANSI_BRIGHT_RED+"***Cab takes 15-20 mins to travel from one stop to another"+ColourMe.ANSI_RESET);
@@ -165,12 +176,14 @@ public class RouteHandler {
                 System.out.println("Alert route "+oldRouteID+" which previously used this bus has no bus tagged now!");
             }
             else{
-                System.out.println("Seat capacity not met! \n Choose a different bus!");
+                System.out.println("Seat capacity not met! \nChoose a different bus!");
             }
         }
         else{
             System.out.println("Route doesn't have any bus linked!");
             routeHandler.route.get(routeId).setBus(newbusID);
+            if(busHandler.bus.get(newbusID).getRouteID()!=-1)
+            routeHandler.route.get(busHandler.bus.get(newbusID).getRouteID()).setBus(-1);
             busHandler.bus.get(newbusID).setRouteID(routeId);
             busHandler.bus.get(newbusID).setSeatFilled(0);
             System.out.println("Route "+ routeHandler.route.get(routeId) + " has tagged with Bus "+ busHandler.bus.get(newbusID));

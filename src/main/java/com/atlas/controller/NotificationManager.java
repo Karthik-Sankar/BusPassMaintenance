@@ -218,9 +218,11 @@ public class NotificationManager {
     public NotificationManager(NotificationBuilder notificationBuilder){
         this.notificationBuilder = notificationBuilder;
     }
+
     public Notifications getNotification(){
         return this.notificationBuilder.getNotification();
     }
+
     public void makeNotification(){
         this.notificationBuilder.buildID();
         this.notificationBuilder.buildFrom();

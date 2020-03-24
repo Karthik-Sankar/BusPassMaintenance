@@ -33,6 +33,7 @@ public class Admin {
             return;
         }
         Admin admin = new Admin();
+        routeHandler.getNoBusRoutes();
         char session = 'y';
         while (session == 'y') {
             System.out.println("Admin Controls:");
@@ -69,7 +70,6 @@ public class Admin {
                                 break;
                             case 0:
                                 session3 = 'n';
-                                System.out.println("Press 0 key to go to previous menu!");
                                 break;
                             default:
                                 System.out.println("Invalid option!");
@@ -84,8 +84,7 @@ public class Admin {
                         System.out.println("2. Approve visitor application");
                         System.out.println("3. Reject visitor application");
                         System.out.println("Press 0 key to previous menu!");
-                        ScannerUtil input = ScannerUtil.getInstance();
-                        int choice2 = input.readInt();
+                        int choice2 = scannerUtil.readInt();
                         switch (choice2) {
                             case 1:
                                 visitorHandler.displayVisitor();
@@ -115,14 +114,29 @@ public class Admin {
                         System.out.println("3. Delete route");
                         System.out.println("4. Change bus in route");
                         System.out.println("Press 0 key to previous menu!");
-                        ScannerUtil input = ScannerUtil.getInstance();
-                        int choice4 = input.readInt();
+                        int choice4 = scannerUtil.readInt();
                         switch (choice4) {
                             case 1:
                                 routeHandler.displayRoute();
                                 break;
                             case 2:
-                                routeHandler.routeAddition();
+                                boolean isBusAvailable = buses.getUnAssignedBuses();
+                                if(isBusAvailable) {
+                                    routeHandler.routeAddition();
+                                }
+                                else{
+                                    System.out.println("Add new bus (y/n) ?");
+                                    String c = scannerUtil.readLine();
+                                    if(c.equals("y")){
+                                        buses.addBuses();
+                                    }
+                                    else if (c.equals("n")) {
+                                        System.out.println("operations canceled!");
+                                    }
+                                    else{
+                                        System.out.println("Invalid operation!");
+                                    }
+                                }
                                 objectSaver.saveAll();
                                 break;
                             case 3:
@@ -153,8 +167,7 @@ public class Admin {
                         System.out.println("3. Delete Bus");
                         System.out.println("4. Change bus coordinator");
                         System.out.println("Press 0 key to previous menu!");
-                        ScannerUtil input = ScannerUtil.getInstance();
-                        int choice5 = input.readInt();
+                        int choice5 = scannerUtil.readInt();
                         switch (choice5) {
                             case 1:
                                 buses.listBuses();
@@ -196,25 +209,35 @@ public class Admin {
     private void approveUserApplication(){
         System.out.println("Enter a vistor id to approve :");
         String userId = scannerUtil.readLine();
-        Visitor v = visitorHandler.getVisitor(userId);
-        int routeID = v.getRouteID();
-        String userID = v.getUserId();
-        String paswd = v.getPassword();
-        String usname = v.getUserName();
-        String phone = v.getPhoneNumber();
-        String addr = v.getAddress();
-        int busPassID = IDGenerator.getBusPassID();
-        buses.getBus(routeHandler.getBus(routeID)).incrementSeatFilled();
-        busPasses.addBusPass(busPassID, routeID, userID, routeHandler.getBus(routeID));
-        userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
-        visitorHandler.visitor.remove(userId);
-        System.out.println("User " + v.getUserName() + " Application Approved");
+        if(visitorHandler.visitor.containsKey(userId)) {
+            Visitor v = visitorHandler.getVisitor(userId);
+            int routeID = v.getRouteID();
+            String userID = v.getUserId();
+            String paswd = v.getPassword();
+            String usname = v.getUserName();
+            String phone = v.getPhoneNumber();
+            String addr = v.getAddress();
+            int busPassID = IDGenerator.getBusPassID();
+            buses.getBus(routeHandler.getBus(routeID)).incrementSeatFilled();
+            busPasses.addBusPass(busPassID, routeID, userID, routeHandler.getBus(routeID));
+            userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
+            visitorHandler.visitor.remove(userId);
+            System.out.println("User " + v.getUserName() + " Application Approved");
+        }
+        else{
+            System.out.println("No such user applied!");
+        }
     }
 
     private void rejectUserApplication(){
         System.out.println("Enter a vistor id to reject :");
         String userId2 = scannerUtil.readLine();
-        visitorHandler.visitor.remove(userId2);
-        System.out.println("User " + userId2 + " Application Rejected");
+        if(visitorHandler.visitor.containsKey(userId2)) {
+            visitorHandler.visitor.remove(userId2);
+            System.out.println("User " + userId2 + " Application Rejected");
+        }
+        else{
+            System.out.println("No such user applied!");
+        }
     }
 }
