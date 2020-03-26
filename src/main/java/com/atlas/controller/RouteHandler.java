@@ -168,6 +168,8 @@ public class RouteHandler {
                 System.out.println(ColourMe.ANSI_RED+"Route already has bus assigned (BusID : "+routeHandler.getBus(routeId)+")"+ColourMe.ANSI_RESET);
                 int oldBus = routeHandler.route.get(routeId).getBus();
                 int oldRouteID = busHandler.bus.get(newbusID).getRouteID();
+                busHandler.bus.get(routeHandler.getBus(routeId)).setSeatFilled(0);
+                busHandler.bus.get(routeHandler.getBus(routeId)).setRouteID(-1);
                 routeHandler.route.get(routeId).setBus(newbusID);
                 busHandler.bus.get(newbusID).setRouteID(routeId);
                 busHandler.bus.get(newbusID).setSeatFilled(busHandler.bus.get(routeHandler.route.get(routeId).getBus()).getSeatFilled());
@@ -176,11 +178,13 @@ public class RouteHandler {
                 System.out.println(ColourMe.ANSI_RED+"Alert route "+oldRouteID+" which previously used this bus has no bus tagged now!"+ColourMe.ANSI_RESET);
             }
             else{
-                System.out.println(ColourMe.ANSI_RED+"Seat capacity not met! \nChoose a different bus!"+ColourMe.ANSI_RESET);
+                System.out.println(ColourMe.ANSI_RED+"Seat capacity not met!\nChoose a different bus!"+ColourMe.ANSI_RESET);
             }
         }
         else{
             System.out.println(ColourMe.ANSI_YELLOW+"Route doesn't have any bus linked!"+ColourMe.ANSI_RESET);
+            busHandler.bus.get(routeHandler.getBus(routeId)).setSeatFilled(0);
+            busHandler.bus.get(routeHandler.getBus(routeId)).setRouteID(-1);
             routeHandler.route.get(routeId).setBus(newbusID);
             if(busHandler.bus.get(newbusID).getRouteID()!=-1)
             routeHandler.route.get(busHandler.bus.get(newbusID).getRouteID()).setBus(-1);

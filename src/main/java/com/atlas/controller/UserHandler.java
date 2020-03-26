@@ -1,14 +1,11 @@
 package com.atlas.controller;
 
-import com.atlas.models.Bus;
-import com.atlas.models.BusPass;
 import com.atlas.models.Route;
 import com.atlas.models.User;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.ColourMe;
 import com.atlas.utils.Lines;
-import com.atlas.utils.NotifyConstants;
 import com.atlas.utils.ScannerUtil;
 
 import java.util.HashMap;
