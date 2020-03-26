@@ -83,7 +83,10 @@ class BusPassCancelNotification implements NotificationBuilder {
         busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.CANCEL);
         BusHandler busHandler = BusHandler.getInstance();
         RouteHandler routeHandler = RouteHandler.getInstance();
-        Bus b = busHandler.getBus(routeHandler.getBus(user.getRouteNum()));
+        Route r = routeHandler.route.get(user.getRouteNum());
+        Bus b = null;
+        if(r!=null)
+            b = busHandler.getBus(r.getBus());
         if(b!=null)
             b.deccrementSeatFilled();
         UserHandler userHandler = UserHandler.getInstance();
@@ -129,7 +132,10 @@ class BusPassSuspendNotification implements NotificationBuilder {
         busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.CANCEL);
         BusHandler busHandler = BusHandler.getInstance();
         RouteHandler routeHandler = RouteHandler.getInstance();
-        Bus b = busHandler.getBus(routeHandler.getBus(user.getRouteNum()));
+        Route r = routeHandler.route.get(user.getRouteNum());
+        Bus b = null;
+        if(r!=null)
+            b = busHandler.getBus(r.getBus());
         if(b!=null)
             b.deccrementSeatFilled();
     }

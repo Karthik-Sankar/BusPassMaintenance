@@ -164,7 +164,7 @@ public class RouteHandler {
         //checking if current route has a bus already!
         if (routeHandler.getBus(routeId) != -1) {
             //checking is new bus can accomodate previous users.
-            if(busHandler.bus.get(newbusID).getTotalCapacity() > busHandler.bus.get(routeHandler.route.get(routeId).getBus()).getSeatFilled()){
+            if(busHandler.bus.get(newbusID).getTotalCapacity() > busHandler.bus.get(routeHandler.getBus(routeId)).getSeatFilled()){
                 System.out.println(ColourMe.ANSI_RED+"Route already has bus assigned (BusID : "+routeHandler.getBus(routeId)+")"+ColourMe.ANSI_RESET);
                 int oldBus = routeHandler.route.get(routeId).getBus();
                 int oldRouteID = busHandler.bus.get(newbusID).getRouteID();
@@ -174,7 +174,7 @@ public class RouteHandler {
                 busHandler.bus.get(newbusID).setRouteID(routeId);
                 busHandler.bus.get(newbusID).setSeatFilled(busHandler.bus.get(routeHandler.route.get(routeId).getBus()).getSeatFilled());
                 routeHandler.route.get(oldRouteID).setBus(-1);
-                System.out.println(ColourMe.ANSI_GREEN+"Route "+ routeHandler.route.get(routeId) + " has tagged with Bus "+ busHandler.bus.get(newbusID)+ColourMe.ANSI_RESET);
+                System.out.println(ColourMe.ANSI_GREEN+"Route "+ routeId + " has tagged with Bus "+ newbusID +ColourMe.ANSI_RESET);
                 System.out.println(ColourMe.ANSI_RED+"Alert route "+oldRouteID+" which previously used this bus has no bus tagged now!"+ColourMe.ANSI_RESET);
             }
             else{
@@ -183,8 +183,6 @@ public class RouteHandler {
         }
         else{
             System.out.println(ColourMe.ANSI_YELLOW+"Route doesn't have any bus linked!"+ColourMe.ANSI_RESET);
-            busHandler.bus.get(routeHandler.getBus(routeId)).setSeatFilled(0);
-            busHandler.bus.get(routeHandler.getBus(routeId)).setRouteID(-1);
             routeHandler.route.get(routeId).setBus(newbusID);
             if(busHandler.bus.get(newbusID).getRouteID()!=-1)
             routeHandler.route.get(busHandler.bus.get(newbusID).getRouteID()).setBus(-1);
@@ -237,7 +235,7 @@ public class RouteHandler {
             System.out.println(ColourMe.ANSI_GREEN+String.format("%55s","Route No : " + r.getRouteId())+ColourMe.ANSI_RESET);
             System.out.println();
             System.out.println("Source   : "+String.format("%10s",r.getSource())+"\t\t\t"+"Destination  : " + String.format("%20s", r.getDestination()));
-            if(r.getBus()!=-1)
+            if(r.getBus()!=-1 && b != null)
                 System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+String.format("%20s",b.getBusId()));
             else
                 System.out.println("Shift    : "+String.format("%10s", r.getTime())+"\t\t\t"+"Bus No       : "+ColourMe.ANSI_BRIGHT_RED+String.format("%20s","No Buses Available!")+ColourMe.ANSI_RESET);

@@ -4,6 +4,7 @@ import com.atlas.models.Route;
 import com.atlas.models.User;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
+import com.atlas.utils.BusPassConstants;
 import com.atlas.utils.ColourMe;
 import com.atlas.utils.Lines;
 import com.atlas.utils.ScannerUtil;
@@ -79,15 +80,17 @@ public class UserHandler {
             System.out.println("Buspass Info   : " + String.format("%25s",u.getBusPass()));
             System.out.println("Employee ID    : " + String.format("%25s",u.getUserId())+"\t\t\t"+"UserName       : " + String.format("%25s",u.getUserName()));
             System.out.println("Phone Number   : " + String.format("%25s",u.getPhoneNumber())+"\t\t\t"+"Route Number   : " + String.format("%25s",u.getRouteNum()));
-            if(r.getBus()!=-1)
-            System.out.println("Route          : " + String.format("%25s",r.getSource()+"-"+r.getDestination())+"\t\t\t"+"Bus No         : "+String.format("%25s", r.getBus()));
+            if(r!=null && r.getBus()!=-1)
+                System.out.println("Route          : " + String.format("%25s",r.getSource()+"-"+r.getDestination())+"\t\t\t"+"Bus No         : "+String.format("%25s", r.getBus()));
+            else if(r!=null)
+                System.out.println("Route          : " + String.format("%25s",r.getSource()+"-"+r.getDestination())+"\t\t\t"+"Bus No         : "+ColourMe.ANSI_BRIGHT_RED+String.format("%25s", "No bus assigned yet!")+ColourMe.ANSI_RESET);
             else
-            System.out.println("Route          : " + String.format("%25s",r.getSource()+"-"+r.getDestination())+"\t\t\t"+"Bus No         : "+ColourMe.ANSI_BRIGHT_RED+String.format("%25s", "No bus assigned yet!")+ColourMe.ANSI_RESET);
+                System.out.println("Route          : " + String.format("%25s",ColourMe.ANSI_BRIGHT_RED+String.format("%25s", "No route assigned to user!")+ColourMe.ANSI_RESET)+"\t\t\t"+"Bus No         : "+ColourMe.ANSI_BRIGHT_RED+String.format("%25s", "No bus assigned yet!")+ColourMe.ANSI_RESET);
             System.out.println("Address        : " + String.format("%25s",u.getAddress()));
             Lines.lines();
             System.out.println();
         } else {
-            System.out.println(ColourMe.ANSI_BRIGHT_RED+"Specified User is not available in the list!!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_RED+"Specified User is not available in the list!"+ColourMe.ANSI_RESET);
         }
     }
 
@@ -111,6 +114,7 @@ public class UserHandler {
     public void UserEntry() {
         ObjectSaver objectSaver = new ObjectSaver();
         RouteHandler routeHandler = RouteHandler.getInstance();
+        BusPassHandler busPassHandler = BusPassHandler.getInstance();
         NotificationHandler ns = NotificationHandler.getNotificationInstance();
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
         System.out.println("Enter Credentials : ");
@@ -142,14 +146,26 @@ public class UserHandler {
                             routeHandler.displayRoute();
                             break;
                         case 2:
-                            ns.createCancelPassNotification(uname, user.get(uname));
-                            System.out.println(ColourMe.ANSI_GREEN+"Bus pass cancelled!!"+ColourMe.ANSI_RESET);
-                            objectSaver.saveAll();
+                            if(busPassHandler.getBusPass(user.get(uname).getBusPass()).getBusPassStatus() != BusPassConstants.CANCEL) {
+                                ns.createCancelPassNotification(uname, user.get(uname));
+                                objectSaver.saveAll();
+                                System.out.println(ColourMe.ANSI_GREEN + "Bus pass cancelled!!" + ColourMe.ANSI_RESET);
+                                System.out.println(ColourMe.ANSI_RED + "Logging you out!" + ColourMe.ANSI_RESET);
+                                session='n';
+                            }
+                            else{
+                                System.out.println(ColourMe.ANSI_RED + "User has no active bus pass!" + ColourMe.ANSI_RESET);
+                            }
                             break;
                         case 3:
-                            ns.createSuspendPassNotification(uname, user.get(uname));
-                            System.out.println(ColourMe.ANSI_GREEN+"Bus pass suspended!!"+ColourMe.ANSI_RESET);
-                            objectSaver.saveAll();
+                            if(busPassHandler.getBusPass(user.get(uname).getBusPass()).getBusPassStatus() != BusPassConstants.SUSPEND) {
+                                ns.createSuspendPassNotification(uname, user.get(uname));
+                                System.out.println(ColourMe.ANSI_GREEN + "Bus pass suspended!!" + ColourMe.ANSI_RESET);
+                                objectSaver.saveAll();
+                            }
+                            else {
+                                System.out.println(ColourMe.ANSI_RED + "User has no active bus pass!" + ColourMe.ANSI_RESET);
+                            }
                             break;
                         case 4:
                             System.out.println("Enter new route as (Source-Destination) :");

@@ -155,7 +155,7 @@ public class VisitorHandler {
                         }
                     }
                     else{
-                        System.out.println(ColourMe.ANSI_RED+"An existing user cant apply! Please cancel you exixting bus pass and try again!"+ColourMe.ANSI_RESET);
+                        System.out.println(ColourMe.ANSI_RED+"An existing user cant apply! Please cancel you existing bus pass and try again!"+ColourMe.ANSI_RESET);
                     }
                     objectSaver.saveAll();
                     break;

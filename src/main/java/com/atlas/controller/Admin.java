@@ -1,6 +1,7 @@
 package com.atlas.controller;
 
 import com.atlas.models.Bus;
+import com.atlas.models.Route;
 import com.atlas.models.User;
 import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectSaver;
@@ -65,13 +66,23 @@ public class Admin {
                                 notificationHandler.ListNotification("Admin");
                                 break;
                             case 2:
-                                System.out.println("Enter Notification ID to delete : ");
-                                notificationHandler.clearNotification(scannerUtil.readInt());
-                                objectSaver.saveAll();
+                                if(!notificationHandler.note.isEmpty()) {
+                                    System.out.println("Enter Notification ID to delete : ");
+                                    notificationHandler.clearNotification(scannerUtil.readInt());
+                                    objectSaver.saveAll();
+                                }
+                                else{
+                                    System.out.println(ColourMe.ANSI_RED+"No Notification Available for admin!"+ColourMe.ANSI_RESET);
+                                }
                                 break;
                             case 3:
-                                notificationHandler.clearAllNotification();
-                                objectSaver.saveAll();
+                                if(!notificationHandler.note.isEmpty()) {
+                                    notificationHandler.clearAllNotification();
+                                    objectSaver.saveAll();
+                                }
+                                else{
+                                    System.out.println(ColourMe.ANSI_RED+"No Notification Available for admin!"+ColourMe.ANSI_RESET);
+                                }
                                 break;
                             case 0:
                                 session3 = 'n';
@@ -97,12 +108,22 @@ public class Admin {
                                 visitorHandler.displayVisitor();
                                 break;
                             case 2:
-                                approveUserApplication();
-                                objectSaver.saveAll();
+                                if(!visitorHandler.visitor.isEmpty()) {
+                                    approveUserApplication();
+                                    objectSaver.saveAll();
+                                }
+                                else{
+                                    System.out.println(ColourMe.ANSI_YELLOW+"No applications available!"+ColourMe.ANSI_RESET);
+                                }
                                 break;
                             case 3:
-                                rejectUserApplication();
-                                objectSaver.saveAll();
+                                if(!visitorHandler.visitor.isEmpty()) {
+                                    rejectUserApplication();
+                                    objectSaver.saveAll();
+                                }
+                                else{
+                                    System.out.println(ColourMe.ANSI_YELLOW+"No applications available!"+ColourMe.ANSI_RESET);
+                                }
                                 break;
                             case 0:
                                 session2 = 'n';
@@ -126,7 +147,10 @@ public class Admin {
                         int choice4 = scannerUtil.readInt();
                         switch (choice4) {
                             case 1:
-                                routeHandler.displayRoute();
+                                if(!routeHandler.route.isEmpty())
+                                    routeHandler.displayRoute();
+                                else
+                                    System.out.println(ColourMe.ANSI_RED+"No routes added yet!"+ColourMe.ANSI_RESET);
                                 break;
                             case 2:
                                 boolean isBusAvailable = buses.getUnAssignedBuses();
@@ -150,12 +174,22 @@ public class Admin {
                                 objectSaver.saveAll();
                                 break;
                             case 3:
-                                routeHandler.deleteRoute();
-                                objectSaver.saveAll();
+                                if(!routeHandler.route.isEmpty()) {
+                                    routeHandler.deleteRoute();
+                                    objectSaver.saveAll();
+                                }
+                                else {
+                                    System.out.println(ColourMe.ANSI_RED + "No routes available!" + ColourMe.ANSI_RESET);
+                                }
                                 break;
                             case 4:
-                                routeHandler.changeBusRoute();
-                                objectSaver.saveAll();
+                                if(!routeHandler.route.isEmpty() && routeHandler.route.size()>1) {
+                                    routeHandler.changeBusRoute();
+                                    objectSaver.saveAll();
+                                }
+                                else{
+                                    System.out.println(ColourMe.ANSI_RED + "No routes available!" + ColourMe.ANSI_RESET);
+                                }
                                 break;
                             case 0:
                                 session4 = 'n';
@@ -182,28 +216,41 @@ public class Admin {
                         int choice5 = scannerUtil.readInt();
                         switch (choice5) {
                             case 1:
-                                buses.listBuses();
+                                if(!buses.bus.isEmpty())
+                                    buses.listBuses();
+                                else
+                                    System.out.println(ColourMe.ANSI_RED + "No bus added yet!" + ColourMe.ANSI_RESET);
                                 break;
                             case 2:
                                 buses.addBuses();
                                 objectSaver.saveAll();
                                 break;
                             case 3:
-                                System.out.println("Enter bus number: ");
-                                buses.removeBus(scannerUtil.readInt());
-                                objectSaver.saveAll();
-                                break;
-                            case 4:
-                                System.out.println("Enter bus number: ");
-                                int busNo = scannerUtil.readInt();
-                                if(buses.bus.containsKey(busNo)) {
-                                    System.out.println("Enter bus coordinator user ID: ");
-                                    buses.getBus(busNo).setBusCoOrdinatorID(scannerUtil.readLine());
-                                    System.out.println(ColourMe.ANSI_GREEN+"Bus co-ordinator changed successfully!"+ColourMe.ANSI_RESET);
+                                if(!buses.bus.isEmpty()) {
+                                    System.out.println("Enter bus number: ");
+                                    buses.removeBus(scannerUtil.readInt());
                                     objectSaver.saveAll();
                                 }
                                 else{
-                                    System.out.println(ColourMe.ANSI_RED+"No such bus available!"+ColourMe.ANSI_RESET);
+                                    System.out.println(ColourMe.ANSI_RED + "No bus added yet!" + ColourMe.ANSI_RESET);
+                                }
+                                break;
+                            case 4:
+                                if(!buses.bus.isEmpty()) {
+                                    System.out.println("Enter bus number: ");
+                                    int busNo = scannerUtil.readInt();
+                                    if(buses.bus.containsKey(busNo)) {
+                                        System.out.println("Enter bus coordinator user ID: ");
+                                        buses.getBus(busNo).setBusCoOrdinatorID(scannerUtil.readLine());
+                                        System.out.println(ColourMe.ANSI_GREEN+"Bus co-ordinator changed successfully!"+ColourMe.ANSI_RESET);
+                                        objectSaver.saveAll();
+                                    }
+                                    else{
+                                        System.out.println(ColourMe.ANSI_RED+"No such bus available!"+ColourMe.ANSI_RESET);
+                                    }
+                                }
+                                else{
+                                    System.out.println(ColourMe.ANSI_RED + "No bus added yet!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
                             default:
@@ -232,15 +279,20 @@ public class Admin {
             String phone = v.getPhoneNumber();
             String addr = v.getAddress();
             int busPassID = IDGenerator.getBusPassID();
-            Bus b = buses.getBus(routeHandler.getBus(routeID));
-            if(b!=null)
+            Route r = routeHandler.route.get(routeID);
+            Bus b = buses.getBus(r.getBus());
+            if(b!=null) {
                 b.incrementSeatFilled();
-            busPasses.addBusPass(busPassID, routeID, userID, routeHandler.getBus(routeID));
-            userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
-            visitorHandler.visitor.remove(userId);
-            NotificationHandler handler = NotificationHandler.getNotificationInstance();
-            handler.createNotification("Amazon Transport",userID, ColourMe.ANSI_GREEN+"Your bus pass has been approved!"+ColourMe.ANSI_RESET);
-            System.out.println(ColourMe.ANSI_GREEN+"User " + v.getUserName() + " Application Approved"+ColourMe.ANSI_RESET);
+                busPasses.addBusPass(busPassID, routeID, userID, b.getBusId());
+                userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
+                visitorHandler.visitor.remove(userId);
+                NotificationHandler handler = NotificationHandler.getNotificationInstance();
+                handler.createNotification("Amazon Transport", userID, ColourMe.ANSI_GREEN + "Your bus pass has been approved!" + ColourMe.ANSI_RESET);
+                System.out.println(ColourMe.ANSI_GREEN + "User " + v.getUserName() + " Application Approved" + ColourMe.ANSI_RESET);
+            }
+            else {
+                System.out.println(ColourMe.ANSI_RED+"Currently the route has no bus! Please assign bus and then add user!"+ColourMe.ANSI_RESET);
+            }
         }
         else{
             System.out.println(ColourMe.ANSI_RED+"No such user applied!"+ColourMe.ANSI_RESET);
