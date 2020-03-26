@@ -39,7 +39,7 @@ public class BusHandler {
     public void addBus(int busId, String regNo, String busType, int totalCapacity, String busCordinatorID) {
         Bus b = new Bus(busId, regNo, busType, totalCapacity, busCordinatorID);
         bus.put(b.getBusId(), b);
-        System.out.println(ColourMe.ANSI_GREEN+"Bus Added Sucessfully!"+ColourMe.ANSI_RESET);
+        System.out.println(ColourMe.ANSI_GREEN + "Bus Added Sucessfully!" + ColourMe.ANSI_RESET);
     }
 
     public void removeBus(int busID) {
@@ -47,9 +47,9 @@ public class BusHandler {
             RouteHandler routeHandler = RouteHandler.getInstance();
             routeHandler.route.get(bus.get(busID).getRouteID()).setBus(-1);
             bus.remove(busID);
-            System.out.println(ColourMe.ANSI_GREEN+"Bus removed successfully!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_GREEN + "Bus removed successfully!" + ColourMe.ANSI_RESET);
         } else {
-            System.out.println(ColourMe.ANSI_RED+"Invalid bus ID"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_RED + "Invalid bus ID" + ColourMe.ANSI_RESET);
         }
     }
 
@@ -65,52 +65,51 @@ public class BusHandler {
         if (!bus.isEmpty()) {
             System.out.println();
             Lines.lines();
-            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Bus Details Summary")+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN + String.format("%55s", "Bus Details Summary") + ColourMe.ANSI_RESET);
             Lines.lines();
             RouteHandler routeHandler = RouteHandler.getInstance();
             Set<Integer> keys = bus.keySet();
             for (Integer key : keys) {
                 Bus bp = bus.get(key);
-                System.out.println("Bus ID         : " + String.format("%10d",bp.getBusId())+"\t\t\tBus Registration Number : " + String.format("%25s",bp.getRegNo()));
-                System.out.println("Bus Type       : " + String.format("%10s",bp.getBusType())+"\t\t\tBus co-ordinator        : " + String.format("%25s",bp.getBusCoOrdinatorID()));
-                System.out.println("Total Capacity : " + String.format("%10d",bp.getTotalCapacity())+"\t\t\tSeats Filled            : " + String.format("%25d",bp.getSeatFilled()));
-                Route r =  routeHandler.route.get(bp.getRouteID());
-                if(bp.getRouteID()!=-1 && r!= null)
-                    System.out.println("Route ID       : "+ String.format("%10d",bp.getRouteID())+"\t\t\tRoute Details           : "+String.format("%25s",routeHandler.route.get(bp.getRouteID()).getSource()+"-"+routeHandler.route.get(bp.getRouteID()).getDestination()));
+                System.out.println("Bus ID         : " + String.format("%10d", bp.getBusId()) + "\t\t\tBus Registration Number : " + String.format("%25s", bp.getRegNo()));
+                System.out.println("Bus Type       : " + String.format("%10s", bp.getBusType()) + "\t\t\tBus co-ordinator        : " + String.format("%25s", bp.getBusCoOrdinatorID()));
+                System.out.println("Total Capacity : " + String.format("%10d", bp.getTotalCapacity()) + "\t\t\tSeats Filled            : " + String.format("%25d", bp.getSeatFilled()));
+                Route r = routeHandler.route.get(bp.getRouteID());
+                if (bp.getRouteID() != -1 && r != null)
+                    System.out.println("Route ID       : " + String.format("%10d", bp.getRouteID()) + "\t\t\tRoute Details           : " + String.format("%25s", routeHandler.route.get(bp.getRouteID()).getSource() + "-" + routeHandler.route.get(bp.getRouteID()).getDestination()));
                 else {
-                    System.out.println(ColourMe.ANSI_RED+"Bus is not tagged to a route yet!"+ColourMe.ANSI_RESET);
+                    System.out.println(ColourMe.ANSI_RED + "Bus is not tagged to a route yet!" + ColourMe.ANSI_RESET);
                 }
                 Lines.lines();
             }
             Lines.lines();
-            System.out.println();
         } else {
-            System.out.println(ColourMe.ANSI_RED+"No buses added yet!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_RED + "No buses added yet!" + ColourMe.ANSI_RESET);
             System.out.println();
         }
     }
 
-    public boolean isSeatsAvailable(int busID){
-        if(busID!=-1)
+    public boolean isSeatsAvailable(int busID) {
+        if (busID != -1)
             return bus.get(busID).getTotalCapacity() > bus.get(busID).getSeatFilled();
         else
             return false;
     }
 
-    public boolean getUnAssignedBuses(){
+    public boolean getUnAssignedBuses() {
         boolean flag = false;
-        if(!bus.isEmpty()) {
+        if (!bus.isEmpty()) {
             Set<Integer> keys = bus.keySet();
             for (Integer key : keys) {
                 Bus b = bus.get(key);
                 if (b.getRouteID() == -1) {
-                    System.out.print(ColourMe.ANSI_BRIGHT_GREEN+"Bus - " + b.getBusId()+ " is free!"+ColourMe.ANSI_RESET);
+                    System.out.print(ColourMe.ANSI_BRIGHT_GREEN + "Bus - " + b.getBusId() + " is free!" + ColourMe.ANSI_RESET);
                     flag = true;
                 }
                 System.out.println();
             }
-            if(!flag)
-                System.out.println(ColourMe.ANSI_BRIGHT_RED+"No bus is free!"+ColourMe.ANSI_RESET);
+            if (!flag)
+                System.out.println(ColourMe.ANSI_BRIGHT_RED + "No bus is free!" + ColourMe.ANSI_RESET);
         }
         return flag;
     }

@@ -2,6 +2,6 @@ package com.atlas.utils;
 
 public class Lines {
     public static void lines() {
-        System.out.println(ColourMe.ANSI_BRIGHT_GREEN+"------------------------------------------------------------------------------------------------------"+ColourMe.ANSI_RESET);
+        System.out.println(ColourMe.ANSI_BRIGHT_GREEN + "------------------------------------------------------------------------------------------------------" + ColourMe.ANSI_RESET);
     }
 }

@@ -7,6 +7,8 @@ import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Base64;
 
+//Coded using web reference - http://www.javased.com/index.php?api=javax.crypto.Cipher
+
 public class CredsMasker {
     private static SecretKeySpec secretKey;
     private static final String skey = "ItsSherlocked";

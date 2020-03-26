@@ -7,7 +7,6 @@ import com.atlas.utils.ColourMe;
 import com.atlas.utils.IDGenerator;
 
 
-
 class BusPassApplyNotification implements NotificationBuilder {
 
     private Notifications notifications;
@@ -33,7 +32,7 @@ class BusPassApplyNotification implements NotificationBuilder {
     }
 
     public void buildMessage() {
-        notifications.setMessage(ColourMe.ANSI_GREEN+"New user "+user.getUserId()+" has applied for bus pass!"+ColourMe.ANSI_RESET);
+        notifications.setMessage(ColourMe.ANSI_GREEN + "New user " + user.getUserId() + " has applied for bus pass!" + ColourMe.ANSI_RESET);
     }
 
     public void buildSupportingObject() {
@@ -44,7 +43,7 @@ class BusPassApplyNotification implements NotificationBuilder {
         saver.saveVisitor();
     }
 
-    public Notifications getNotification(){
+    public Notifications getNotification() {
         return this.notifications;
     }
 }
@@ -74,7 +73,7 @@ class BusPassCancelNotification implements NotificationBuilder {
     }
 
     public void buildMessage() {
-        notifications.setMessage(ColourMe.ANSI_RED+"User "+ user.getUserName()+" has cancelled their bus pass! \n User Removed from subscriber list!"+ColourMe.ANSI_RESET);
+        notifications.setMessage(ColourMe.ANSI_RED + "User " + user.getUserName() + " has cancelled their bus pass! \n User Removed from subscriber list!" + ColourMe.ANSI_RESET);
     }
 
     public void buildSupportingObject() {
@@ -85,15 +84,15 @@ class BusPassCancelNotification implements NotificationBuilder {
         RouteHandler routeHandler = RouteHandler.getInstance();
         Route r = routeHandler.route.get(user.getRouteNum());
         Bus b = null;
-        if(r!=null)
+        if (r != null)
             b = busHandler.getBus(r.getBus());
-        if(b!=null)
+        if (b != null)
             b.deccrementSeatFilled();
         UserHandler userHandler = UserHandler.getInstance();
         userHandler.user.remove(user.getUserId());
     }
 
-    public Notifications getNotification(){
+    public Notifications getNotification() {
         return this.notifications;
     }
 }
@@ -123,7 +122,7 @@ class BusPassSuspendNotification implements NotificationBuilder {
     }
 
     public void buildMessage() {
-        notifications.setMessage(ColourMe.ANSI_YELLOW+"User "+ user.getUserName()+" has suspended their bus pass!"+ColourMe.ANSI_RESET);
+        notifications.setMessage(ColourMe.ANSI_YELLOW + "User " + user.getUserName() + " has suspended their bus pass!" + ColourMe.ANSI_RESET);
     }
 
     public void buildSupportingObject() {
@@ -134,13 +133,13 @@ class BusPassSuspendNotification implements NotificationBuilder {
         RouteHandler routeHandler = RouteHandler.getInstance();
         Route r = routeHandler.route.get(user.getRouteNum());
         Bus b = null;
-        if(r!=null)
+        if (r != null)
             b = busHandler.getBus(r.getBus());
-        if(b!=null)
+        if (b != null)
             b.deccrementSeatFilled();
     }
 
-    public Notifications getNotification(){
+    public Notifications getNotification() {
         return this.notifications;
     }
 }
@@ -181,7 +180,7 @@ class PrimaryNotification implements NotificationBuilder {
         notifications.setSupportingObject(null);
     }
 
-    public Notifications getNotification(){
+    public Notifications getNotification() {
         return this.notifications;
     }
 }
@@ -218,7 +217,8 @@ class Feedback implements NotificationBuilder {
     public void buildSupportingObject() {
         notifications.setSupportingObject(null);
     }
-    public Notifications getNotification(){
+
+    public Notifications getNotification() {
         return this.notifications;
     }
 }
@@ -226,15 +226,16 @@ class Feedback implements NotificationBuilder {
 
 public class NotificationManager {
     private NotificationBuilder notificationBuilder;
-    public NotificationManager(NotificationBuilder notificationBuilder){
+
+    public NotificationManager(NotificationBuilder notificationBuilder) {
         this.notificationBuilder = notificationBuilder;
     }
 
-    public Notifications getNotification(){
+    public Notifications getNotification() {
         return this.notificationBuilder.getNotification();
     }
 
-    public void makeNotification(){
+    public void makeNotification() {
         this.notificationBuilder.buildID();
         this.notificationBuilder.buildFrom();
         this.notificationBuilder.buildTo();

@@ -6,7 +6,6 @@ import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.ColourMe;
 import com.atlas.utils.Lines;
-import com.atlas.utils.NotifyConstants;
 import com.atlas.utils.ScannerUtil;
 
 import java.util.HashMap;
@@ -53,7 +52,7 @@ public class VisitorHandler {
         if (!visitor.isEmpty()) {
             System.out.println();
             Lines.lines();
-            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Visitor Applied for Pass")+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN + String.format("%55s", "Visitor Applied for Pass") + ColourMe.ANSI_RESET);
             Lines.lines();
             Set<String> u = visitor.keySet();
             for (String u1 : u) {
@@ -65,21 +64,20 @@ public class VisitorHandler {
                 System.out.println("Route ID :" + element.getRouteID());
                 Lines.lines();
                 int busid = routeHandler.route.get(element.getRouteID()).getBus();
-                Bus b=null;
-                if(busid!=-1)
+                Bus b = null;
+                if (busid != -1)
                     b = busHandler.bus.get(busid);
-                if(b!=null)
-                if(b.getSeatFilled() < b.getTotalCapacity()){
-                    System.out.println(ColourMe.ANSI_GREEN+"*** ALERT : SEATS AVAILABLE IN ROUTE ***"+ColourMe.ANSI_RESET);
-                }
-                else{
-                    System.out.println(ColourMe.ANSI_BRIGHT_RED+"*** ALERT : NO SEATS AVAILABLE IN ROUTE ***"+ColourMe.ANSI_RESET);
-                }
+                if (b != null)
+                    if (b.getSeatFilled() < b.getTotalCapacity()) {
+                        System.out.println(ColourMe.ANSI_GREEN + "*** ALERT : SEATS AVAILABLE IN ROUTE ***" + ColourMe.ANSI_RESET);
+                    } else {
+                        System.out.println(ColourMe.ANSI_BRIGHT_RED + "*** ALERT : NO SEATS AVAILABLE IN ROUTE ***" + ColourMe.ANSI_RESET);
+                    }
                 Lines.lines();
             }
             Lines.lines();
         } else {
-            System.out.println(ColourMe.ANSI_BRIGHT_RED+"No Bus Pass Application Found!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_RED + "No Bus Pass Application Found!" + ColourMe.ANSI_RESET);
         }
     }
 
@@ -92,8 +90,8 @@ public class VisitorHandler {
         System.out.println("Enter UserID : ");
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
         String uid = scannerUtil.readLine();
-        if(userHandler.user.containsKey(uid)){
-            System.out.println(ColourMe.ANSI_BRIGHT_RED+" Your are already an office transport user! Please login as a user to view more options!"+ColourMe.ANSI_RESET);
+        if (userHandler.user.containsKey(uid)) {
+            System.out.println(ColourMe.ANSI_BRIGHT_RED + " Your are already an office transport user! Please login as a user to view more options!" + ColourMe.ANSI_RESET);
         }
         char session;
         session = 'y';
@@ -118,27 +116,27 @@ public class VisitorHandler {
                     break;
                 case 3:
                     System.out.println("Enter new route as (Source-Destination) :");
-                    notification.createNotification(uid,"Admin", "Create a new route between "+scannerUtil.readLine());
+                    notification.createNotification(uid, "Admin", "Create a new route between " + scannerUtil.readLine());
                     objectSaver.saveAll();
                     break;
                 case 4:
-                    if(!userHandler.user.containsKey(uid)) {
+                    if (!userHandler.user.containsKey(uid)) {
                         System.out.println("USER ID : \n" + uid);
                         System.out.println("ENTER ROUTE ID : ");
                         int routeID = scannerUtil.readInt();
                         String c = "y";
                         while (!routeHandler.route.containsKey(routeID)) {
-                            System.out.println(ColourMe.ANSI_RED+"You are entering invalid Route ID / Route has no seats available!! \nPress 'y' to continue and 'n' to cancel applying"+ColourMe.ANSI_RESET);
+                            System.out.println(ColourMe.ANSI_RED + "You are entering invalid Route ID / Route has no seats available!! \nPress 'y' to continue and 'n' to cancel applying" + ColourMe.ANSI_RESET);
                             c = scannerUtil.readLine();
                             if (c.equals("y")) {
                                 routeHandler.availableValidRoutes();
                                 System.out.println("ENTER ROUTE ID AGAIN: ");
                                 routeID = scannerUtil.readInt();
                             } else if (c.equals("n")) {
-                                System.out.println(ColourMe.ANSI_RED+"Bus pass application canceled!"+ColourMe.ANSI_RESET);
+                                System.out.println(ColourMe.ANSI_RED + "Bus pass application canceled!" + ColourMe.ANSI_RESET);
                                 break;
                             } else {
-                                System.out.println(ColourMe.ANSI_RED+"Press 'y' or 'n', invalid key pressed!"+ColourMe.ANSI_RESET);
+                                System.out.println(ColourMe.ANSI_RED + "Press 'y' or 'n', invalid key pressed!" + ColourMe.ANSI_RESET);
                             }
                         }
                         System.out.println("ENTER YOUR NAME : ");
@@ -153,9 +151,8 @@ public class VisitorHandler {
                             Visitor v = new Visitor(uid, password, userName, phoneNumber, address, routeID);
                             notification.createApplyPassNotification(uid, v);
                         }
-                    }
-                    else{
-                        System.out.println(ColourMe.ANSI_RED+"An existing user cant apply! Please cancel you existing bus pass and try again!"+ColourMe.ANSI_RESET);
+                    } else {
+                        System.out.println(ColourMe.ANSI_RED + "An existing user cant apply! Please cancel you existing bus pass and try again!" + ColourMe.ANSI_RESET);
                     }
                     objectSaver.saveAll();
                     break;
@@ -164,19 +161,19 @@ public class VisitorHandler {
                         System.out.println("ENTER PASSWORD TO CHECK STATUS : ");
                         String password2 = scannerUtil.readLine();
                         if (userHandler.user.get(uid).getPassword().equals(password2)) {
-                            System.out.println(ColourMe.ANSI_GREEN+"Application of " + uid + " has been approved! Please login as user!"+ColourMe.ANSI_RESET);
+                            System.out.println(ColourMe.ANSI_GREEN + "Application of " + uid + " has been approved! Please login as user!" + ColourMe.ANSI_RESET);
                         } else {
-                            System.out.println(ColourMe.ANSI_RED+"Incorrect password!"+ColourMe.ANSI_RESET);
+                            System.out.println(ColourMe.ANSI_RED + "Incorrect password!" + ColourMe.ANSI_RESET);
                         }
                     } else {
-                        System.out.println(ColourMe.ANSI_RED+"Bus pass application rejected / Application not submitted yet!"+ColourMe.ANSI_RESET);
+                        System.out.println(ColourMe.ANSI_RED + "Bus pass application rejected / Application not submitted yet!" + ColourMe.ANSI_RESET);
                     }
                     break;
                 case 0:
                     session = 'n';
                     break;
                 default:
-                    System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
+                    System.out.println(ColourMe.ANSI_RED + "Invalid option!" + ColourMe.ANSI_RESET);
             }
         }
     }

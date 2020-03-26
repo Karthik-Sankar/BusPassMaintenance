@@ -1,14 +1,10 @@
 package com.atlas.controller;
 
-import com.atlas.models.Bus;
 import com.atlas.models.BusPass;
-import com.atlas.models.Route;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.utils.ColourMe;
-import com.atlas.utils.Lines;
 
 import java.util.HashMap;
-import java.util.Set;
 
 public class BusPassHandler {
     private static BusPassHandler busPassHandler;
@@ -44,7 +40,7 @@ public class BusPassHandler {
         if (busPass.containsKey(busPassId)) {
             return busPass.get(busPassId);
         } else {
-            System.out.println(ColourMe.ANSI_RED+"Invalid buspass id!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_RED + "Invalid buspass id!" + ColourMe.ANSI_RESET);
         }
         return null;
     }

@@ -51,21 +51,21 @@ public class UserHandler {
         if (!user.isEmpty()) {
             System.out.println();
             Lines.lines();
-            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s","Users Available")+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN + String.format("%55s", "Users Available") + ColourMe.ANSI_RESET);
             Lines.lines();
             Set<String> u = user.keySet();
             for (String u1 : u) {
                 User element = user.get(u1);
-                System.out.println("Buspass Info   : " + String.format("%25s",element.getBusPass()));
-                System.out.println("Employee ID    : " + String.format("%25s",element.getUserId())+"\t\t\t"+"UserName       : " + String.format("%25s",element.getUserName()));
-                System.out.println("Phone Number   : " + String.format("%25s",element.getPhoneNumber())+"\t\t\t"+"Route Number   : " + String.format("%25s",element.getRouteNum()));
-                System.out.println("Address        : "+String.format("%25s",element.getAddress()));
+                System.out.println("Buspass Info   : " + String.format("%25s", element.getBusPass()));
+                System.out.println("Employee ID    : " + String.format("%25s", element.getUserId()) + "\t\t\t" + "UserName       : " + String.format("%25s", element.getUserName()));
+                System.out.println("Phone Number   : " + String.format("%25s", element.getPhoneNumber()) + "\t\t\t" + "Route Number   : " + String.format("%25s", element.getRouteNum()));
+                System.out.println("Address        : " + String.format("%25s", element.getAddress()));
                 Lines.lines();
             }
             Lines.lines();
             System.out.println();
         } else {
-            System.out.println(ColourMe.ANSI_BRIGHT_RED+"No Users registered yet!!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_RED + "No Users registered yet!!" + ColourMe.ANSI_RESET);
         }
     }
 
@@ -75,22 +75,22 @@ public class UserHandler {
             Route r = routeHandler.route.get(u.getRouteNum());
             System.out.println();
             Lines.lines();
-            System.out.println(ColourMe.ANSI_BRIGHT_CYAN+String.format("%55s",u.getUserId()+"\'s Profile")+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN + String.format("%55s", u.getUserId() + "\'s Profile") + ColourMe.ANSI_RESET);
             Lines.lines();
-            System.out.println("Buspass Info   : " + String.format("%25s",u.getBusPass()));
-            System.out.println("Employee ID    : " + String.format("%25s",u.getUserId())+"\t\t\t"+"UserName       : " + String.format("%25s",u.getUserName()));
-            System.out.println("Phone Number   : " + String.format("%25s",u.getPhoneNumber())+"\t\t\t"+"Route Number   : " + String.format("%25s",u.getRouteNum()));
-            if(r!=null && r.getBus()!=-1)
-                System.out.println("Route          : " + String.format("%25s",r.getSource()+"-"+r.getDestination())+"\t\t\t"+"Bus No         : "+String.format("%25s", r.getBus()));
-            else if(r!=null)
-                System.out.println("Route          : " + String.format("%25s",r.getSource()+"-"+r.getDestination())+"\t\t\t"+"Bus No         : "+ColourMe.ANSI_BRIGHT_RED+String.format("%25s", "No bus assigned yet!")+ColourMe.ANSI_RESET);
+            System.out.println("Buspass Info   : " + String.format("%25s", u.getBusPass()));
+            System.out.println("Employee ID    : " + String.format("%25s", u.getUserId()) + "\t\t\t" + "UserName       : " + String.format("%25s", u.getUserName()));
+            System.out.println("Phone Number   : " + String.format("%25s", u.getPhoneNumber()) + "\t\t\t" + "Route Number   : " + String.format("%25s", u.getRouteNum()));
+            if (r != null && r.getBus() != -1)
+                System.out.println("Route          : " + String.format("%25s", r.getSource() + "-" + r.getDestination()) + "\t\t\t" + "Bus No         : " + String.format("%25s", r.getBus()));
+            else if (r != null)
+                System.out.println("Route          : " + String.format("%25s", r.getSource() + "-" + r.getDestination()) + "\t\t\t" + "Bus No         : " + ColourMe.ANSI_BRIGHT_RED + String.format("%25s", "No bus assigned yet!") + ColourMe.ANSI_RESET);
             else
-                System.out.println("Route          : " + String.format("%25s",ColourMe.ANSI_BRIGHT_RED+String.format("%25s", "No route assigned to user!")+ColourMe.ANSI_RESET)+"\t\t\t"+"Bus No         : "+ColourMe.ANSI_BRIGHT_RED+String.format("%25s", "No bus assigned yet!")+ColourMe.ANSI_RESET);
-            System.out.println("Address        : " + String.format("%25s",u.getAddress()));
+                System.out.println("Route          : " + String.format("%25s", ColourMe.ANSI_BRIGHT_RED + String.format("%25s", "No route assigned to user!") + ColourMe.ANSI_RESET) + "\t\t\t" + "Bus No         : " + ColourMe.ANSI_BRIGHT_RED + String.format("%25s", "No bus assigned yet!") + ColourMe.ANSI_RESET);
+            System.out.println("Address        : " + String.format("%25s", u.getAddress()));
             Lines.lines();
             System.out.println();
         } else {
-            System.out.println(ColourMe.ANSI_BRIGHT_RED+"Specified User is not available in the list!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_RED + "Specified User is not available in the list!" + ColourMe.ANSI_RESET);
         }
     }
 
@@ -146,31 +146,29 @@ public class UserHandler {
                             routeHandler.displayRoute();
                             break;
                         case 2:
-                            if(busPassHandler.getBusPass(user.get(uname).getBusPass()).getBusPassStatus() != BusPassConstants.CANCEL) {
+                            if (busPassHandler.getBusPass(user.get(uname).getBusPass()).getBusPassStatus() != BusPassConstants.CANCEL) {
                                 ns.createCancelPassNotification(uname, user.get(uname));
                                 objectSaver.saveAll();
                                 System.out.println(ColourMe.ANSI_GREEN + "Bus pass cancelled!!" + ColourMe.ANSI_RESET);
                                 System.out.println(ColourMe.ANSI_RED + "Logging you out!" + ColourMe.ANSI_RESET);
-                                session='n';
-                            }
-                            else{
+                                session = 'n';
+                            } else {
                                 System.out.println(ColourMe.ANSI_RED + "User has no active bus pass!" + ColourMe.ANSI_RESET);
                             }
                             break;
                         case 3:
-                            if(busPassHandler.getBusPass(user.get(uname).getBusPass()).getBusPassStatus() != BusPassConstants.SUSPEND) {
+                            if (busPassHandler.getBusPass(user.get(uname).getBusPass()).getBusPassStatus() != BusPassConstants.SUSPEND) {
                                 ns.createSuspendPassNotification(uname, user.get(uname));
                                 System.out.println(ColourMe.ANSI_GREEN + "Bus pass suspended!!" + ColourMe.ANSI_RESET);
                                 objectSaver.saveAll();
-                            }
-                            else {
+                            } else {
                                 System.out.println(ColourMe.ANSI_RED + "User has no active bus pass!" + ColourMe.ANSI_RESET);
                             }
                             break;
                         case 4:
                             System.out.println("Enter new route as (Source-Destination) :");
-                            ns.createNotification(uname,"Admin", "Create a new route between "+scannerUtil.readLine());
-                            System.out.println(ColourMe.ANSI_GREEN+"New route request placed!"+ColourMe.ANSI_RESET);
+                            ns.createNotification(uname, "Admin", "Create a new route between " + scannerUtil.readLine());
+                            System.out.println(ColourMe.ANSI_GREEN + "New route request placed!" + ColourMe.ANSI_RESET);
                             objectSaver.saveAll();
                             break;
                         case 5:
@@ -212,14 +210,14 @@ public class UserHandler {
                                             String newCPassword = scannerUtil.readLine();
                                             if (newPassword.equals(newCPassword)) {
                                                 user.setPassword(newPassword);
-                                                System.out.println(ColourMe.ANSI_GREEN+"Password changed successfully!"+ColourMe.ANSI_RESET);
+                                                System.out.println(ColourMe.ANSI_GREEN + "Password changed successfully!" + ColourMe.ANSI_RESET);
                                             } else {
-                                                System.out.println(ColourMe.ANSI_RED+"Password mismatch try again!"+ColourMe.ANSI_RESET);
+                                                System.out.println(ColourMe.ANSI_RED + "Password mismatch try again!" + ColourMe.ANSI_RESET);
                                             }
                                         } else {
                                             session = 'n';
                                             session2 = 'n';
-                                            System.out.println(ColourMe.ANSI_RED+"Wrong Password!\n Logging you out! \n Please login with correct password again!"+ColourMe.ANSI_RESET);
+                                            System.out.println(ColourMe.ANSI_RED + "Wrong Password!\n Logging you out! \n Please login with correct password again!" + ColourMe.ANSI_RESET);
                                         }
                                         objectSaver.saveAll();
                                         break;
@@ -227,7 +225,7 @@ public class UserHandler {
                                         session2 = 'n';
                                         break;
                                     default:
-                                        System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
+                                        System.out.println(ColourMe.ANSI_RED + "Invalid option!" + ColourMe.ANSI_RESET);
                                 }
                             }
                             break;
@@ -237,7 +235,7 @@ public class UserHandler {
                         case 7:
                             System.out.println("Enter your single line feedback : ");
                             ns.createFeedback(uname, scannerUtil.readLine());
-                            System.out.println(ColourMe.ANSI_GREEN+"Feedback sent to Admin!"+ColourMe.ANSI_RESET);
+                            System.out.println(ColourMe.ANSI_GREEN + "Feedback sent to Admin!" + ColourMe.ANSI_RESET);
                             objectSaver.saveAll();
                             break;
                         case 8:
@@ -249,14 +247,14 @@ public class UserHandler {
                             session = 'n';
                             break;
                         default:
-                            System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
+                            System.out.println(ColourMe.ANSI_RED + "Invalid option!" + ColourMe.ANSI_RESET);
                     }
                 }
             } else {
-                System.out.println(ColourMe.ANSI_RED+"Incorrect password!"+ColourMe.ANSI_RESET);
+                System.out.println(ColourMe.ANSI_RED + "Incorrect password!" + ColourMe.ANSI_RESET);
             }
         } else {
-            System.out.println(ColourMe.ANSI_RED+"Your Application Not Approved Yet!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_RED + "Your Application Not Approved Yet!" + ColourMe.ANSI_RESET);
         }
     }
 }

@@ -33,7 +33,7 @@ public class MainClass {
                     session = 'n';
                     break;
                 default:
-                    System.out.println(ColourMe.ANSI_BRIGHT_RED+"Invalid option!"+ColourMe.ANSI_RESET);
+                    System.out.println(ColourMe.ANSI_BRIGHT_RED + "Invalid option!" + ColourMe.ANSI_RESET);
             }
         }
     }

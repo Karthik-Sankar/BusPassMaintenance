@@ -2,28 +2,24 @@ package com.atlas.controller;
 
 import com.atlas.models.Bus;
 import com.atlas.models.Route;
-import com.atlas.models.User;
 import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.ColourMe;
 import com.atlas.utils.IDGenerator;
 import com.atlas.utils.ScannerUtil;
 
-import java.util.LinkedList;
-
 public class Admin {
     boolean isAuthenticated = false;
-    Admin admin;
     ScannerUtil scannerUtil = ScannerUtil.getInstance();
     RouteHandler routeHandler = RouteHandler.getInstance();
     BusHandler buses = BusHandler.getInstance();
     BusPassHandler busPasses = BusPassHandler.getInstance();
     UserHandler userHandler = UserHandler.getInstance();
-    NotificationHandler ns = NotificationHandler.getNotificationInstance();
     VisitorHandler visitorHandler = VisitorHandler.getInstance();
     ObjectSaver objectSaver = new ObjectSaver();
+
     public void AdminEntry() {
-        System.out.println(ColourMe.ANSI_GREEN+"Enter Credentials : "+ColourMe.ANSI_RESET);
+        System.out.println(ColourMe.ANSI_GREEN + "Enter Credentials : " + ColourMe.ANSI_RESET);
         System.out.println("Username : ");
         String uname = scannerUtil.readLine();
         System.out.println("Password : ");
@@ -31,14 +27,13 @@ public class Admin {
         if (uname.equals("admin") && passwd.equals("admin123")) {
             isAuthenticated = true;
         } else {
-            System.out.println(ColourMe.ANSI_RED+"You are not an administrator!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_RED + "You are not an administrator!" + ColourMe.ANSI_RESET);
             return;
         }
-        Admin admin = new Admin();
         routeHandler.getNoBusRoutes();
         char session = 'y';
         while (session == 'y') {
-            System.out.println(ColourMe.ANSI_BRIGHT_YELLOW+"Admin Controls:"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_YELLOW + "Admin Controls:" + ColourMe.ANSI_RESET);
             System.out.print(ColourMe.ANSI_BLUE);
             System.out.println("1: Notification");
             System.out.println("2: Approve/Reject Application");
@@ -66,29 +61,27 @@ public class Admin {
                                 notificationHandler.ListNotification("Admin");
                                 break;
                             case 2:
-                                if(!notificationHandler.note.isEmpty()) {
+                                if (!notificationHandler.note.isEmpty()) {
                                     System.out.println("Enter Notification ID to delete : ");
                                     notificationHandler.clearNotification(scannerUtil.readInt());
                                     objectSaver.saveAll();
-                                }
-                                else{
-                                    System.out.println(ColourMe.ANSI_RED+"No Notification Available for admin!"+ColourMe.ANSI_RESET);
+                                } else {
+                                    System.out.println(ColourMe.ANSI_RED + "No Notification Available for admin!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
                             case 3:
-                                if(!notificationHandler.note.isEmpty()) {
+                                if (!notificationHandler.note.isEmpty()) {
                                     notificationHandler.clearAllNotification();
                                     objectSaver.saveAll();
-                                }
-                                else{
-                                    System.out.println(ColourMe.ANSI_RED+"No Notification Available for admin!"+ColourMe.ANSI_RESET);
+                                } else {
+                                    System.out.println(ColourMe.ANSI_RED + "No Notification Available for admin!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
                             case 0:
                                 session3 = 'n';
                                 break;
                             default:
-                                System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
+                                System.out.println(ColourMe.ANSI_RED + "Invalid option!" + ColourMe.ANSI_RESET);
                         }
                     }
                     break;
@@ -108,28 +101,26 @@ public class Admin {
                                 visitorHandler.displayVisitor();
                                 break;
                             case 2:
-                                if(!visitorHandler.visitor.isEmpty()) {
+                                if (!visitorHandler.visitor.isEmpty()) {
                                     approveUserApplication();
                                     objectSaver.saveAll();
-                                }
-                                else{
-                                    System.out.println(ColourMe.ANSI_YELLOW+"No applications available!"+ColourMe.ANSI_RESET);
+                                } else {
+                                    System.out.println(ColourMe.ANSI_YELLOW + "No applications available!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
                             case 3:
-                                if(!visitorHandler.visitor.isEmpty()) {
+                                if (!visitorHandler.visitor.isEmpty()) {
                                     rejectUserApplication();
                                     objectSaver.saveAll();
-                                }
-                                else{
-                                    System.out.println(ColourMe.ANSI_YELLOW+"No applications available!"+ColourMe.ANSI_RESET);
+                                } else {
+                                    System.out.println(ColourMe.ANSI_YELLOW + "No applications available!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
                             case 0:
                                 session2 = 'n';
                                 break;
                             default:
-                                System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
+                                System.out.println(ColourMe.ANSI_RED + "Invalid option!" + ColourMe.ANSI_RESET);
                         }
                     }
                     break;
@@ -147,47 +138,42 @@ public class Admin {
                         int choice4 = scannerUtil.readInt();
                         switch (choice4) {
                             case 1:
-                                if(!routeHandler.route.isEmpty())
+                                if (!routeHandler.route.isEmpty())
                                     routeHandler.displayRoute();
                                 else
-                                    System.out.println(ColourMe.ANSI_RED+"No routes added yet!"+ColourMe.ANSI_RESET);
+                                    System.out.println(ColourMe.ANSI_RED + "No routes added yet!" + ColourMe.ANSI_RESET);
                                 break;
                             case 2:
                                 boolean isBusAvailable = buses.getUnAssignedBuses();
-                                if(isBusAvailable) {
+                                if (isBusAvailable) {
                                     routeHandler.routeAddition();
-                                }
-                                else{
-                                    System.out.println(ColourMe.ANSI_GREEN+"Add new bus (y/n) ?"+ColourMe.ANSI_RESET);
+                                } else {
+                                    System.out.println(ColourMe.ANSI_GREEN + "Add new bus (y/n) ?" + ColourMe.ANSI_RESET);
                                     String c = scannerUtil.readLine();
-                                    if(c.equals("y")){
+                                    if (c.equals("y")) {
                                         buses.addBuses();
                                         routeHandler.routeAddition();
-                                    }
-                                    else if (c.equals("n")) {
-                                        System.out.println(ColourMe.ANSI_RED+"operations canceled!"+ColourMe.ANSI_RESET);
-                                    }
-                                    else{
-                                        System.out.println(ColourMe.ANSI_RED+"Invalid operation!"+ColourMe.ANSI_RESET);
+                                    } else if (c.equals("n")) {
+                                        System.out.println(ColourMe.ANSI_RED + "operations canceled!" + ColourMe.ANSI_RESET);
+                                    } else {
+                                        System.out.println(ColourMe.ANSI_RED + "Invalid operation!" + ColourMe.ANSI_RESET);
                                     }
                                 }
                                 objectSaver.saveAll();
                                 break;
                             case 3:
-                                if(!routeHandler.route.isEmpty()) {
+                                if (!routeHandler.route.isEmpty()) {
                                     routeHandler.deleteRoute();
                                     objectSaver.saveAll();
-                                }
-                                else {
+                                } else {
                                     System.out.println(ColourMe.ANSI_RED + "No routes available!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
                             case 4:
-                                if(!routeHandler.route.isEmpty() && routeHandler.route.size()>1) {
+                                if (!routeHandler.route.isEmpty() && routeHandler.route.size() > 1) {
                                     routeHandler.changeBusRoute();
                                     objectSaver.saveAll();
-                                }
-                                else{
+                                } else {
                                     System.out.println(ColourMe.ANSI_RED + "No routes available!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
@@ -195,7 +181,7 @@ public class Admin {
                                 session4 = 'n';
                                 break;
                             default:
-                                System.out.println(ColourMe.ANSI_RED+"Invalid option!"+ColourMe.ANSI_RESET);
+                                System.out.println(ColourMe.ANSI_RED + "Invalid option!" + ColourMe.ANSI_RESET);
                         }
                     }
                     break;
@@ -216,7 +202,7 @@ public class Admin {
                         int choice5 = scannerUtil.readInt();
                         switch (choice5) {
                             case 1:
-                                if(!buses.bus.isEmpty())
+                                if (!buses.bus.isEmpty())
                                     buses.listBuses();
                                 else
                                     System.out.println(ColourMe.ANSI_RED + "No bus added yet!" + ColourMe.ANSI_RESET);
@@ -226,30 +212,27 @@ public class Admin {
                                 objectSaver.saveAll();
                                 break;
                             case 3:
-                                if(!buses.bus.isEmpty()) {
+                                if (!buses.bus.isEmpty()) {
                                     System.out.println("Enter bus number: ");
                                     buses.removeBus(scannerUtil.readInt());
                                     objectSaver.saveAll();
-                                }
-                                else{
+                                } else {
                                     System.out.println(ColourMe.ANSI_RED + "No bus added yet!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
                             case 4:
-                                if(!buses.bus.isEmpty()) {
+                                if (!buses.bus.isEmpty()) {
                                     System.out.println("Enter bus number: ");
                                     int busNo = scannerUtil.readInt();
-                                    if(buses.bus.containsKey(busNo)) {
+                                    if (buses.bus.containsKey(busNo)) {
                                         System.out.println("Enter bus coordinator user ID: ");
                                         buses.getBus(busNo).setBusCoOrdinatorID(scannerUtil.readLine());
-                                        System.out.println(ColourMe.ANSI_GREEN+"Bus co-ordinator changed successfully!"+ColourMe.ANSI_RESET);
+                                        System.out.println(ColourMe.ANSI_GREEN + "Bus co-ordinator changed successfully!" + ColourMe.ANSI_RESET);
                                         objectSaver.saveAll();
+                                    } else {
+                                        System.out.println(ColourMe.ANSI_RED + "No such bus available!" + ColourMe.ANSI_RESET);
                                     }
-                                    else{
-                                        System.out.println(ColourMe.ANSI_RED+"No such bus available!"+ColourMe.ANSI_RESET);
-                                    }
-                                }
-                                else{
+                                } else {
                                     System.out.println(ColourMe.ANSI_RED + "No bus added yet!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
@@ -267,10 +250,10 @@ public class Admin {
     }
 
 
-    private void approveUserApplication(){
+    private void approveUserApplication() {
         System.out.println("Enter a vistor id to approve :");
         String userId = scannerUtil.readLine();
-        if(visitorHandler.visitor.containsKey(userId)) {
+        if (visitorHandler.visitor.containsKey(userId)) {
             Visitor v = visitorHandler.getVisitor(userId);
             int routeID = v.getRouteID();
             String userID = v.getUserId();
@@ -281,7 +264,7 @@ public class Admin {
             int busPassID = IDGenerator.getBusPassID();
             Route r = routeHandler.route.get(routeID);
             Bus b = buses.getBus(r.getBus());
-            if(b!=null) {
+            if (b != null) {
                 b.incrementSeatFilled();
                 busPasses.addBusPass(busPassID, routeID, userID, b.getBusId());
                 userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
@@ -289,27 +272,24 @@ public class Admin {
                 NotificationHandler handler = NotificationHandler.getNotificationInstance();
                 handler.createNotification("Amazon Transport", userID, ColourMe.ANSI_GREEN + "Your bus pass has been approved!" + ColourMe.ANSI_RESET);
                 System.out.println(ColourMe.ANSI_GREEN + "User " + v.getUserName() + " Application Approved" + ColourMe.ANSI_RESET);
+            } else {
+                System.out.println(ColourMe.ANSI_RED + "Currently the route has no bus! Please assign bus and then add user!" + ColourMe.ANSI_RESET);
             }
-            else {
-                System.out.println(ColourMe.ANSI_RED+"Currently the route has no bus! Please assign bus and then add user!"+ColourMe.ANSI_RESET);
-            }
-        }
-        else{
-            System.out.println(ColourMe.ANSI_RED+"No such user applied!"+ColourMe.ANSI_RESET);
+        } else {
+            System.out.println(ColourMe.ANSI_RED + "No such user applied!" + ColourMe.ANSI_RESET);
         }
     }
 
-    private void rejectUserApplication(){
+    private void rejectUserApplication() {
         System.out.println("Enter a vistor id to reject :");
         String userId2 = scannerUtil.readLine();
-        if(visitorHandler.visitor.containsKey(userId2)) {
+        if (visitorHandler.visitor.containsKey(userId2)) {
             visitorHandler.visitor.remove(userId2);
             NotificationHandler handler = NotificationHandler.getNotificationInstance();
-            handler.createNotification("Amazon Transport",userId2, ColourMe.ANSI_RED+"Your bus pass has been rejected!"+ColourMe.ANSI_RESET);
-            System.out.println(ColourMe.ANSI_RED+"User " + userId2 + " Application Rejected"+ColourMe.ANSI_RESET);
-        }
-        else{
-            System.out.println(ColourMe.ANSI_RED+"No such user applied!"+ColourMe.ANSI_RESET);
+            handler.createNotification("Amazon Transport", userId2, ColourMe.ANSI_RED + "Your bus pass has been rejected!" + ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_RED + "User " + userId2 + " Application Rejected" + ColourMe.ANSI_RESET);
+        } else {
+            System.out.println(ColourMe.ANSI_RED + "No such user applied!" + ColourMe.ANSI_RESET);
         }
     }
 }
