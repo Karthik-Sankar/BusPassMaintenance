@@ -18,7 +18,15 @@ public class ScannerUtil {
     }
 
     public int readInt() {
-        return Integer.parseInt(scan.nextLine());
+        int val = -1;
+        try {
+            val = Integer.parseInt(scan.nextLine());
+        }
+        catch (NumberFormatException e){
+            System.out.println(ColourMe.ANSI_RED+"Please enter a number! Try again : "+ColourMe.ANSI_RESET);
+            readInt();
+        }
+        return val;
     }
 
     public String readLine() {
