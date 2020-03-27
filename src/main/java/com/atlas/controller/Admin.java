@@ -152,6 +152,7 @@ public class Admin {
                                     String c = scannerUtil.readLine();
                                     if (c.equals("y")) {
                                         buses.addBuses();
+                                        buses.getUnAssignedBuses();
                                         routeHandler.routeAddition();
                                     } else if (c.equals("n")) {
                                         System.out.println(ColourMe.ANSI_RED + "operations canceled!" + ColourMe.ANSI_RESET);
@@ -171,7 +172,7 @@ public class Admin {
                                 }
                                 break;
                             case 4:
-                                if (!routeHandler.route.isEmpty() && routeHandler.route.size() > 1) {
+                                if (!routeHandler.route.isEmpty()) {
                                     routeHandler.displayRoute();
                                     routeHandler.changeBusRoute();
                                     objectSaver.saveAll();

@@ -2,6 +2,7 @@ package com.atlas.controller;
 
 import com.atlas.models.Bus;
 import com.atlas.models.Route;
+import com.atlas.models.User;
 import com.atlas.persistance.ObjectRetreiver;
 import com.atlas.utils.ColourMe;
 import com.atlas.utils.IDGenerator;
@@ -51,7 +52,6 @@ public class RouteHandler {
 
     public void routeAddition() {
         BusHandler busHandler = BusHandler.getInstance();
-        busHandler.getUnAssignedBuses();
         System.out.println("Enter Bus ID : ");
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
         Bus bus = busHandler.getBus(scannerUtil.readInt());
@@ -169,11 +169,12 @@ public class RouteHandler {
                 System.out.println(ColourMe.ANSI_RED + "Route already has bus assigned (BusID : " + routeHandler.getBus(routeId) + ") Which is now released!" + ColourMe.ANSI_RESET);
                 int oldBus = routeHandler.route.get(routeId).getBus();
                 int oldRouteID = busHandler.bus.get(newbusID).getRouteID();
+                int sf = busHandler.bus.get(oldBus).getSeatFilled();
                 busHandler.bus.get(oldBus).setSeatFilled(0);
                 busHandler.bus.get(oldBus).setRouteID(-1);
                 routeHandler.route.get(routeId).setBus(newbusID);
                 busHandler.bus.get(newbusID).setRouteID(routeId);
-                busHandler.bus.get(newbusID).setSeatFilled(busHandler.bus.get(routeHandler.route.get(routeId).getBus()).getSeatFilled());
+                busHandler.bus.get(newbusID).setSeatFilled(sf);
                 routeHandler.route.get(oldRouteID).setBus(-1);
                 System.out.println(ColourMe.ANSI_GREEN + "Now, Route " + routeId + " has tagged with Bus " + newbusID + ColourMe.ANSI_RESET);
                 System.out.println(ColourMe.ANSI_RED + "Alert route " + oldRouteID + " which previously used "+ newbusID +" has no bus tagged now!" + ColourMe.ANSI_RESET);
@@ -182,11 +183,20 @@ public class RouteHandler {
             }
         } else {
             System.out.println(ColourMe.ANSI_YELLOW + "Route doesn't have any bus linked!" + ColourMe.ANSI_RESET);
+            int sf = 0;
+            UserHandler user = UserHandler.getInstance();
+            if(!user.user.isEmpty()) {
+                Set<String> keys = user.user.keySet();
+                for (String key : keys) {
+                    User u = user.user.get(key);
+                    if (u.getRouteNum() == routeId) sf++;
+                }
+            }
             routeHandler.route.get(routeId).setBus(newbusID);
             if (busHandler.bus.get(newbusID).getRouteID() != -1)
                 routeHandler.route.get(busHandler.bus.get(newbusID).getRouteID()).setBus(-1);
             busHandler.bus.get(newbusID).setRouteID(routeId);
-            busHandler.bus.get(newbusID).setSeatFilled(0);
+            busHandler.bus.get(newbusID).setSeatFilled(sf);
             System.out.println(ColourMe.ANSI_GREEN + "Route " + routeHandler.route.get(routeId) + " has tagged with Bus " + busHandler.bus.get(newbusID) + ColourMe.ANSI_RESET);
         }
     }
