@@ -278,6 +278,7 @@ public class Admin {
                     visitorHandler.visitor.remove(userId);
                     NotificationHandler handler = NotificationHandler.getNotificationInstance();
                     handler.createNotification("Amazon Transport", userID, ColourMe.ANSI_GREEN + "Your bus pass has been approved!" + ColourMe.ANSI_RESET);
+                    handler.clearNotification(handler.getVisitorNotificationID(userID));
                     System.out.println(ColourMe.ANSI_GREEN + "User " + v.getUserName() + " Application Approved" + ColourMe.ANSI_RESET);
                 }
                 else{
@@ -298,6 +299,7 @@ public class Admin {
             visitorHandler.visitor.remove(userId2);
             NotificationHandler handler = NotificationHandler.getNotificationInstance();
             handler.createNotification("Amazon Transport", userId2, ColourMe.ANSI_RED + "Your bus pass has been rejected!" + ColourMe.ANSI_RESET);
+            handler.clearNotification(handler.getVisitorNotificationID(userId2));
             System.out.println(ColourMe.ANSI_RED + "User " + userId2 + " Application Rejected" + ColourMe.ANSI_RESET);
         } else {
             System.out.println(ColourMe.ANSI_RED + "No such user applied!" + ColourMe.ANSI_RESET);

@@ -103,6 +103,22 @@ public class NotificationHandler {
         }
     }
 
+    public int getVisitorNotificationID(String userid){
+        if (!note.isEmpty()) {
+            VisitorHandler visitorHandler = VisitorHandler.getInstance();
+            Set<Integer> keys = note.keySet();
+            for (Integer key : keys) {
+                Notifications notify = note.get(key);
+                if (notify.getSupportingParameters()!=null) {
+                    if(notify.getSupportingParameters().equals(visitorHandler.getVisitor(userid))){
+                        return notify.getID();
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
     public void clearNotification(int id) {
         if (note.containsKey(id)) {
             note.remove(id);
