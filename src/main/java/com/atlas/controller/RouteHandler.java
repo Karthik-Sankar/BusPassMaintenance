@@ -203,8 +203,10 @@ public class RouteHandler {
 
     public void delRoute(int routeId) {
         if (route.containsKey(routeId)) {
-            BusHandler busHandler = BusHandler.getInstance();
-            busHandler.bus.get(route.get(routeId).getBus()).setRouteID(-1);
+            if(route.get(routeId).getBus()!=-1) {
+                BusHandler busHandler = BusHandler.getInstance();
+                busHandler.bus.get(route.get(routeId).getBus()).setRouteID(-1);
+            }
             route.remove(routeId);
         } else {
             System.out.println(ColourMe.ANSI_RED + "No such route available!!!" + ColourMe.ANSI_RESET);
