@@ -96,8 +96,10 @@ public class VisitorHandler {
         char session;
         session = 'y';
         while (session == 'y') {
-            System.out.println(ColourMe.ANSI_BLUE);
+            System.out.println(ColourMe.ANSI_YELLOW);
             System.out.println("Visitor Options");
+            System.out.println(ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BLUE);
             System.out.println("1. View Routes");
             System.out.println("2. View Seat Availability %");
             System.out.println("3. Request New Route Addition");
@@ -122,34 +124,36 @@ public class VisitorHandler {
                 case 4:
                     if (!userHandler.user.containsKey(uid)) {
                         System.out.println("USER ID : \n" + uid);
-                        System.out.println("ENTER ROUTE ID : ");
-                        int routeID = scannerUtil.readInt();
-                        String c = "y";
-                        while (!routeHandler.route.containsKey(routeID)) {
-                            System.out.println(ColourMe.ANSI_RED + "You are entering invalid Route ID / Route has no seats available!! \nPress 'y' to continue and 'n' to cancel applying" + ColourMe.ANSI_RESET);
-                            c = scannerUtil.readLine();
-                            if (c.equals("y")) {
-                                routeHandler.availableValidRoutes();
-                                System.out.println("ENTER ROUTE ID AGAIN: ");
-                                routeID = scannerUtil.readInt();
-                            } else if (c.equals("n")) {
-                                System.out.println(ColourMe.ANSI_RED + "Bus pass application canceled!" + ColourMe.ANSI_RESET);
-                                break;
-                            } else {
-                                System.out.println(ColourMe.ANSI_RED + "Press 'y' or 'n', invalid key pressed!" + ColourMe.ANSI_RESET);
+                        if (routeHandler.availableValidRoutes()) {
+                            System.out.println("ENTER ROUTE ID : ");
+                            int routeID = scannerUtil.readInt();
+                            String c = "y";
+                            while (!routeHandler.route.containsKey(routeID)) {
+                                System.out.println(ColourMe.ANSI_RED + "You are entering invalid Route ID / Route has no seats available!! \nPress 'y' to continue and 'n' to cancel applying" + ColourMe.ANSI_RESET);
+                                c = scannerUtil.readLine();
+                                if (c.equals("y")) {
+                                    routeHandler.availableValidRoutes();
+                                    System.out.println("ENTER ROUTE ID AGAIN: ");
+                                    routeID = scannerUtil.readInt();
+                                } else if (c.equals("n")) {
+                                    System.out.println(ColourMe.ANSI_RED + "Bus pass application canceled!" + ColourMe.ANSI_RESET);
+                                    break;
+                                } else {
+                                    System.out.println(ColourMe.ANSI_RED + "Press 'y' or 'n', invalid key pressed!" + ColourMe.ANSI_RESET);
+                                }
                             }
-                        }
-                        System.out.println("ENTER YOUR NAME : ");
-                        String userName = scannerUtil.readLine();
-                        System.out.println("ENTER PASSWORD : ");
-                        String password = scannerUtil.readLine();
-                        System.out.println("ENTER PHONE NUMBER : ");
-                        String phoneNumber = scannerUtil.readLine();
-                        System.out.println("ENTER ADDRESS IN SINGLE LINE : ");
-                        String address = scannerUtil.readLine();
-                        if (c.equals("y")) {
-                            Visitor v = new Visitor(uid, password, userName, phoneNumber, address, routeID);
-                            notification.createApplyPassNotification(uid, v);
+                            if (c.equals("y")) {
+                                System.out.println("ENTER YOUR NAME : ");
+                                String userName = scannerUtil.readLine();
+                                System.out.println("ENTER PASSWORD : ");
+                                String password = scannerUtil.readLine();
+                                System.out.println("ENTER PHONE NUMBER : ");
+                                String phoneNumber = scannerUtil.readLine();
+                                System.out.println("ENTER ADDRESS IN SINGLE LINE : ");
+                                String address = scannerUtil.readLine();
+                                Visitor v = new Visitor(uid, password, userName, phoneNumber, address, routeID);
+                                notification.createApplyPassNotification(uid, v);
+                            }
                         }
                     } else {
                         System.out.println(ColourMe.ANSI_RED + "An existing user cant apply! Please cancel you existing bus pass and try again!" + ColourMe.ANSI_RESET);

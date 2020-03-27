@@ -51,6 +51,7 @@ public class RouteHandler {
 
     public void routeAddition() {
         BusHandler busHandler = BusHandler.getInstance();
+        busHandler.getUnAssignedBuses();
         System.out.println("Enter Bus ID : ");
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
         Bus bus = busHandler.getBus(scannerUtil.readInt());
@@ -200,7 +201,7 @@ public class RouteHandler {
         }
     }
 
-    public void availableValidRoutes() {
+    public boolean availableValidRoutes() {
         if (!route.isEmpty()) {
             Set<Integer> keys = route.keySet();
             for (Integer key : keys) {
@@ -214,8 +215,10 @@ public class RouteHandler {
                     System.out.println(ColourMe.ANSI_RESET);
                 }
             }
+            return true;
         } else {
             System.out.println(ColourMe.ANSI_RED + "No Routes Available currently!" + ColourMe.ANSI_RESET);
+            return false;
         }
     }
 
