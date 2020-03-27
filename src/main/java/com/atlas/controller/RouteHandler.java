@@ -165,7 +165,7 @@ public class RouteHandler {
         //checking if current route has a bus already!
         if (routeHandler.getBus(routeId) != -1) {
             //checking is new bus can accomodate previous users.
-            if (busHandler.bus.get(newbusID).getTotalCapacity() > busHandler.bus.get(routeHandler.getBus(routeId)).getSeatFilled()) {
+            if (busHandler.bus.get(newbusID).getTotalCapacity() >= busHandler.bus.get(routeHandler.getBus(routeId)).getSeatFilled()) {
                 System.out.println(ColourMe.ANSI_RED + "Route already has bus assigned (BusID : " + routeHandler.getBus(routeId) + ") Which is now released!" + ColourMe.ANSI_RESET);
                 int oldBus = routeHandler.route.get(routeId).getBus();
                 int oldRouteID = busHandler.bus.get(newbusID).getRouteID();
