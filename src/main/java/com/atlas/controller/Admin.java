@@ -163,6 +163,7 @@ public class Admin {
                                 break;
                             case 3:
                                 if (!routeHandler.route.isEmpty()) {
+                                    routeHandler.displayRoute();
                                     routeHandler.deleteRoute();
                                     objectSaver.saveAll();
                                 } else {
@@ -171,6 +172,7 @@ public class Admin {
                                 break;
                             case 4:
                                 if (!routeHandler.route.isEmpty() && routeHandler.route.size() > 1) {
+                                    routeHandler.displayRoute();
                                     routeHandler.changeBusRoute();
                                     objectSaver.saveAll();
                                 } else {
@@ -213,6 +215,7 @@ public class Admin {
                                 break;
                             case 3:
                                 if (!buses.bus.isEmpty()) {
+                                    buses.listBuses();
                                     System.out.println("Enter bus number: ");
                                     buses.removeBus(scannerUtil.readInt());
                                     objectSaver.saveAll();
@@ -222,6 +225,7 @@ public class Admin {
                                 break;
                             case 4:
                                 if (!buses.bus.isEmpty()) {
+                                    buses.listBuses();
                                     System.out.println("Enter bus number: ");
                                     int busNo = scannerUtil.readInt();
                                     if (buses.bus.containsKey(busNo)) {
