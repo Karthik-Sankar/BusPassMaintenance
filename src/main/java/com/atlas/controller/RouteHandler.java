@@ -207,6 +207,14 @@ public class RouteHandler {
                 BusHandler busHandler = BusHandler.getInstance();
                 busHandler.bus.get(route.get(routeId).getBus()).setRouteID(-1);
             }
+            UserHandler user = UserHandler.getInstance();
+            Set<String> keys = user.user.keySet();
+            for(String key:keys){
+                User u = user.getUser(key);
+                if(u.getRouteNum()==routeId){
+                    u.setRouteNum(-1);
+                }
+            }
             route.remove(routeId);
         } else {
             System.out.println(ColourMe.ANSI_RED + "No such route available!!!" + ColourMe.ANSI_RESET);
