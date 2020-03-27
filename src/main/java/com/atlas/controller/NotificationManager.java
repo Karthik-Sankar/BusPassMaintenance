@@ -128,7 +128,7 @@ class BusPassSuspendNotification implements NotificationBuilder {
     public void buildSupportingObject() {
         notifications.setSupportingObject(user);
         BusPassHandler busPassHandler = BusPassHandler.getInstance();
-        busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.CANCEL);
+        busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.SUSPEND);
         BusHandler busHandler = BusHandler.getInstance();
         RouteHandler routeHandler = RouteHandler.getInstance();
         Route r = routeHandler.route.get(user.getRouteNum());
