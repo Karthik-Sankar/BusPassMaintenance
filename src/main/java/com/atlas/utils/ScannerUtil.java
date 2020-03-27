@@ -24,7 +24,7 @@ public class ScannerUtil {
         }
         catch (NumberFormatException e){
             System.out.println(ColourMe.ANSI_RED+"Please enter a number! Try again : "+ColourMe.ANSI_RESET);
-            readInt();
+            val = readInt();
         }
         return val;
     }
