@@ -96,7 +96,9 @@ public class VisitorHandler {
         char session;
         session = 'y';
         while (session == 'y') {
+            Lines.menulines();
             System.out.println(ColourMe.ANSI_BRIGHT_YELLOW + "Visitor Controls:" + ColourMe.ANSI_RESET);
+            Lines.menulines();
             System.out.println(ColourMe.ANSI_BLUE);
             System.out.println("1. View Routes");
             System.out.println("2. View Seat Availability %");

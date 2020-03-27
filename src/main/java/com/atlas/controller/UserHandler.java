@@ -147,7 +147,9 @@ public class UserHandler {
             if (user.get(uname).getPassword().equals(password)) {
                 char session = 'y';
                 while (session == 'y') {
+                    Lines.menulines();
                     System.out.println(ColourMe.ANSI_BRIGHT_YELLOW + "User Controls:" + ColourMe.ANSI_RESET);
+                    Lines.menulines();
                     System.out.println(ColourMe.ANSI_BLUE);
                     System.out.println("1. View all the routes");
                     System.out.println("2. Cancel a bus pass");

@@ -2,11 +2,15 @@ package com.atlas.controller;
 
 import com.atlas.models.Bus;
 import com.atlas.models.Route;
+import com.atlas.models.User;
 import com.atlas.models.Visitor;
 import com.atlas.persistance.ObjectSaver;
 import com.atlas.utils.ColourMe;
 import com.atlas.utils.IDGenerator;
+import com.atlas.utils.Lines;
 import com.atlas.utils.ScannerUtil;
+
+import java.util.Set;
 
 public class Admin {
     boolean isAuthenticated = false;
@@ -33,7 +37,9 @@ public class Admin {
         routeHandler.getNoBusRoutes();
         char session = 'y';
         while (session == 'y') {
+            Lines.menulines();
             System.out.println(ColourMe.ANSI_BRIGHT_YELLOW + "Admin Controls:" + ColourMe.ANSI_RESET);
+            Lines.menulines();
             System.out.print(ColourMe.ANSI_BLUE);
             System.out.println("1: Notification");
             System.out.println("2: Approve/Reject Application");
@@ -257,9 +263,37 @@ public class Admin {
                                     System.out.println(ColourMe.ANSI_RED + "No bus added yet!" + ColourMe.ANSI_RESET);
                                 }
                                 break;
-                            default:
+                            case 0:
                                 session5 = 'n';
                                 break;
+                            default:
+                                System.out.println(ColourMe.ANSI_RED + "Invalid option!" + ColourMe.ANSI_RESET);
+                                break;
+                        }
+                    }
+                    break;
+                case 7:
+                    char session7 = 'y';
+                    while (session7 == 'y') {
+                        System.out.println(ColourMe.ANSI_BLUE);
+                        System.out.println("Reporting Options");
+                        System.out.println("1. Finance Team Report");
+                        System.out.println("2. Vehicle summary");
+                        System.out.println("Press 0 key to go to previous menu!");
+                        System.out.println(ColourMe.ANSI_RESET);
+                        int choice7 = scannerUtil.readInt();
+                        switch (choice7) {
+                            case 1:
+                                generateFinanceTeamReport();
+                                break;
+                            case 2:
+                                generateVehicleSummary();
+                                break;
+                            case 0:
+                                session7 = 'n';
+                                break;
+                            default:
+                                System.out.println(ColourMe.ANSI_RED + "Invalid option!" + ColourMe.ANSI_RESET);
                         }
                     }
                     break;
@@ -318,6 +352,72 @@ public class Admin {
             System.out.println(ColourMe.ANSI_RED + "User " + userId2 + " Application Rejected" + ColourMe.ANSI_RESET);
         } else {
             System.out.println(ColourMe.ANSI_RED + "No such user applied!" + ColourMe.ANSI_RESET);
+        }
+    }
+
+    private void generateFinanceTeamReport(){
+        UserHandler userHandler = UserHandler.getInstance();
+        BusHandler busHandler = BusHandler.getInstance();
+        RouteHandler routeHandler = RouteHandler.getInstance();
+        if (!userHandler.user.isEmpty()) {
+            System.out.println();
+            Lines.lines();
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN + String.format("%70s", "Finance Report on Transport Utilization") + ColourMe.ANSI_RESET);
+            Lines.lines();
+            System.out.println(String.format("%12s", "Employee ID") + "\t" + String.format("%25s", "Bus Type") +"\t"+ String.format("%25s", "Route Number") +"\t"+ String.format("%25s", "Number of Stops"));
+            Lines.lines();
+            Set<String> u = userHandler.user.keySet();
+            for (String u1 : u) {
+                User element = userHandler.user.get(u1);
+                if(element.getRouteNum()!=-1){
+                    Bus b = busHandler.getBus(routeHandler.getBus(element.getRouteNum()));
+                    if(b!=null){
+                        if(b.getBusId()!=-1){
+                            System.out.println(String.format("%12s", element.getUserId()) + "\t" + String.format("%25s", b.getBusType()) +"\t"+ String.format("%25s", element.getRouteNum()) +"\t"+ String.format("%25s", routeHandler.route.get(element.getRouteNum()).getStops().size()));
+                        }
+                    }
+                }
+                Lines.lines();
+            }
+            Lines.lines();
+            System.out.println();
+        } else {
+            System.out.println(ColourMe.ANSI_BRIGHT_RED + "No Users registered yet!!" + ColourMe.ANSI_RESET);
+        }
+    }
+
+    private void generateVehicleSummary(){
+        UserHandler userHandler = UserHandler.getInstance();
+        BusHandler busHandler = BusHandler.getInstance();
+        RouteHandler routeHandler = RouteHandler.getInstance();
+        int ac = 0;
+        int non_ac = 0;
+        int other = 0;
+        if (!busHandler.bus.isEmpty()) {
+            System.out.println();
+            Lines.lines();
+            System.out.println(ColourMe.ANSI_BRIGHT_CYAN + String.format("%55s", "Vehicle Type Summary") + ColourMe.ANSI_RESET);
+            Lines.lines();
+            Set<Integer> keys = busHandler.bus.keySet();
+            for (Integer key : keys) {
+                Bus bp = busHandler.bus.get(key);
+                if(bp.getBusType().equals("AC")){
+                    ac++;
+                }
+                else if(bp.getBusType().equals("NON-AC")){
+                    non_ac++;
+                }
+                else{
+                    other++;
+                }
+            }
+            System.out.println(String.format("%s", "AC Buses") + "\t" + String.format("%25s", ac)+" Nos");
+            System.out.println(String.format("%s", "Non-AC Buses") + "\t" + String.format("%25s", non_ac)+" Nos");
+            System.out.println(String.format("%s", "Other Type Buses") + "\t" + String.format("%25s", other)+" Nos");
+            Lines.lines();
+        } else {
+            System.out.println(ColourMe.ANSI_RED + "No buses added yet!" + ColourMe.ANSI_RESET);
+            System.out.println();
         }
     }
 }
