@@ -284,7 +284,7 @@ public class RouteHandler {
                 {
                     per = 0.0;
                 }
-                System.out.println(ColourMe.ANSI_BRIGHT_RED + "Percentage Occupied : " + per + "%" + ColourMe.ANSI_RESET);
+                System.out.println(ColourMe.ANSI_BRIGHT_RED + "Percentage Occupied : " + Math.round(per) + "%" + ColourMe.ANSI_RESET);
                 Lines.lines();
             }
             Lines.lines();

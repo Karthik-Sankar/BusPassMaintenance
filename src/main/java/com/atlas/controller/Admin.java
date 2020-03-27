@@ -174,6 +174,7 @@ public class Admin {
                             case 4:
                                 if (!routeHandler.route.isEmpty()) {
                                     routeHandler.displayRoute();
+                                    buses.listBuses();
                                     routeHandler.changeBusRoute();
                                     objectSaver.saveAll();
                                 } else {
@@ -270,7 +271,7 @@ public class Admin {
             Route r = routeHandler.route.get(routeID);
             Bus b = buses.getBus(r.getBus());
             if (b != null) {
-                if(b.getSeatFilled()+1 < b.getTotalCapacity()) {
+                if(b.getSeatFilled()+1 <= b.getTotalCapacity()) {
                     b.incrementSeatFilled();
                     busPasses.addBusPass(busPassID, routeID, userID, b.getBusId());
                     userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
