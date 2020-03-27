@@ -1,5 +1,6 @@
 package com.atlas.controller;
 
+import com.atlas.models.Bus;
 import com.atlas.models.Route;
 import com.atlas.models.User;
 import com.atlas.persistance.ObjectRetreiver;
@@ -132,11 +133,12 @@ public class UserHandler {
                     System.out.println("1. View all the routes");
                     System.out.println("2. Cancel a bus pass");
                     System.out.println("3. Suspend a bus pass");
-                    System.out.println("4. Request for new route");
-                    System.out.println("5. Update their contact details");
-                    System.out.println("6. Get a snapshot of their details");
+                    System.out.println("4. Activate bus pass");
+                    System.out.println("5. Request for new route");
+                    System.out.println("6. Update their contact details");
+                    System.out.println("7. Get a snapshot of their details");
                     System.out.println("7. Submit feedback");
-                    System.out.println("8. Notifications");
+                    System.out.println("9. Notifications");
                     System.out.println("Press 0 key to go to main menu!");
                     System.out.println(ColourMe.ANSI_RESET);
                     ScannerUtil input = ScannerUtil.getInstance();
@@ -166,12 +168,36 @@ public class UserHandler {
                             }
                             break;
                         case 4:
+                            if (busPassHandler.getBusPass(user.get(uname).getBusPass()).getBusPassStatus() != BusPassConstants.ACTIVE) {
+                                BusHandler busHandler = BusHandler.getInstance();
+                                Route r = routeHandler.route.get(user.get(uname).getRouteNum());
+                                Bus b = null;
+                                if (r != null)
+                                    b = busHandler.getBus(r.getBus());
+                                if (b != null) {
+                                    if(b.getSeatFilled()<b.getTotalCapacity()) {
+                                        busPassHandler.busPass.get(user.get(uname).getBusPass()).setBusPassStatus(BusPassConstants.ACTIVE);
+                                        b.incrementSeatFilled();
+                                        ns.createNotification(uname,"Admin","User has activated their bus pass again!");
+                                        System.out.println(ColourMe.ANSI_GREEN + "Bus pass activated!!" + ColourMe.ANSI_RESET);
+                                        objectSaver.saveAll();
+                                    }
+                                    else{
+                                        System.out.println(ColourMe.ANSI_RED + "No seat available currently!" + ColourMe.ANSI_RESET);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                System.out.println(ColourMe.ANSI_RED + "User has active bus pass already!" + ColourMe.ANSI_RESET);
+                            }
+                            break;
+                        case 5:
                             System.out.println("Enter new route as (Source-Destination) :");
                             ns.createNotification(uname, "Admin", "Create a new route between " + scannerUtil.readLine());
                             System.out.println(ColourMe.ANSI_GREEN + "New route request placed!" + ColourMe.ANSI_RESET);
                             objectSaver.saveAll();
                             break;
-                        case 5:
+                        case 6:
                             char session2 = 'y';
                             while (session2 == 'y') {
                                 System.out.println(ColourMe.ANSI_BLUE);
@@ -229,16 +255,16 @@ public class UserHandler {
                                 }
                             }
                             break;
-                        case 6:
+                        case 7:
                             displayUsers(getUser(uname));
                             break;
-                        case 7:
+                        case 8:
                             System.out.println("Enter your single line feedback : ");
                             ns.createFeedback(uname, scannerUtil.readLine());
                             System.out.println(ColourMe.ANSI_GREEN + "Feedback sent to Admin!" + ColourMe.ANSI_RESET);
                             objectSaver.saveAll();
                             break;
-                        case 8:
+                        case 9:
                             NotificationHandler notificationHandler = NotificationHandler.getNotificationInstance();
                             notificationHandler.ListNotification(uname);
                             objectSaver.saveAll();
