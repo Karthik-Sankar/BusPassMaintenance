@@ -96,9 +96,7 @@ public class VisitorHandler {
         char session;
         session = 'y';
         while (session == 'y') {
-            System.out.println(ColourMe.ANSI_YELLOW);
-            System.out.println("Visitor Options");
-            System.out.println(ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_YELLOW + "Visitor Controls:" + ColourMe.ANSI_RESET);
             System.out.println(ColourMe.ANSI_BLUE);
             System.out.println("1. View Routes");
             System.out.println("2. View Seat Availability %");
@@ -122,7 +120,7 @@ public class VisitorHandler {
                     objectSaver.saveAll();
                     break;
                 case 4:
-                    if (!userHandler.user.containsKey(uid)) {
+                    if (!userHandler.user.containsKey(uid) && !visitor.containsKey(uid)) {
                         System.out.println("USER ID : \n" + uid);
                         if (routeHandler.availableValidRoutes()) {
                             System.out.println("ENTER ROUTE ID : ");

@@ -270,13 +270,18 @@ public class Admin {
             Route r = routeHandler.route.get(routeID);
             Bus b = buses.getBus(r.getBus());
             if (b != null) {
-                b.incrementSeatFilled();
-                busPasses.addBusPass(busPassID, routeID, userID, b.getBusId());
-                userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
-                visitorHandler.visitor.remove(userId);
-                NotificationHandler handler = NotificationHandler.getNotificationInstance();
-                handler.createNotification("Amazon Transport", userID, ColourMe.ANSI_GREEN + "Your bus pass has been approved!" + ColourMe.ANSI_RESET);
-                System.out.println(ColourMe.ANSI_GREEN + "User " + v.getUserName() + " Application Approved" + ColourMe.ANSI_RESET);
+                if(b.getSeatFilled()+1 < b.getTotalCapacity()) {
+                    b.incrementSeatFilled();
+                    busPasses.addBusPass(busPassID, routeID, userID, b.getBusId());
+                    userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
+                    visitorHandler.visitor.remove(userId);
+                    NotificationHandler handler = NotificationHandler.getNotificationInstance();
+                    handler.createNotification("Amazon Transport", userID, ColourMe.ANSI_GREEN + "Your bus pass has been approved!" + ColourMe.ANSI_RESET);
+                    System.out.println(ColourMe.ANSI_GREEN + "User " + v.getUserName() + " Application Approved" + ColourMe.ANSI_RESET);
+                }
+                else{
+                    System.out.println(ColourMe.ANSI_RED + "No seats available in the route!" + ColourMe.ANSI_RESET);
+                }
             } else {
                 System.out.println(ColourMe.ANSI_RED + "Currently the route has no bus! Please assign bus and then add user!" + ColourMe.ANSI_RESET);
             }

@@ -197,7 +197,7 @@ public class RouteHandler {
                 routeHandler.route.get(busHandler.bus.get(newbusID).getRouteID()).setBus(-1);
             busHandler.bus.get(newbusID).setRouteID(routeId);
             busHandler.bus.get(newbusID).setSeatFilled(sf);
-            System.out.println(ColourMe.ANSI_GREEN + "Route " + routeHandler.route.get(routeId) + " has tagged with Bus " + busHandler.bus.get(newbusID) + ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_GREEN + "Now, Route " + routeId + " has tagged with Bus " + newbusID + ColourMe.ANSI_RESET);
         }
     }
 
@@ -277,9 +277,13 @@ public class RouteHandler {
                 System.out.println();
                 System.out.println("Source   : " + String.format("%10s", r.getSource()) + "\t\t\t" + "Destination  : " + String.format("%20s", r.getDestination()));
                 double per;
-                if (b != null)
-                    per = (b.getSeatFilled() / b.getTotalCapacity()) * 100;
-                else per = 0.0;
+                if (b != null) {
+                    per = ((double)b.getSeatFilled() / (double)b.getTotalCapacity()) * 100;
+                }
+                else
+                {
+                    per = 0.0;
+                }
                 System.out.println(ColourMe.ANSI_BRIGHT_RED + "Percentage Occupied : " + per + "%" + ColourMe.ANSI_RESET);
                 Lines.lines();
             }

@@ -10,10 +10,9 @@ public class MainClass {
     public static void main(String[] args) {
         char session = 'y';
         while (session == 'y') {
-            System.out.println(ColourMe.ANSI_BRIGHT_YELLOW);
-            System.out.println("Login Options");
-            System.out.println(ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_YELLOW + "Home Menu" + ColourMe.ANSI_RESET);
             System.out.println(ColourMe.ANSI_BLUE);
+            System.out.println("Login Options");
             System.out.println("1. Admin");
             System.out.println("2. User");
             System.out.println("3. Visitor");
