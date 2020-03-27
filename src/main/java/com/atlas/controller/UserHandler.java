@@ -158,7 +158,7 @@ public class UserHandler {
                     System.out.println("5. Request for new route");
                     System.out.println("6. Update their contact details");
                     System.out.println("7. Get a snapshot of their details");
-                    System.out.println("7. Submit feedback");
+                    System.out.println("8. Submit feedback");
                     System.out.println("9. Notifications");
                     System.out.println("Press 0 key to go to main menu!");
                     System.out.println(ColourMe.ANSI_RESET);

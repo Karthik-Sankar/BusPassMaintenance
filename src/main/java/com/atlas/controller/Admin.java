@@ -411,9 +411,9 @@ public class Admin {
                     other++;
                 }
             }
-            System.out.println(String.format("%s", "AC Buses") + "\t" + String.format("%25s", ac)+" Nos");
-            System.out.println(String.format("%s", "Non-AC Buses") + "\t" + String.format("%25s", non_ac)+" Nos");
-            System.out.println(String.format("%s", "Other Type Buses") + "\t" + String.format("%25s", other)+" Nos");
+            System.out.println(String.format("%17s", "AC Buses") + "\t" + String.format("%25s", ac)+" Nos");
+            System.out.println(String.format("%17s", "Non-AC Buses") + "\t" + String.format("%25s", non_ac)+" Nos");
+            System.out.println(String.format("%17s", "Other Type Buses") + "\t" + String.format("%25s", other)+" Nos");
             Lines.lines();
         } else {
             System.out.println(ColourMe.ANSI_RED + "No buses added yet!" + ColourMe.ANSI_RESET);
