@@ -59,7 +59,10 @@ public class UserHandler {
                 User element = user.get(u1);
                 System.out.println("Buspass Info   : " + String.format("%25s", element.getBusPass()));
                 System.out.println("Employee ID    : " + String.format("%25s", element.getUserId()) + "\t\t\t" + "UserName       : " + String.format("%25s", element.getUserName()));
-                System.out.println("Phone Number   : " + String.format("%25s", element.getPhoneNumber()) + "\t\t\t" + "Route Number   : " + String.format("%25s", element.getRouteNum()));
+                if (element.getRouteNum() != -1)
+                    System.out.println("Phone Number   : " + String.format("%25s", element.getPhoneNumber()) + "\t\t\t" + "Route Number   : " + String.format("%25s", element.getRouteNum()));
+                else
+                    System.out.println("Phone Number   : " + String.format("%25s", element.getPhoneNumber()) + "\t\t\t" + "Route Number   : " + String.format("%25s", "User not tagged to a route currently!"));
                 System.out.println("Address        : " + String.format("%25s", element.getAddress()));
                 Lines.lines();
             }
