@@ -39,7 +39,9 @@ public class Admin {
             System.out.println("2: Approve/Reject Application");
             System.out.println("3: Route Operations");
             System.out.println("4: List User details");
-            System.out.println("5: Bus Operations");
+            System.out.println("5: Assign user to route");
+            System.out.println("6: Bus Operations");
+            System.out.println("7: Reporting options");
             System.out.print("Press 0 key to go to main menu!");
             System.out.println(ColourMe.ANSI_RESET);
             int choice = scannerUtil.readInt();
@@ -193,6 +195,19 @@ public class Admin {
                     userHandler.displayUsers();
                     break;
                 case 5:
+                    System.out.println("Enter user id :");
+                    String userid = scannerUtil.readLine();
+                    System.out.println("Available routes :");
+                    if(routeHandler.availableValidRoutes()) {
+                        System.out.println("Enter route id :");
+                        int rid = scannerUtil.readInt();
+                        userHandler.updateUserRoute(userid,rid);
+                    }
+                    else{
+                        System.out.println(ColourMe.ANSI_RED+"No free routes!"+ColourMe.ANSI_RESET);
+                    }
+                    break;
+                case 6:
                     char session5 = 'y';
                     while (session5 == 'y') {
                         System.out.println(ColourMe.ANSI_BLUE);

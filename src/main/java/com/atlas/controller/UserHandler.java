@@ -98,15 +98,31 @@ public class UserHandler {
     public void updateUserRoute(String userId, int routeId) {
         RouteHandler routeHandler = RouteHandler.getInstance();
         if (user.containsKey(userId) && routeHandler.route.containsKey(routeId)) {
-            user.get(userId).setRouteNum(routeId);
+            BusHandler busHandler = BusHandler.getInstance();
+            Bus b = busHandler.bus.get(routeHandler.route.get(routeId).getBus());
+            if(b.getBusId()!=-1){
+                if(b.getSeatFilled() <= b.getTotalCapacity()){
+                    int oldr = user.get(userId).getRouteNum();
+                    if(oldr!=-1){
+                        if(busHandler.getBus(routeHandler.getBus(routeId))!=null){
+                            busHandler.getBus(routeHandler.getBus(routeId)).deccrementSeatFilled();
+                        }
+                    }
+                    user.get(userId).setRouteNum(routeId);
+                    b.incrementSeatFilled();
+                }
+                else{
+                    System.out.println(ColourMe.ANSI_RED+"No space available in the given route!"+ColourMe.ANSI_RESET);
+                }
+            }
+            else{
+                System.out.println(ColourMe.ANSI_RED+"cant assign user when there is no bus in route!"+ColourMe.ANSI_RESET);
+            }
         } else {
             System.out.println("Invalid UserID/RouteID!!");
         }
     }
 
-    public void assignRouteToUser(String userId, int routeId) {
-
-    }
 
     public Object getObject() {
         return user;
