@@ -169,8 +169,11 @@ public class VisitorHandler {
                         } else {
                             System.out.println(ColourMe.ANSI_RED + "Incorrect password!" + ColourMe.ANSI_RESET);
                         }
-                    } else {
-                        System.out.println(ColourMe.ANSI_RED + "Bus pass application rejected / Application not submitted yet!" + ColourMe.ANSI_RESET);
+                    } else if(visitor.containsKey(uid)){
+                        System.out.println(ColourMe.ANSI_RED + "Bus pass application not reviewed / approved yet!" + ColourMe.ANSI_RESET);
+                    }
+                    else {
+                        System.out.println(ColourMe.ANSI_RED + "Application Rejected / Not Submitted yet!" + ColourMe.ANSI_RESET);
                     }
                     break;
                 case 0:
