@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="BusPassMaintenance:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BusPassMaintenance_jar</output-path>
+    <root id="archive" name="BusPassMaintenance.jar">
+      <element id="module-output" name="BusPassMaintenance" />
+    </root>
+  </artifact>
+</component>

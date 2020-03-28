@@ -5,16 +5,16 @@ import java.io.*;
 public class ObjectStore {
     public void saveObject(Object o, String fileName) {
         try {
-            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            File file = new File(classLoader.getResource(fileName).getFile());
-            if (file.exists()) {
+            File file = new File(fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+                System.out.println("Running For First Time Hence Creating Database : " + file.getAbsolutePath());
+            } else {
                 FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(o);
                 objectOutputStream.close();
                 fileOutputStream.close();
-            } else {
-                System.out.println("Running For First Time Hence Creating Database : " + file.getAbsolutePath());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -25,16 +25,19 @@ public class ObjectStore {
     public Object retreiveObject(String fileName) {
         Object o = null;
         try {
-            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-            File file = new File(classLoader.getResource(fileName).getFile());
-            if (file.exists() && file.length() != 0) {
+            File file = new File(fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+                System.out.println("Running For First Time Hence Creating Database : " + file.getAbsolutePath());
+            } else if(file.length() == 0) {
+                System.out.println("\nNo data Present in DB : " + file.getAbsolutePath());
+            }
+            else{
                 FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 o = objectInputStream.readObject();
                 objectInputStream.close();
                 fileInputStream.close();
-            } else {
-                System.out.println("\nRunning For First Time Hence Creating Database : " + file.getAbsolutePath());
             }
             return o;
         } catch (Exception e) {
