@@ -33,7 +33,11 @@ public class ObjectStore {
             if (!file.exists()) {
                 file.createNewFile();
                 System.out.println("Creating Database Files: " + file.getAbsolutePath());
-            } else {
+            }
+            else if(file.length()==0){
+                System.out.println("No data Present in DB :"+file.getAbsolutePath());
+            }
+            else {
                 FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 o = objectInputStream.readObject();
