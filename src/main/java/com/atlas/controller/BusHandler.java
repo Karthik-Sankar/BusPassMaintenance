@@ -44,8 +44,10 @@ public class BusHandler {
 
     public void removeBus(int busID) {
         if (bus.containsKey(busID)) {
-            RouteHandler routeHandler = RouteHandler.getInstance();
-            routeHandler.route.get(bus.get(busID).getRouteID()).setBus(-1);
+            if(bus.get(busID).getRouteID()!=-1) {
+                RouteHandler routeHandler = RouteHandler.getInstance();
+                routeHandler.route.get(bus.get(busID).getRouteID()).setBus(-1);
+            }
             bus.remove(busID);
             System.out.println(ColourMe.ANSI_GREEN + "Bus removed successfully!" + ColourMe.ANSI_RESET);
         } else {

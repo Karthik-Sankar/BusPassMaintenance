@@ -110,8 +110,12 @@ public class NotificationHandler {
             for (Integer key : keys) {
                 Notifications notify = note.get(key);
                 if (notify.getSupportingParameters()!=null) {
-                    if(notify.getSupportingParameters().equals(visitorHandler.getVisitor(userid))){
-                        return notify.getID();
+                    if(notify.getSupportingParameters().getClass().getSimpleName().equals("Visitor"))
+                    {
+                        Visitor v = (Visitor) notify.getSupportingParameters();
+                        if(v.getUserId().equals(userid)) {
+                            return notify.getID();
+                        }
                     }
                 }
             }

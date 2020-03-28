@@ -38,15 +38,13 @@ public class RouteHandler {
         }
     }
 
-    public int addRoutes(int routeId, String source, String destination, LinkedList<String> stops, String time, String eta, int bus) {
+    public void addRoutes(int routeId, String source, String destination, LinkedList<String> stops, String time, String eta, int bus) {
         if (!route.containsKey(getRouteID_S(source)) || !route.containsKey(getRouteID_D(destination))) {
             Route r = new Route(routeId, source, destination, stops, time, eta, bus);
             route.put(routeId, r);
-            return r.getRouteId();
         } else {
             System.out.println(ColourMe.ANSI_RED + "Already have a route in same location with id : " + route.get(getRouteID_S(source)).getRouteId() + "" + ColourMe.ANSI_RESET);
             displayRoute(route.get(getRouteID_S(source)).getRouteId());
-            return route.get(routeId).getRouteId();
         }
     }
 
@@ -72,8 +70,18 @@ public class RouteHandler {
                 }
                 System.out.println("Enter Shift [SHIFT1, SHIFT2, SHIFT3] : ");
                 String time = scannerUtil.readLine();
-                System.out.println("Enter Cab Arrival time at Source : ");
-                String eta = scannerUtil.readLine();
+                while(!time.equals("SHIFT1") && !time.equals("SHIFT2") && !time.equals("SHIFT3")){
+                    System.out.println(ColourMe.ANSI_RED+"Enter SHIFT in correct format : "+ColourMe.ANSI_RESET);
+                    time = scannerUtil.readLine();
+                }
+                String eta = "";
+                if(time.equals("SHIFT1")){
+                    eta = "05:00AM";
+                }else if(time.equals("SHIFT2")){
+                    eta = "07:00AM";
+                }else{
+                    eta = "11:00AM";
+                }
                 int routeID = IDGenerator.getRouteID();
                 addRoutes(routeID, source, destination, stops, time, eta, bus.getBusId());
                 busHandler.bus.get(bus.getBusId()).setRouteID(routeID);
@@ -101,7 +109,7 @@ public class RouteHandler {
             Route r = route.get(key);
             if (r.getSource().equals(source)) return r.getRouteId();
         }
-        return -1;
+        return 0;
     }
 
     public int getRouteID_D(String destination) {
@@ -110,7 +118,7 @@ public class RouteHandler {
             Route r = route.get(key);
             if (r.getDestination().equals(destination)) return r.getRouteId();
         }
-        return -1;
+        return 0;
     }
 
     public void getNoBusRoutes() {
@@ -205,6 +213,7 @@ public class RouteHandler {
         if (route.containsKey(routeId)) {
             if(route.get(routeId).getBus()!=-1) {
                 BusHandler busHandler = BusHandler.getInstance();
+                busHandler.bus.get(route.get(routeId).getBus()).setSeatFilled(0);
                 busHandler.bus.get(route.get(routeId).getBus()).setRouteID(-1);
             }
             UserHandler user = UserHandler.getInstance();
@@ -216,6 +225,7 @@ public class RouteHandler {
                 }
             }
             route.remove(routeId);
+            System.out.println(ColourMe.ANSI_BRIGHT_GREEN+"Route deleted!"+ColourMe.ANSI_RESET);
         } else {
             System.out.println(ColourMe.ANSI_RED + "No such route available!!!" + ColourMe.ANSI_RESET);
         }
