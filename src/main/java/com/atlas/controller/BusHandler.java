@@ -44,6 +44,7 @@ public class BusHandler {
 
     public void removeBus(int busID) {
         if (bus.containsKey(busID)) {
+            //checking if bus is tagged to a route
             if(bus.get(busID).getRouteID()!=-1) {
                 RouteHandler routeHandler = RouteHandler.getInstance();
                 routeHandler.route.get(bus.get(busID).getRouteID()).setBus(-1);
@@ -104,6 +105,7 @@ public class BusHandler {
             Set<Integer> keys = bus.keySet();
             for (Integer key : keys) {
                 Bus b = bus.get(key);
+                //checking for buses with no routes.
                 if (b.getRouteID() == -1) {
                     System.out.print(ColourMe.ANSI_BRIGHT_GREEN + "Bus - " + b.getBusId() + " is free!" + ColourMe.ANSI_RESET);
                     flag = true;

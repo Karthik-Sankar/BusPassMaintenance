@@ -306,6 +306,7 @@ public class Admin {
 
 
     private void approveUserApplication() {
+        //Visitor details will be stored once a visitor applies for a bus pass, we use that to approve / reject a bus pass.
         System.out.println("Enter a vistor id to approve :");
         String userId = scannerUtil.readLine();
         if (visitorHandler.visitor.containsKey(userId)) {
@@ -320,6 +321,7 @@ public class Admin {
             Route r = routeHandler.route.get(routeID);
             Bus b = buses.getBus(r.getBus());
             if (b != null) {
+                //checking if we can accomodate a new user
                 if(b.getSeatFilled()+1 <= b.getTotalCapacity()) {
                     b.incrementSeatFilled();
                     busPasses.addBusPass(busPassID, routeID, userID, b.getBusId());

@@ -118,7 +118,7 @@ class BusPassSuspendNotification implements NotificationBuilder {
     }
 
     public void buildTo() {
-        notifications.setFrom("Admin");
+        notifications.setTo("Admin");
     }
 
     public void buildMessage() {

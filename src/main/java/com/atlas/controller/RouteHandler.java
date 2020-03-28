@@ -183,7 +183,8 @@ public class RouteHandler {
                 routeHandler.route.get(routeId).setBus(newbusID);
                 busHandler.bus.get(newbusID).setRouteID(routeId);
                 busHandler.bus.get(newbusID).setSeatFilled(sf);
-                routeHandler.route.get(oldRouteID).setBus(-1);
+                if(routeHandler.route.containsKey(oldRouteID))
+                    routeHandler.route.get(oldRouteID).setBus(-1);
                 System.out.println(ColourMe.ANSI_GREEN + "Now, Route " + routeId + " has tagged with Bus " + newbusID + ColourMe.ANSI_RESET);
                 System.out.println(ColourMe.ANSI_RED + "Alert route " + oldRouteID + " which previously used "+ newbusID +" has no bus tagged now!" + ColourMe.ANSI_RESET);
             } else {
