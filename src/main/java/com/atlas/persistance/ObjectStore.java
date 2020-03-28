@@ -23,6 +23,7 @@ public class ObjectStore {
             System.out.println("\nAlert, Data storage error!");
         }
     }
+
     //retreives hashmap object of each handler
     public Object retreiveObject(String fileName) {
         Object o = null;
@@ -32,8 +33,7 @@ public class ObjectStore {
             if (!file.exists()) {
                 file.createNewFile();
                 System.out.println("Creating Database Files: " + file.getAbsolutePath());
-            }
-            else{
+            } else {
                 FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 o = objectInputStream.readObject();

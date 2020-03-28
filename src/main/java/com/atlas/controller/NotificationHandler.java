@@ -106,17 +106,16 @@ public class NotificationHandler {
     }
 
     //To remove notification after approval / rejection of bus pass we need notification ID, below function handles that.
-    public int getVisitorNotificationID(String userid){
+    public int getVisitorNotificationID(String userid) {
         if (!note.isEmpty()) {
             VisitorHandler visitorHandler = VisitorHandler.getInstance();
             Set<Integer> keys = note.keySet();
             for (Integer key : keys) {
                 Notifications notify = note.get(key);
-                if (notify.getSupportingParameters()!=null) {
-                    if(notify.getSupportingParameters().getClass().getSimpleName().equals("Visitor"))
-                    {
+                if (notify.getSupportingParameters() != null) {
+                    if (notify.getSupportingParameters().getClass().getSimpleName().equals("Visitor")) {
                         Visitor v = (Visitor) notify.getSupportingParameters();
-                        if(v.getUserId().equals(userid)) {
+                        if (v.getUserId().equals(userid)) {
                             return notify.getID();
                         }
                     }

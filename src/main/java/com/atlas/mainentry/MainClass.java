@@ -14,11 +14,11 @@ public class MainClass {
             Lines.menulines();
             System.out.println(ColourMe.ANSI_BRIGHT_YELLOW + "Home Menu" + ColourMe.ANSI_RESET);
             Lines.menulines();
-            System.out.println(ColourMe.ANSI_BLUE+"Login Options");
+            System.out.println(ColourMe.ANSI_BLUE + "Login Options");
             System.out.println("1. Admin");
             System.out.println("2. User");
             System.out.println("3. Visitor");
-            System.out.println("Press 0 key to close!"+ColourMe.ANSI_RESET);
+            System.out.println("Press 0 key to close!" + ColourMe.ANSI_RESET);
             ScannerUtil input = ScannerUtil.getInstance();
             int choice = input.readInt();
             switch (choice) {

@@ -70,16 +70,16 @@ public class RouteHandler {
                 }
                 System.out.println("Enter Shift [SHIFT1, SHIFT2, SHIFT3] : ");
                 String time = scannerUtil.readLine();
-                while(!time.equals("SHIFT1") && !time.equals("SHIFT2") && !time.equals("SHIFT3")){
-                    System.out.println(ColourMe.ANSI_RED+"Enter SHIFT in correct format : "+ColourMe.ANSI_RESET);
+                while (!time.equals("SHIFT1") && !time.equals("SHIFT2") && !time.equals("SHIFT3")) {
+                    System.out.println(ColourMe.ANSI_RED + "Enter SHIFT in correct format : " + ColourMe.ANSI_RESET);
                     time = scannerUtil.readLine();
                 }
                 String eta = "";
-                if(time.equals("SHIFT1")){ //Auto assigning arrival time based on the shift
+                if (time.equals("SHIFT1")) { //Auto assigning arrival time based on the shift
                     eta = "05:00AM";
-                }else if(time.equals("SHIFT2")){
+                } else if (time.equals("SHIFT2")) {
                     eta = "07:00AM";
-                }else{
+                } else {
                     eta = "11:00AM";
                 }
                 int routeID = IDGenerator.getRouteID();
@@ -189,10 +189,10 @@ public class RouteHandler {
                 routeHandler.route.get(routeId).setBus(newbusID);
                 busHandler.bus.get(newbusID).setRouteID(routeId);
                 busHandler.bus.get(newbusID).setSeatFilled(sf);
-                if(routeHandler.route.containsKey(oldRouteID))
+                if (routeHandler.route.containsKey(oldRouteID))
                     routeHandler.route.get(oldRouteID).setBus(-1);
                 System.out.println(ColourMe.ANSI_GREEN + "Now, Route " + routeId + " has tagged with Bus " + newbusID + ColourMe.ANSI_RESET);
-                System.out.println(ColourMe.ANSI_RED + "Alert route " + oldRouteID + " which previously used "+ newbusID +" has no bus tagged now!" + ColourMe.ANSI_RESET);
+                System.out.println(ColourMe.ANSI_RED + "Alert route " + oldRouteID + " which previously used " + newbusID + " has no bus tagged now!" + ColourMe.ANSI_RESET);
             } else {
                 System.out.println(ColourMe.ANSI_RED + "Seat capacity not met!\nChoose a different bus!" + ColourMe.ANSI_RESET);
             }
@@ -200,7 +200,7 @@ public class RouteHandler {
             System.out.println(ColourMe.ANSI_YELLOW + "Route doesn't have any bus linked!" + ColourMe.ANSI_RESET);
             int sf = 0;
             UserHandler user = UserHandler.getInstance();
-            if(!user.user.isEmpty()) {
+            if (!user.user.isEmpty()) {
                 Set<String> keys = user.user.keySet();
                 for (String key : keys) {
                     User u = user.user.get(key);
@@ -218,21 +218,21 @@ public class RouteHandler {
 
     public void delRoute(int routeId) {
         if (route.containsKey(routeId)) {
-            if(route.get(routeId).getBus()!=-1) {
+            if (route.get(routeId).getBus() != -1) {
                 BusHandler busHandler = BusHandler.getInstance();
                 busHandler.bus.get(route.get(routeId).getBus()).setSeatFilled(0);
                 busHandler.bus.get(route.get(routeId).getBus()).setRouteID(-1);
             }
             UserHandler user = UserHandler.getInstance();
             Set<String> keys = user.user.keySet();
-            for(String key:keys){
+            for (String key : keys) {
                 User u = user.getUser(key);
-                if(u.getRouteNum()==routeId){
+                if (u.getRouteNum() == routeId) {
                     u.setRouteNum(-1);
                 }
             }
             route.remove(routeId);
-            System.out.println(ColourMe.ANSI_BRIGHT_GREEN+"Route deleted!"+ColourMe.ANSI_RESET);
+            System.out.println(ColourMe.ANSI_BRIGHT_GREEN + "Route deleted!" + ColourMe.ANSI_RESET);
         } else {
             System.out.println(ColourMe.ANSI_RED + "No such route available!!!" + ColourMe.ANSI_RESET);
         }
@@ -307,10 +307,8 @@ public class RouteHandler {
                 System.out.println("Source   : " + String.format("%10s", r.getSource()) + "\t\t\t" + "Destination  : " + String.format("%20s", r.getDestination()));
                 double per;
                 if (b != null) {
-                    per = ((double)b.getSeatFilled() / (double)b.getTotalCapacity()) * 100;
-                }
-                else
-                {
+                    per = ((double) b.getSeatFilled() / (double) b.getTotalCapacity()) * 100;
+                } else {
                     per = 0.0;
                 }
                 System.out.println(ColourMe.ANSI_BRIGHT_RED + "Percentage Occupied : " + Math.round(per) + "%" + ColourMe.ANSI_RESET);

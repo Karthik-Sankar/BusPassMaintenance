@@ -46,7 +46,7 @@ public class BusHandler {
     public void removeBus(int busID) {
         if (bus.containsKey(busID)) {
             //checking if bus is tagged to a route
-            if(bus.get(busID).getRouteID()!=-1) {
+            if (bus.get(busID).getRouteID() != -1) {
                 RouteHandler routeHandler = RouteHandler.getInstance();
                 routeHandler.route.get(bus.get(busID).getRouteID()).setBus(-1);
             }

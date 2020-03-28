@@ -106,23 +106,21 @@ public class UserHandler {
         if (user.containsKey(userId) && routeHandler.route.containsKey(routeId)) {
             BusHandler busHandler = BusHandler.getInstance();
             Bus b = busHandler.bus.get(routeHandler.route.get(routeId).getBus());
-            if(b.getBusId()!=-1){
-                if(b.getSeatFilled() <= b.getTotalCapacity()){
+            if (b.getBusId() != -1) {
+                if (b.getSeatFilled() <= b.getTotalCapacity()) {
                     int oldr = user.get(userId).getRouteNum();
-                    if(oldr!=-1){
-                        if(busHandler.getBus(routeHandler.getBus(routeId))!=null){
+                    if (oldr != -1) {
+                        if (busHandler.getBus(routeHandler.getBus(routeId)) != null) {
                             busHandler.getBus(routeHandler.getBus(routeId)).deccrementSeatFilled();
                         }
                     }
                     user.get(userId).setRouteNum(routeId);
                     b.incrementSeatFilled();
+                } else {
+                    System.out.println(ColourMe.ANSI_RED + "No space available in the given route!" + ColourMe.ANSI_RESET);
                 }
-                else{
-                    System.out.println(ColourMe.ANSI_RED+"No space available in the given route!"+ColourMe.ANSI_RESET);
-                }
-            }
-            else{
-                System.out.println(ColourMe.ANSI_RED+"cant assign user when there is no bus in route!"+ColourMe.ANSI_RESET);
+            } else {
+                System.out.println(ColourMe.ANSI_RED + "cant assign user when there is no bus in route!" + ColourMe.ANSI_RESET);
             }
         } else {
             System.out.println("Invalid UserID/RouteID!!");
@@ -199,14 +197,13 @@ public class UserHandler {
                                 if (r != null)
                                     b = busHandler.getBus(r.getBus());
                                 if (b != null) {
-                                    if(b.getSeatFilled()<b.getTotalCapacity()) {
+                                    if (b.getSeatFilled() < b.getTotalCapacity()) {
                                         busPassHandler.busPass.get(user.get(uname).getBusPass()).setBusPassStatus(BusPassConstants.ACTIVE);
                                         b.incrementSeatFilled();
-                                        ns.createNotification(uname,"Admin","User has activated their bus pass again!");
+                                        ns.createNotification(uname, "Admin", "User has activated their bus pass again!");
                                         System.out.println(ColourMe.ANSI_GREEN + "Bus pass activated!!" + ColourMe.ANSI_RESET);
                                         objectSaver.saveAll();
-                                    }
-                                    else{
+                                    } else {
                                         System.out.println(ColourMe.ANSI_RED + "No seat available currently!" + ColourMe.ANSI_RESET);
                                         break;
                                     }

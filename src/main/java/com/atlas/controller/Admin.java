@@ -208,13 +208,12 @@ public class Admin {
                     System.out.println("Enter user id :");
                     String userid = scannerUtil.readLine();
                     System.out.println("Available routes :");
-                    if(routeHandler.availableValidRoutes()) {
+                    if (routeHandler.availableValidRoutes()) {
                         System.out.println("Enter route id :");
                         int rid = scannerUtil.readInt();
-                        userHandler.updateUserRoute(userid,rid);
-                    }
-                    else{
-                        System.out.println(ColourMe.ANSI_RED+"No free routes!"+ColourMe.ANSI_RESET);
+                        userHandler.updateUserRoute(userid, rid);
+                    } else {
+                        System.out.println(ColourMe.ANSI_RED + "No free routes!" + ColourMe.ANSI_RESET);
                     }
                     break;
                 case 6:
@@ -326,7 +325,7 @@ public class Admin {
             Bus b = buses.getBus(r.getBus());
             if (b != null) {
                 //checking if we can accomodate a new user
-                if(b.getSeatFilled()+1 <= b.getTotalCapacity()) {
+                if (b.getSeatFilled() + 1 <= b.getTotalCapacity()) {
                     b.incrementSeatFilled();
                     busPasses.addBusPass(busPassID, routeID, userID, b.getBusId());
                     userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
@@ -336,8 +335,7 @@ public class Admin {
                     handler.createNotification("Amazon Transport", userID, ColourMe.ANSI_GREEN + "Your bus pass has been approved!" + ColourMe.ANSI_RESET);
                     handler.clearNotification(handler.getVisitorNotificationID(userID));
                     System.out.println(ColourMe.ANSI_GREEN + "User " + v.getUserName() + " Application Approved" + ColourMe.ANSI_RESET);
-                }
-                else{
+                } else {
                     System.out.println(ColourMe.ANSI_RED + "No seats available in the route!" + ColourMe.ANSI_RESET);
                 }
             } else {
@@ -362,7 +360,7 @@ public class Admin {
         }
     }
 
-    private void generateFinanceTeamReport(){
+    private void generateFinanceTeamReport() {
         UserHandler userHandler = UserHandler.getInstance();
         BusHandler busHandler = BusHandler.getInstance();
         RouteHandler routeHandler = RouteHandler.getInstance();
@@ -371,16 +369,16 @@ public class Admin {
             Lines.lines();
             System.out.println(ColourMe.ANSI_BRIGHT_CYAN + String.format("%70s", "Finance Report on Transport Utilization") + ColourMe.ANSI_RESET);
             Lines.lines();
-            System.out.println(String.format("%12s", "Employee ID") + "\t" + String.format("%25s", "Bus Type") +"\t"+ String.format("%25s", "Route Number") +"\t"+ String.format("%25s", "Number of Stops"));
+            System.out.println(String.format("%12s", "Employee ID") + "\t" + String.format("%25s", "Bus Type") + "\t" + String.format("%25s", "Route Number") + "\t" + String.format("%25s", "Number of Stops"));
             Lines.lines();
             Set<String> u = userHandler.user.keySet();
             for (String u1 : u) {
                 User element = userHandler.user.get(u1);
-                if(element.getRouteNum()!=-1){
+                if (element.getRouteNum() != -1) {
                     Bus b = busHandler.getBus(routeHandler.getBus(element.getRouteNum()));
-                    if(b!=null){
-                        if(b.getBusId()!=-1){
-                            System.out.println(String.format("%12s", element.getUserId()) + "\t" + String.format("%25s", b.getBusType()) +"\t"+ String.format("%25s", element.getRouteNum()) +"\t"+ String.format("%25s", routeHandler.route.get(element.getRouteNum()).getStops().size()));
+                    if (b != null) {
+                        if (b.getBusId() != -1) {
+                            System.out.println(String.format("%12s", element.getUserId()) + "\t" + String.format("%25s", b.getBusType()) + "\t" + String.format("%25s", element.getRouteNum()) + "\t" + String.format("%25s", routeHandler.route.get(element.getRouteNum()).getStops().size()));
                         }
                     }
                 }
@@ -393,7 +391,7 @@ public class Admin {
         }
     }
 
-    private void generateVehicleSummary(){
+    private void generateVehicleSummary() {
         UserHandler userHandler = UserHandler.getInstance();
         BusHandler busHandler = BusHandler.getInstance();
         RouteHandler routeHandler = RouteHandler.getInstance();
@@ -408,19 +406,17 @@ public class Admin {
             Set<Integer> keys = busHandler.bus.keySet();
             for (Integer key : keys) {
                 Bus bp = busHandler.bus.get(key);
-                if(bp.getBusType().equals("AC")){
+                if (bp.getBusType().equals("AC")) {
                     ac++;
-                }
-                else if(bp.getBusType().equals("NON-AC")){
+                } else if (bp.getBusType().equals("NON-AC")) {
                     non_ac++;
-                }
-                else{
+                } else {
                     other++;
                 }
             }
-            System.out.println(String.format("%17s", "AC Buses") + "\t" + String.format("%25s", ac)+" Nos");
-            System.out.println(String.format("%17s", "Non-AC Buses") + "\t" + String.format("%25s", non_ac)+" Nos");
-            System.out.println(String.format("%17s", "Other Type Buses") + "\t" + String.format("%25s", other)+" Nos");
+            System.out.println(String.format("%17s", "AC Buses") + "\t" + String.format("%25s", ac) + " Nos");
+            System.out.println(String.format("%17s", "Non-AC Buses") + "\t" + String.format("%25s", non_ac) + " Nos");
+            System.out.println(String.format("%17s", "Other Type Buses") + "\t" + String.format("%25s", other) + " Nos");
             Lines.lines();
         } else {
             System.out.println(ColourMe.ANSI_RED + "No buses added yet!" + ColourMe.ANSI_RESET);
