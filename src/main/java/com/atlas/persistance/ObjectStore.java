@@ -8,7 +8,7 @@ public class ObjectStore {
             File file = new File(fileName);
             if (!file.exists()) {
                 file.createNewFile();
-                System.out.println("Running For First Time Hence Creating Database : " + file.getAbsolutePath());
+                System.out.println("Creating Database Files: " + file.getAbsolutePath());
             } else {
                 FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
@@ -28,9 +28,7 @@ public class ObjectStore {
             File file = new File(fileName);
             if (!file.exists()) {
                 file.createNewFile();
-                System.out.println("Running For First Time Hence Creating Database : " + file.getAbsolutePath());
-            } else if(file.length() == 0) {
-                System.out.println("\nNo data Present in DB : " + file.getAbsolutePath());
+                System.out.println("Creating Database Files: " + file.getAbsolutePath());
             }
             else{
                 FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
