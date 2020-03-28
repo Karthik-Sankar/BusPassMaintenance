@@ -36,6 +36,8 @@ public class NotificationHandler {
         }
     }
 
+    //Notification build functions - Hiding the complex building logic using builder pattern
+
     public void createApplyPassNotification(String from, Visitor v) {
         NotificationBuilder notificationBuilder = new BusPassApplyNotification(from, v);
         NotificationManager manager = new NotificationManager(notificationBuilder);
@@ -103,6 +105,7 @@ public class NotificationHandler {
         }
     }
 
+    //To remove notification after approval / rejection of bus pass we need notification ID, below function handles that.
     public int getVisitorNotificationID(String userid){
         if (!note.isEmpty()) {
             VisitorHandler visitorHandler = VisitorHandler.getInstance();

@@ -54,8 +54,8 @@ public class RouteHandler {
         ScannerUtil scannerUtil = ScannerUtil.getInstance();
         Bus bus = busHandler.getBus(scannerUtil.readInt());
         //System.out.println("Bus object : "+bus.hashCode());
-        if (bus != null) {
-            if (bus.getRouteID() == -1) {
+        if (bus != null) { //checking if the bus is available
+            if (bus.getRouteID() == -1) { //checking if the bus have route assigned already!
                 System.out.println("Enter source : ");
                 String source = scannerUtil.readLine();
                 System.out.println("Enter destination : ");
@@ -75,7 +75,7 @@ public class RouteHandler {
                     time = scannerUtil.readLine();
                 }
                 String eta = "";
-                if(time.equals("SHIFT1")){
+                if(time.equals("SHIFT1")){ //Auto assigning arrival time based on the shift
                     eta = "05:00AM";
                 }else if(time.equals("SHIFT2")){
                     eta = "07:00AM";
@@ -103,6 +103,7 @@ public class RouteHandler {
         return -1;
     }
 
+    //Getting route id using source
     public int getRouteID_S(String source) {
         Set<Integer> keys = route.keySet();
         for (Integer key : keys) {
@@ -112,6 +113,7 @@ public class RouteHandler {
         return 0;
     }
 
+    //Getting route id using destination
     public int getRouteID_D(String destination) {
         Set<Integer> keys = route.keySet();
         for (Integer key : keys) {
@@ -121,6 +123,7 @@ public class RouteHandler {
         return 0;
     }
 
+    //function outputs routes with no buses, used for alert mechanism!
     public void getNoBusRoutes() {
         if (!route.isEmpty()) {
             Set<Integer> keys = route.keySet();
@@ -150,6 +153,7 @@ public class RouteHandler {
                 System.out.println(ColourMe.ANSI_GREEN + String.format("%55s", "Route No : " + r.getRouteId()) + ColourMe.ANSI_RESET);
                 System.out.println();
                 System.out.println("Source   : " + String.format("%10s", r.getSource()) + "\t\t\t" + "Destination  : " + String.format("%20s", r.getDestination()));
+                //checks if route has no bus and displays accordingly
                 if (r.getBus() != -1 && b != null)
                     System.out.println("Shift    : " + String.format("%10s", r.getTime()) + "\t\t\t" + "Bus No       : " + String.format("%20s", r.getBus()));
                 else
@@ -178,6 +182,8 @@ public class RouteHandler {
                 int oldBus = routeHandler.route.get(routeId).getBus();
                 int oldRouteID = busHandler.bus.get(newbusID).getRouteID();
                 int sf = busHandler.bus.get(oldBus).getSeatFilled();
+                // oldRoute is assigned with new bus and bus which was previously tagged to the route is released
+                // also same way new bus's previous route is released
                 busHandler.bus.get(oldBus).setSeatFilled(0);
                 busHandler.bus.get(oldBus).setRouteID(-1);
                 routeHandler.route.get(routeId).setBus(newbusID);
@@ -232,6 +238,7 @@ public class RouteHandler {
         }
     }
 
+    //Prints routes which can accomodate new users!
     public boolean availableValidRoutes() {
         if (!route.isEmpty()) {
             Set<Integer> keys = route.keySet();
@@ -283,6 +290,7 @@ public class RouteHandler {
         }
     }
 
+    //calculate route's capacity % and displays the value
     public void routeCapacityStatus() {
         if (!route.isEmpty()) {
             BusHandler busHandler = BusHandler.getInstance();

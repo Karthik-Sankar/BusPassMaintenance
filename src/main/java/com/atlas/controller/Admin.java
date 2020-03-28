@@ -28,12 +28,14 @@ public class Admin {
         String uname = scannerUtil.readLine();
         System.out.println("Password : ");
         String passwd = scannerUtil.readLine();
+        //Authenticating user as admin
         if (uname.equals("admin") && passwd.equals("admin123")) {
             isAuthenticated = true;
         } else {
             System.out.println(ColourMe.ANSI_RED + "You are not an administrator!" + ColourMe.ANSI_RESET);
             return;
         }
+        //displaying error alerts
         routeHandler.getNoBusRoutes();
         char session = 'y';
         while (session == 'y') {
@@ -153,6 +155,7 @@ public class Admin {
                                 break;
                             case 2:
                                 boolean isBusAvailable = buses.getUnAssignedBuses();
+                                //If there are no buses available then we cant create a route. Logic to create a bus before route
                                 if (isBusAvailable) {
                                     routeHandler.routeAddition();
                                 } else {
@@ -201,6 +204,7 @@ public class Admin {
                     userHandler.displayUsers();
                     break;
                 case 5:
+                    //Assigning user to a new route if their route got removed
                     System.out.println("Enter user id :");
                     String userid = scannerUtil.readLine();
                     System.out.println("Available routes :");
@@ -326,6 +330,7 @@ public class Admin {
                     b.incrementSeatFilled();
                     busPasses.addBusPass(busPassID, routeID, userID, b.getBusId());
                     userHandler.addUser(busPassID, userID, paswd, usname, phone, addr, routeID);
+                    //removing visitor once added as user
                     visitorHandler.visitor.remove(userId);
                     NotificationHandler handler = NotificationHandler.getNotificationInstance();
                     handler.createNotification("Amazon Transport", userID, ColourMe.ANSI_GREEN + "Your bus pass has been approved!" + ColourMe.ANSI_RESET);

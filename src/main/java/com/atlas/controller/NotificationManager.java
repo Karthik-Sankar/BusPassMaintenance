@@ -36,6 +36,7 @@ class BusPassApplyNotification implements NotificationBuilder {
     }
 
     public void buildSupportingObject() {
+        //Creates visitor object for admin to use it while approve / reject application
         notifications.setSupportingObject(user);
         VisitorHandler visitorHandler = VisitorHandler.getInstance();
         visitorHandler.addVisitor(user.getUserId(), user.getPassword(), user.getUserName(), user.getPhoneNumber(), user.getAddress(), user.getRouteID());
@@ -77,6 +78,7 @@ class BusPassCancelNotification implements NotificationBuilder {
     }
 
     public void buildSupportingObject() {
+        //Cancel bus pass of the user and remove the user from database
         notifications.setSupportingObject(user);
         BusPassHandler busPassHandler = BusPassHandler.getInstance();
         busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.CANCEL);
@@ -126,6 +128,7 @@ class BusPassSuspendNotification implements NotificationBuilder {
     }
 
     public void buildSupportingObject() {
+        //Changing the bus pass's state from active to suspend! This will also release the seat used by
         notifications.setSupportingObject(user);
         BusPassHandler busPassHandler = BusPassHandler.getInstance();
         busPassHandler.busPass.get(user.getBusPass()).setBusPassStatus(BusPassConstants.SUSPEND);

@@ -59,6 +59,7 @@ public class UserHandler {
                 User element = user.get(u1);
                 System.out.println("Buspass Info   : " + String.format("%25s", element.getBusPass()));
                 System.out.println("Employee ID    : " + String.format("%25s", element.getUserId()) + "\t\t\t" + "UserName       : " + String.format("%25s", element.getUserName()));
+                //checks if route is tagged to a user
                 if (element.getRouteNum() != -1)
                     System.out.println("Phone Number   : " + String.format("%25s", element.getPhoneNumber()) + "\t\t\t" + "Route Number   : " + String.format("%25s", element.getRouteNum()));
                 else
@@ -84,6 +85,7 @@ public class UserHandler {
             System.out.println("Buspass Info   : " + String.format("%25s", u.getBusPass()));
             System.out.println("Employee ID    : " + String.format("%25s", u.getUserId()) + "\t\t\t" + "UserName       : " + String.format("%25s", u.getUserName()));
             System.out.println("Phone Number   : " + String.format("%25s", u.getPhoneNumber()) + "\t\t\t" + "Route Number   : " + String.format("%25s", u.getRouteNum()));
+            //check's route and bus status of a user
             if (r != null && r.getBus() != -1)
                 System.out.println("Route          : " + String.format("%25s", r.getSource() + "-" + r.getDestination()) + "\t\t\t" + "Bus No         : " + String.format("%25s", r.getBus()));
             else if (r != null)
@@ -98,6 +100,7 @@ public class UserHandler {
         }
     }
 
+    //Route of an user might get deleted hence updating route request
     public void updateUserRoute(String userId, int routeId) {
         RouteHandler routeHandler = RouteHandler.getInstance();
         if (user.containsKey(userId) && routeHandler.route.containsKey(routeId)) {

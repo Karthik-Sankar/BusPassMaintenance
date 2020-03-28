@@ -24,6 +24,7 @@ public class BusHandler {
         ObjectRetreiver retreiver = new ObjectRetreiver();
         Object o = retreiver.getBusObj();
         if (o != null) {
+            //copying previously saved data
             HashMap<Integer, Bus> temp = (HashMap<Integer, Bus>) o;
             bus = temp;
         }
@@ -78,6 +79,7 @@ public class BusHandler {
                 System.out.println("Bus Type       : " + String.format("%10s", bp.getBusType()) + "\t\t\tBus co-ordinator        : " + String.format("%25s", bp.getBusCoOrdinatorID()));
                 System.out.println("Total Capacity : " + String.format("%10d", bp.getTotalCapacity()) + "\t\t\tSeats Filled            : " + String.format("%25d", bp.getSeatFilled()));
                 Route r = routeHandler.route.get(bp.getRouteID());
+                //checking if bus have route and display accordingly!
                 if (bp.getRouteID() != -1 && r != null)
                     System.out.println("Route ID       : " + String.format("%10d", bp.getRouteID()) + "\t\t\tRoute Details           : " + String.format("%25s", routeHandler.route.get(bp.getRouteID()).getSource() + "-" + routeHandler.route.get(bp.getRouteID()).getDestination()));
                 else {

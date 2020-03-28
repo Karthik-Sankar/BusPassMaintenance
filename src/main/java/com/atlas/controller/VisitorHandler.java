@@ -128,6 +128,7 @@ public class VisitorHandler {
                             System.out.println("ENTER ROUTE ID : ");
                             int routeID = scannerUtil.readInt();
                             String c = "y";
+                            //User can only apply if the route is valid and have seats
                             while (!routeHandler.route.containsKey(routeID)) {
                                 System.out.println(ColourMe.ANSI_RED + "You are entering invalid Route ID / Route has no seats available!! \nPress 'y' to continue and 'n' to cancel applying" + ColourMe.ANSI_RESET);
                                 c = scannerUtil.readLine();

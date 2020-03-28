@@ -3,9 +3,11 @@ package com.atlas.persistance;
 import java.io.*;
 
 public class ObjectStore {
+    //saves hashmap object of each handler
     public void saveObject(Object o, String fileName) {
         try {
             File file = new File(fileName);
+            //creating files if not exists
             if (!file.exists()) {
                 file.createNewFile();
                 System.out.println("Creating Database Files: " + file.getAbsolutePath());
@@ -21,11 +23,12 @@ public class ObjectStore {
             System.out.println("\nAlert, Data storage error!");
         }
     }
-
+    //retreives hashmap object of each handler
     public Object retreiveObject(String fileName) {
         Object o = null;
         try {
             File file = new File(fileName);
+            //creating files if not exists
             if (!file.exists()) {
                 file.createNewFile();
                 System.out.println("Creating Database Files: " + file.getAbsolutePath());
